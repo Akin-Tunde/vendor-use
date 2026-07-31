@@ -1,0 +1,13 @@
+/* global.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    :root {
+        --color-primary: 79 38 217;
+        /* #4F26D9 in RGB */
+        --color-secondary: 76 217 100;
+        /* #4CD964 in RGB */
+    }
+}

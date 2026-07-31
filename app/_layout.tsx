@@ -1,3 +1,4 @@
+import "../global.css"; // MUST be the first import for NativeWind
 import { useFonts } from 'expo-font';
 import { DarkTheme, DefaultTheme, Stack, ThemeProvider } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
@@ -12,8 +13,8 @@ export {
 } from 'expo-router';
 
 export const unstable_settings = {
-  // Ensure that reloading on `/modal` keeps a back button present.
-  initialRouteName: '(tabs)',
+  // Ensure that reloading on certain routes keeps a back button present.
+  initialRouteName: 'onboarding', 
 };
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -47,9 +48,15 @@ function RootLayoutNav() {
 
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
+      <Stack screenOptions={{ headerShown: false }}>
+        {/* Onboarding Screen (Initial route) */}
+        <Stack.Screen name="onboarding" options={{ animation: 'fade' }} />
+        
+        {/* Main App Tabs */}
+        <Stack.Screen name="(tabs)" options={{ gestureEnabled: false }} />
+        
+        {/* Modal screens */}
+        <Stack.Screen name="modal" options={{ presentation: 'modal', headerShown: true }} />
       </Stack>
     </ThemeProvider>
   );
