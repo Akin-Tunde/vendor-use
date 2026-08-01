@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TextInput, Pressable, ScrollView, SafeAreaView } from 'react-native';
+import { View, Text, TextInput, Pressable, ScrollView, SafeAreaView, Image } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Mail, Lock, Eye, ArrowLeft, Globe } from 'lucide-react-native';
 
@@ -10,7 +10,7 @@ export default function LoginScreen() {
     <SafeAreaView className="flex-1 bg-white">
       <ScrollView className="flex-1 px-6" showsVerticalScrollIndicator={false}>
         {/* Header */}
-        <View className="flex-row justify-between items-center py-4">
+        <View className="flex-row justify-between items-center pt-7 ">
           <Pressable onPress={() => router.back()} className="p-2 border border-slate-100 rounded-full">
             <ArrowLeft size={20} color="#000" />
           </Pressable>
@@ -22,16 +22,15 @@ export default function LoginScreen() {
 
         {/* Branding & Illustration */}
         <View className="flex-row justify-between items-center mt-6">
-          <View>
-             <View className="w-12 h-12 bg-primary/10 rounded-xl items-center justify-center mb-2">
-                <View className="w-6 h-6 bg-primary rounded-md" />
-             </View>
-             <Text className="text-3xl font-bold text-slate-900">useMarket</Text>
-             <Text className="text-secondary text-xl font-bold">Vendor</Text>
+          <View className="items-center">
+            <View className="w-16 h- bg-white rounded-2xl items-center justify-center shadow-sm">
+              <Image source={require('../../assets/icons/logo-1.png')} className="w-30 h-24" resizeMode="contain" />
+            </View>
+            <Text className="text-2xl font-bold text-slate-900 mt-2">useMarket</Text>
+            <Text className="text-secondary text-lg font-bold">Vendor</Text>
           </View>
-          <View className="w-40 h-40 bg-slate-50 rounded-full items-center justify-center overflow-hidden">
-             {/* Replace with your Illustration */}
-             <View className="w-32 h-32 bg-primary/20 rounded-full" />
+          <View className="w-40 h-40 items-center justify-center">
+            <Image source={require('../../assets/icons/login-1.png')} className="w-full h-full" resizeMode="contain" />
           </View>
         </View>
 
@@ -86,19 +85,19 @@ export default function LoginScreen() {
         {/* Social Logins */}
         <View className="flex-row space-x-3">
           <Pressable className="flex-1 flex-row items-center justify-center border border-slate-200 h-14 rounded-2xl">
-            <View className="w-6 h-6 bg-red-500 rounded-full mr-2" />
+            <Image source={require('../../assets/icons/google.jpg')} className="w-6 h-6 mr-2" resizeMode="contain" />
             <Text className="font-bold text-slate-700">Google</Text>
           </Pressable>
           <Pressable className="flex-1 flex-row items-center justify-center border border-slate-200 h-14 rounded-2xl">
-            <View className="w-6 h-6 bg-blue-600 rounded-full mr-2" />
+            <Image source={require('../../assets/icons/facebook.jpg')} className="w-6 h-6 mr-2" resizeMode="contain" />
             <Text className="font-bold text-slate-700">Facebook</Text>
           </Pressable>
         </View>
 
-        <Pressable className="mt-4 border border-primary h-14 rounded-2xl flex-row items-center justify-center">
+      {/*  <Pressable className="mt-4 border border-primary h-14 rounded-2xl flex-row items-center justify-center">
           <Globe size={18} color="#4F26D9" className="mr-2" />
           <Text className="text-primary font-bold">Continue as Guest</Text>
-        </Pressable>
+        </Pressable> */}
 
         <View className="items-center mt-8 pb-10">
           <Text className="text-slate-500">
