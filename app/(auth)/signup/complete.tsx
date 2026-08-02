@@ -95,36 +95,7 @@ export default function SetupCompleteScreen() {
            </View>
         </View>
 
-        {/* What's Next Section */}
-        <View className="mb-10">
-           <View className="flex-row items-center mb-4">
-              <View className="w-8 h-8 bg-green-100 rounded-full items-center justify-center mr-2">
-                 <Star size={16} color="#4CD964" />
-              </View>
-              <View>
-                 <Text className="font-bold text-slate-900">What's Next?</Text>
-                 <Text className="text-slate-400 text-[10px]">Start managing your business now.</Text>
-              </View>
-           </View>
-
-           <View className="flex-row space-x-3">
-              <NextStepCard 
-                icon={ShoppingBasket} 
-                label="Add Products" 
-                desc="List your items and services" 
-              />
-              <NextStepCard 
-                icon={Store} 
-                label="Manage Orders" 
-                desc="Receive and manage orders" 
-              />
-              <NextStepCard 
-                icon={TrendingUp} 
-                label="Grow Business" 
-                desc="Track performance and sales" 
-              />
-           </View>
-        </View>
+     
       </ScrollView>
 
       {/* Primary Actions */}

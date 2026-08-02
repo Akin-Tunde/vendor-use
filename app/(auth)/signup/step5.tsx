@@ -152,28 +152,10 @@ export default function PayoutSetupScreen() {
             </Pressable>
           </View>
 
-          {/* FAQ Green Box */}
-          <View className="bg-green-50/50 border border-green-100 rounded-2xl p-4 flex-row items-start">
-             <HelpCircle size={20} color="#4CD964" />
-             <View className="flex-1 ml-3">
-                <Text className="text-green-800 font-bold text-sm">Why do we need this?</Text>
-                <Text className="text-green-700 text-[11px] leading-4 mt-1">This helps us ensure secure payments and prevent fraud on our platform.</Text>
-             </View>
-          </View>
+     
         </View>
 
-        {/* Global Security Footer */}
-        <View className="items-center mt-10 mb-10">
-           <View className="flex-row items-center">
-              <Lock size={12} color="#94a3b8" />
-              <Text className="text-slate-400 text-[10px] ml-1.5 text-center font-medium">
-                Your financial information is encrypted and 100% secure.
-              </Text>
-           </View>
-           <Text className="text-slate-400 text-[10px] mt-1 text-center font-medium">
-             We never share your data with third parties.
-           </Text>
-        </View>
+    
       </ScrollView>
 
       {/* Sticky Footer */}

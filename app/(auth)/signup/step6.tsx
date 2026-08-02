@@ -208,12 +208,6 @@ export default function DeliveryOperatingHoursScreen() {
           <Text className="text-primary font-bold">Save & Continue Later</Text>
         </Pressable>
 
-        <View className="bg-green-50 flex-row items-center justify-center p-3 rounded-2xl mt-6">
-           <View className="w-4 h-4 bg-green-500 rounded-full items-center justify-center mr-2">
-              <Check size={10} color="white" strokeWidth={4} />
-           </View>
-           <Text className="text-green-700 text-[10px] font-medium">You can update these settings anytime from your store dashboard.</Text>
-        </View>
       </View>
     </View>
   );

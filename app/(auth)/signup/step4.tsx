@@ -26,31 +26,32 @@ export default function BusinessVerificationScreen() {
                 <Pressable onPress={() => router.back()} className="p-1">
                     <ArrowLeft size={24} color="#4F26D9" />
                 </Pressable>
-                <Text className="text-primary font-bold text-sm">Step 4 of 4</Text>
+                <Text className="text-primary font-bold text-sm">Step 4 of 6</Text>
                 <Pressable className="flex-row items-center">
                     <HelpCircle size={18} color="#4F26D9" />
                     <Text className="text-primary font-bold ml-1 text-sm">Help</Text>
                 </Pressable>
             </View>
 
-            {/* 2. Progress Indicator */}
-            <View className="flex-row items-center justify-center px-10 mb-6">
-                {[1, 2, 3, 4].map((step) => (
-                    <React.Fragment key={step}>
-                        <View
-                            className={`w-7 h-7 rounded-full items-center justify-center 
-                ${step < 4 ? 'bg-primary' : 'bg-primary border-2 border-primary'}`}
-                        >
-                            {step < 4 ? (
-                                <CheckCircle2 size={16} color="white" />
-                            ) : (
-                                <Text className="text-white text-xs font-bold">4</Text>
-                            )}
-                        </View>
-                        {step < 4 && <View className="flex-1 h-[2px] mx-0.5 bg-primary" />}
-                    </React.Fragment>
-                ))}
-            </View>
+           
+                {/* Progress Indicator */}
+                 <View className="flex-row items-center justify-center px-5 mt-4 mb-6">
+                   {[1, 2, 3, 4, 5 , 6].map((step) => (
+                     <React.Fragment key={step}>
+                       <View 
+                         className={`w-8 h-8 rounded-full items-center justify-center 
+                           ${step < 4 ? 'bg-primary' : step === 4 ? 'border-2 border-primary bg-white' : 'border border-slate-200 bg-white'}`}
+                       >
+                         {step < 4 ? (
+                           <CheckCircle2 size={18} color="white" />
+                         ) : (
+                           <Text className={step === 4 ? 'text-primary font-bold' : 'text-slate-400'}>{step}</Text>
+                         )}
+                       </View>
+                       {step < 6 && <View className={`flex-1 h-[2px] mx-1 ${step < 4 ? 'bg-primary' : 'bg-slate-100'}`} />}
+                     </React.Fragment>
+                   ))}
+                 </View>
 
             <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
                 {/* 3. Illustration & Title Section */}
@@ -71,14 +72,7 @@ export default function BusinessVerificationScreen() {
                 </View>
 
                 {/* 4. Privacy Note */}
-                <View className="mx-6 mt-6 bg-green-50/80 p-4 rounded-2xl flex-row items-center">
-                    <View className="w-8 h-8 bg-green-500/10 rounded-full items-center justify-center">
-                        <Lock size={16} color="#22c55e" />
-                    </View>
-                    <Text className="flex-1 ml-3 text-green-800 text-[11px] leading-4">
-                        Your information is secure and will only be used for verification purposes. It will never be shared with the public.
-                    </Text>
-                </View>
+              
 
                 {/* 5. Verification Checklist */}
                 <View className="px-6 mt-8">
@@ -118,20 +112,14 @@ export default function BusinessVerificationScreen() {
                     />
                 </View>
 
-                {/* 6. Encryption Note */}
-                <View className="mx-6 mt-8 bg-slate-50 p-4 rounded-2xl flex-row items-center mb-10">
-                    <Lock size={16} color="#94a3b8" />
-                    <Text className="flex-1 ml-3 text-slate-400 text-[10px] leading-4">
-                        All documents are encrypted and secured. We comply with global data protection standards.
-                    </Text>
-                </View>
+         
             </ScrollView>
 
             {/* 7. Action Footer */}
             <View className="p-6 bg-white border-t border-slate-50">
                 <Pressable
                     className="bg-primary h-16 rounded-2xl justify-center items-center shadow-lg shadow-primary/30"
-                    onPress={() => router.push('/signup/complete')}
+                    onPress={() => router.push('/signup/step5')}
                 >
                     <Text className="text-white font-bold text-lg">Submit for Verification</Text>
                 </Pressable>

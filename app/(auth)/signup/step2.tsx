@@ -1,15 +1,14 @@
-import React, { useState } from 'react';
-import { View, Text, Pressable, ScrollView, SafeAreaView } from 'react-native';
 import { useRouter } from 'expo-router';
-import { 
-  Check, 
-  ShoppingBasket, 
-  UtensilsCrossed, 
-  FirstAidKit, 
-  ShoppingBag, 
+import {
+  Check,
+  CheckCircle2,
   LayoutGrid,
-  CheckCircle2
+  ShoppingBag,
+  ShoppingBasket,
+  UtensilsCrossed
 } from 'lucide-react-native';
+import React, { useState } from 'react';
+import { Pressable, ScrollView, Text, View } from 'react-native';
 
 const BUSINESS_TYPES = [
   {
@@ -30,7 +29,7 @@ const BUSINESS_TYPES = [
     id: 'pharmacy',
     title: 'Pharmacy & Health',
     description: 'Sell medicines, health products and personal care items.',
-    icon: FirstAidKit,
+    icon: ShoppingBag,
     color: 'bg-green-100',
   },
   {
@@ -57,14 +56,14 @@ export default function BusinessTypeScreen() {
     <View className="flex-1 bg-white">
       {/* Progress Header */}
       <View className="items-center pt-2">
-         <Text className="text-primary font-bold text-sm">Step 2 of 4</Text>
+        <Text className="text-primary font-bold text-sm">Step 2 of 6</Text>
       </View>
 
       {/* Progress Indicator */}
-      <View className="flex-row items-center justify-center px-10 mt-4 mb-6">
-        {[1, 2, 3, 4].map((step) => (
+      <View className="flex-row items-center justify-center px-5 mt-4 mb-6">
+        {[1, 2, 3, 4 , 5 , 6].map((step) => (
           <React.Fragment key={step}>
-            <View 
+            <View
               className={`w-8 h-8 rounded-full items-center justify-center 
                 ${step < 2 ? 'bg-primary' : step === 2 ? 'border-2 border-primary bg-white' : 'border border-slate-200 bg-white'}`}
             >
@@ -74,7 +73,7 @@ export default function BusinessTypeScreen() {
                 <Text className={step === 2 ? 'text-primary font-bold' : 'text-slate-400'}>{step}</Text>
               )}
             </View>
-            {step < 4 && <View className={`flex-1 h-[2px] mx-1 ${step < 2 ? 'bg-primary' : 'bg-slate-100'}`} />}
+            {step < 6 && <View className={`flex-1 h-[2px] mx-1 ${step < 2 ? 'bg-primary' : 'bg-slate-100'}`} />}
           </React.Fragment>
         ))}
       </View>
@@ -89,7 +88,7 @@ export default function BusinessTypeScreen() {
           </View>
           {/* Illustration placeholder */}
           <View className="w-32 h-32 bg-slate-50 rounded-2xl items-center justify-center">
-             <ShoppingBasket size={60} color="#4F26D9" opacity={0.2} />
+            <ShoppingBasket size={60} color="#4F26D9" opacity={0.2} />
           </View>
         </View>
 
@@ -107,7 +106,7 @@ export default function BusinessTypeScreen() {
               <View className={`w-14 h-14 rounded-2xl items-center justify-center mr-4 ${type.color}`}>
                 <type.icon size={28} color="#4F26D9" />
               </View>
-              
+
               <View className="flex-1">
                 <Text className="text-base font-bold text-slate-900">{type.title}</Text>
                 <Text className="text-slate-500 text-xs mt-1 leading-4">{type.description}</Text>
@@ -124,14 +123,14 @@ export default function BusinessTypeScreen() {
 
       {/* Footer Actions */}
       <View className="p-6 bg-white border-t border-slate-50">
-        <Pressable 
+        <Pressable
           className="bg-primary h-16 rounded-2xl justify-center items-center shadow-lg shadow-primary/30"
           onPress={() => router.push('/signup/step3')}
         >
           <Text className="text-white font-bold text-lg">Continue</Text>
         </Pressable>
-        
-        <Pressable 
+
+        <Pressable
           className="mt-4 py-2"
           onPress={() => router.push('/signup/step3')}
         >

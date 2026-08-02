@@ -28,12 +28,12 @@ export default function StoreProfileScreen() {
     <View className="flex-1 bg-white">
       {/* Progress Header */}
       <View className="items-center pt-2">
-         <Text className="text-primary font-bold text-sm">Step 3 of 4</Text>
+         <Text className="text-primary font-bold text-sm">Step 3 of 6</Text>
       </View>
 
       {/* Progress Indicator */}
-      <View className="flex-row items-center justify-center px-10 mt-4 mb-6">
-        {[1, 2, 3, 4].map((step) => (
+      <View className="flex-row items-center justify-center px-5 mt-4 mb-6">
+        {[1, 2, 3, 4, 5 , 6].map((step) => (
           <React.Fragment key={step}>
             <View 
               className={`w-8 h-8 rounded-full items-center justify-center 
@@ -45,7 +45,7 @@ export default function StoreProfileScreen() {
                 <Text className={step === 3 ? 'text-primary font-bold' : 'text-slate-400'}>{step}</Text>
               )}
             </View>
-            {step < 4 && <View className={`flex-1 h-[2px] mx-1 ${step < 3 ? 'bg-primary' : 'bg-slate-100'}`} />}
+            {step < 6 && <View className={`flex-1 h-[2px] mx-1 ${step < 3 ? 'bg-primary' : 'bg-slate-100'}`} />}
           </React.Fragment>
         ))}
       </View>
@@ -190,11 +190,7 @@ export default function StoreProfileScreen() {
           </View>
         </View>
 
-        {/* Security Note */}
-        <View className="flex-row items-center justify-center my-10 bg-slate-50 py-3 rounded-2xl">
-           <ShieldCheck size={14} color="#64748b" className="mr-2" />
-           <Text className="text-slate-500 text-[10px]">Your information is secure and will never be shared.</Text>
-        </View>
+   
       </ScrollView>
 
       {/* Footer */}

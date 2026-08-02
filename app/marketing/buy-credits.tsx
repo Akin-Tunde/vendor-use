@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, SafeAreaView, ScrollView, Pressable } from 'react-native';
 import { useRouter } from 'expo-router';
-import { ArrowLeft, Check, Lock } from 'lucide-react-native';
+import { ArrowLeft, Check, Lock, Plus } from 'lucide-react-native';
 
 const PACKAGES = [
   { amount: '5,000', get: '5,250', bonus: '250' },
@@ -13,6 +13,7 @@ const PACKAGES = [
 export default function BuyCreditsScreen() {
   const router = useRouter();
   const [selectedPkg, setSelectedPkg] = useState('10,000');
+  const [payMethod, setPayMethod] = useState('wallet');
 
   return (
     <SafeAreaView className="flex-1 bg-[#F8F9FE]">
@@ -29,6 +30,7 @@ export default function BuyCreditsScreen() {
       <ScrollView className="flex-1 px-6 pt-4" showsVerticalScrollIndicator={false}>
         <Text className="font-bold text-slate-900 text-sm mb-3">Select Credit Package</Text>
 
+        {/* Packages Grid */}
         <View className="flex-row flex-wrap justify-between gap-y-3 mb-6">
           {PACKAGES.map((pkg) => {
             const isSelected = selectedPkg === pkg.amount;
@@ -53,6 +55,57 @@ export default function BuyCreditsScreen() {
               </Pressable>
             );
           })}
+        </View>
+
+        {/* Payment Method with Top Up Connection */}
+        <Text className="font-bold text-slate-900 text-sm mb-3">Payment Method</Text>
+        <View className="bg-white border border-slate-100 p-4 rounded-3xl mb-6 space-y-3 shadow-sm">
+          {/* Wallet Balance Option */}
+          <Pressable 
+            onPress={() => setPayMethod('wallet')} 
+            className={`p-3.5 rounded-2xl border-2 flex-row items-center justify-between ${
+              payMethod === 'wallet' ? 'border-primary bg-purple-50/30' : 'border-slate-100 bg-slate-50/50'
+            }`}
+          >
+            <View className="flex-row items-center flex-1">
+              <Text className="text-2xl mr-3">👛</Text>
+              <View className="flex-1">
+                <View className="flex-row items-center">
+                  <Text className="font-bold text-slate-900 text-xs mr-2">Wallet Balance</Text>
+                  <Pressable 
+                    onPress={() => router.push('/finance/add-money')}
+                    className="bg-primary/10 px-2 py-0.5 rounded-full flex-row items-center"
+                  >
+                    <Plus size={10} color="#4F26D9" className="mr-0.5" />
+                    <Text className="text-primary font-bold text-[9px]">Top Up</Text>
+                  </Pressable>
+                </View>
+                <Text className="text-slate-500 text-[10px]">Available: ₦52,500.00</Text>
+              </View>
+            </View>
+            <View className={`w-5 h-5 rounded-full border-2 items-center justify-center ${payMethod === 'wallet' ? 'border-primary bg-primary' : 'border-slate-300'}`}>
+              {payMethod === 'wallet' && <Check size={10} color="white" strokeWidth={3} />}
+            </View>
+          </Pressable>
+
+          {/* Paystack Card Option */}
+          <Pressable 
+            onPress={() => setPayMethod('card')} 
+            className={`p-3.5 rounded-2xl border-2 flex-row items-center justify-between ${
+              payMethod === 'card' ? 'border-primary bg-purple-50/30' : 'border-slate-100 bg-slate-50/50'
+            }`}
+          >
+            <View className="flex-row items-center">
+              <Text className="text-2xl mr-3">💳</Text>
+              <View>
+                <Text className="font-bold text-slate-900 text-xs">Paystack (Card)</Text>
+                <Text className="text-slate-400 text-[10px]">Visa, Mastercard, Verve</Text>
+              </View>
+            </View>
+            <View className={`w-5 h-5 rounded-full border-2 items-center justify-center ${payMethod === 'card' ? 'border-primary bg-primary' : 'border-slate-300'}`}>
+              {payMethod === 'card' && <Check size={10} color="white" strokeWidth={3} />}
+            </View>
+          </Pressable>
         </View>
 
         {/* Order Summary */}
