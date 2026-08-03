@@ -4,12 +4,14 @@ import {
     Bike,
     Check,
     CheckCircle2,
+    ChevronDown,
     CreditCard,
     Headphones,
     Info,
     MapPin,
     MessageSquare,
-    MoreVertical, Phone,
+    MoreVertical,
+    Phone,
     Printer,
     ShoppingBag,
     Star,
@@ -17,8 +19,9 @@ import {
     Wallet
 } from 'lucide-react-native';
 import React from 'react';
-import { Image, Pressable,  ScrollView, Text, View } from 'react-native';
+import { Image, Pressable, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+
 const STEPS = [
     { label: 'Confirmed', time: '09:10 AM', active: false, completed: true },
     { label: 'Preparing', time: '09:20 AM', active: false, completed: true },
@@ -27,224 +30,326 @@ const STEPS = [
     { label: 'Delivered', active: false, completed: false },
 ];
 
+const ITEMS = [
+    {
+        name: 'Orange (1kg)',
+        desc: 'Fresh Valencia Orange',
+        qty: 'x1',
+        price: '₦2,500',
+        emoji: '🍊',
+        bg: 'bg-orange-50/60',
+        border: 'border-orange-100',
+    },
+    {
+        name: 'Bread Loaf',
+        desc: 'Premium Whole Wheat Bread',
+        qty: 'x1',
+        price: '₦1,800',
+        emoji: '🍞',
+        bg: 'bg-amber-50/60',
+        border: 'border-amber-100',
+    },
+    {
+        name: 'Fresh Milk (1L)',
+        desc: 'Full Cream Milk',
+        qty: 'x1',
+        price: '₦1,900',
+        emoji: '🥛',
+        bg: 'bg-blue-50/60',
+        border: 'border-blue-100',
+    },
+];
+
 export default function ReadyForPickupScreen() {
     const router = useRouter();
 
     return (
         <SafeAreaView className="flex-1 bg-white">
             {/* 1. Header */}
-            <View className="px-6 py-4 flex-row justify-between items-center border-b border-slate-50">
+            <View className="px-5 py-3.5 flex-row justify-between items-center border-b border-slate-100 bg-white">
                 <View className="flex-row items-center">
-                    <Pressable onPress={() => router.back()} className="mr-4">
-                        <ArrowLeft size={24} color="#000" />
+                    <Pressable onPress={() => router.back()} className="mr-3 p-1">
+                        <ArrowLeft size={22} color="#1e293b" />
                     </Pressable>
                     <View>
                         <Text className="text-lg font-bold text-slate-900">Ready for Pickup</Text>
-                        <Text className="text-slate-400 text-[10px]">#ORD-8919 • 3 items</Text>
+                        <Text className="text-slate-400 text-xs">#ORD-8919 • 3 items</Text>
                     </View>
                 </View>
-                <View className="flex-row items-center space-x-3">
-                    <Pressable className="flex-row items-center bg-slate-50 px-3 py-1.5 rounded-full border border-slate-100">
+
+                <View className="flex-row items-center space-x-2.5">
+                    <Pressable className="flex-row items-center bg-slate-50 border border-slate-200 px-3 py-1.5 rounded-full">
                         <Headphones size={14} color="#4F26D9" />
                         <Text className="text-primary font-bold ml-1.5 text-xs">Help</Text>
                     </Pressable>
-                    <MoreVertical size={24} color="#64748b" />
+                    <Pressable className="p-1">
+                        <MoreVertical size={20} color="#64748b" />
+                    </Pressable>
                 </View>
             </View>
 
-            <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
+            <ScrollView className="flex-1 bg-[#F8F9FE]" showsVerticalScrollIndicator={false}>
                 {/* 2. Status Stepper */}
-                <View className="px-6 py-6 bg-white">
-                    <ScrollView horizontal showsHorizontalScrollIndicator={false} className="flex-row">
-                        {STEPS.map((step, i) => (
-                            <React.Fragment key={i}>
-                                <View className="items-center w-16">
-                                    <View className={`w-8 h-8 rounded-full items-center justify-center mb-2 
-                    ${step.active ? 'bg-primary shadow-lg shadow-primary/40' : step.completed ? 'bg-primary' : 'bg-slate-100'}`}>
-                                        {step.completed ? <Check size={14} color="white" /> : <ShoppingBag size={14} color={step.active ? 'white' : '#cbd5e1'} />}
+                <View className="px-5 py-5 bg-white border-b border-slate-100">
+                    <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                        <View className="flex-row items-center pr-6">
+                            {STEPS.map((step, i) => (
+                                <React.Fragment key={i}>
+                                    <View className="items-center min-w-[64px]">
+                                        <View
+                                            className={`w-9 h-9 rounded-full items-center justify-center mb-1.5 ${step.active
+                                                    ? 'bg-primary shadow-md shadow-primary/30'
+                                                    : step.completed
+                                                        ? 'bg-primary'
+                                                        : 'bg-slate-100 border border-slate-200'
+                                                }`}
+                                        >
+                                            {step.completed ? (
+                                                <Check size={16} color="white" />
+                                            ) : (
+                                                <ShoppingBag
+                                                    size={16}
+                                                    color={step.active ? 'white' : '#94a3b8'}
+                                                />
+                                            )}
+                                        </View>
+                                        <Text
+                                            className={`text-[10px] font-bold text-center ${step.active || step.completed ? 'text-primary' : 'text-slate-500'
+                                                }`}
+                                        >
+                                            {step.label}
+                                        </Text>
+                                        {step.time && (
+                                            <Text
+                                                className={`text-[9px] font-bold mt-0.5 ${step.active ? 'text-primary' : 'text-slate-400'
+                                                    }`}
+                                            >
+                                                {step.time}
+                                            </Text>
+                                        )}
                                     </View>
-                                    <Text className={`text-[8px] font-bold text-center ${step.active || step.completed ? 'text-primary' : 'text-slate-400'}`}>{step.label}</Text>
-                                    {step.time && <Text className="text-[6px] text-slate-400 mt-0.5">{step.time}</Text>}
-                                </View>
-                                {i < STEPS.length - 1 && <View className={`w-10 h-[1px] mt-4 mx-1 border-dashed ${step.completed ? 'bg-primary' : 'bg-slate-100'}`} />}
-                            </React.Fragment>
-                        ))}
+                                    {i < STEPS.length - 1 && (
+                                        <View
+                                            className={`w-10 h-[1px] mx-1 border-dashed -mt-5 ${step.completed ? 'bg-primary' : 'bg-slate-200'
+                                                }`}
+                                        />
+                                    )}
+                                </React.Fragment>
+                            ))}
+                        </View>
                     </ScrollView>
                 </View>
 
                 {/* 3. Ready Banner */}
-                <View className="mx-6 bg-green-50/50 border border-green-100 p-4 rounded-2xl flex-row items-center justify-between">
-                    <View className="flex-row items-center flex-1">
-                        <CheckCircle2 size={18} color="#22c55e" />
-                        <View className="ml-3">
-                            <Text className="text-slate-900 font-bold text-xs">Order is ready for pickup</Text>
-                            <Text className="text-slate-500 text-[10px]">Assign a rider or wait for auto-assignment.</Text>
+                <View className="mx-5 mt-4 bg-emerald-50/70 border border-emerald-200/80 p-3.5 rounded-2xl flex-row items-center justify-between shadow-sm">
+                    <View className="flex-row items-center flex-1 mr-2">
+                        <CheckCircle2 size={20} color="#10b981" />
+                        <View className="ml-2.5 flex-1">
+                            <Text className="text-slate-900 font-bold text-xs">
+                                Order is ready for pickup
+                            </Text>
+                            <Text className="text-slate-500 text-[10px] mt-0.5">
+                                Assign a rider or wait for auto-assignment.
+                            </Text>
                         </View>
                     </View>
-                    <View className="bg-white px-3 py-1.5 rounded-xl border border-green-200 items-center">
-                        <Text className="text-green-600 font-bold text-xs tracking-tighter">00:12:45</Text>
-                        <Text className="text-slate-400 text-[6px] font-bold uppercase">Ready for</Text>
-                    </View>
-                </View>
-
-                {/* 4. Customer Info (Profile) */}
-                <View className="px-6 mt-6">
-                    <View className="bg-white border border-slate-100 p-5 rounded-[32px] shadow-sm flex-row items-center">
-                        <View className="w-16 h-16 bg-purple-100 rounded-full items-center justify-center">
-                            <Text className="text-primary font-bold text-xl">AB</Text>
-                        </View>
-                        <View className="flex-1 ml-4">
-                            <View className="flex-row items-center">
-                                <Text className="text-lg font-bold text-slate-900 mr-2">Alex Brown</Text>
-                                <View className="bg-orange-100 px-2 py-0.5 rounded">
-                                    <Text className="text-orange-700 text-[8px] font-bold">VIP</Text>
-                                </View>
-                            </View>
-                            <View className="flex-row items-center mt-1">
-                                <Phone size={12} color="#94a3b8" />
-                                <Text className="text-slate-600 text-xs ml-2">0812 345 6789</Text>
-                            </View>
-                            <View className="flex-row items-start mt-1">
-                                <MapPin size={12} color="#94a3b8" className="mt-0.5" />
-                                <Text className="text-slate-400 text-[10px] ml-2 leading-4 flex-1">
-                                    45 Freedom Way, Lekki Phase 1, Lagos, Nigeria
-                                </Text>
-                            </View>
-                        </View>
-                        <View className="flex-row space-x-2">
-                            <Pressable className="w-10 h-10 bg-slate-50 rounded-full items-center justify-center"><Phone size={18} color="#4F26D9" /></Pressable>
-                            <Pressable className="w-10 h-10 bg-slate-50 rounded-full items-center justify-center"><MessageSquare size={18} color="#4F26D9" /></Pressable>
-                        </View>
+                    <View className="bg-white px-3 py-1.5 rounded-xl border border-emerald-200 items-center">
+                        <Text className="text-slate-400 text-[8px] font-bold uppercase">Ready for</Text>
+                        <Text className="text-emerald-600 font-extrabold text-xs">00:12:45</Text>
                     </View>
                 </View>
 
-                {/* 5. Logistics Grid */}
-                <View className="flex-row flex-wrap px-6 mt-4 justify-between">
-                    <LogisticsChip icon={Bike} label="Standard Delivery" />
-                    <LogisticsChip icon={Wallet} label="Paid" color="text-green-500" />
-                    <LogisticsChip icon={CreditCard} label="Transfer" />
-                    <LogisticsChip icon={ShoppingBag} label="Delivery" />
+            
+                {/* 5. Logistics Grid 
+                <View className="flex-row px-5 mt-4 justify-between gap-x-2">
+                    <LogisticsCard icon={Bike} label="Delivery Type" value="Standard Delivery" color="text-primary" />
+                    <LogisticsCard icon={Wallet} label="Payment Status" value="Paid" color="text-emerald-600" />
+                    <LogisticsCard icon={CreditCard} label="Payment Method" value="Transfer" color="text-primary" />
+                    <LogisticsCard icon={ShoppingBag} label="Order Type" value="Delivery" color="text-primary" />
                 </View>
-
-                {/* 6. Customer Note */}
-                <View className="mx-6 mt-4 bg-blue-50/50 border border-blue-100 p-3 rounded-xl flex-row items-center">
+*/}
+                {/* 6. Customer Note 
+                <View className="mx-5 mt-3.5 bg-blue-50/70 border border-blue-100 p-3 rounded-2xl flex-row items-center">
                     <Info size={14} color="#4F26D9" />
-                    <Text className="text-primary text-[10px] ml-2 font-medium">
+                    <Text className="text-primary text-[10px] ml-2 font-medium flex-1">
                         <Text className="font-bold">Customer Note: </Text>Please leave at the gate. Thanks!
                     </Text>
                 </View>
+*/}
+                {/* 7. Order Items Card */}
+                <View className="mx-5 mt-4 bg-white border border-slate-100 rounded-[28px] p-4.5 shadow-sm">
+                    <View className="flex-row justify-between items-center mb-3">
+                        <View className="flex-row items-center">
+                            <View className="w-8 h-8 bg-purple-100 rounded-xl items-center justify-center mr-2.5">
+                                <ShoppingBag size={18} color="#4F26D9" />
+                            </View>
+                            <Text className="font-bold text-slate-900 text-sm">Order Items (3)</Text>
+                        </View>
+                        <Pressable>
+                            <Text className="text-primary font-bold text-xs">See all items</Text>
+                        </Pressable>
+                    </View>
 
-                {/* 7. Next Action Cards */}
-                <View className="px-6 mt-8">
-                    <View className="flex-row justify-between items-center mb-4">
+                    {ITEMS.map((item, idx) => (
+                        <View key={idx} className="flex-row items-center py-3 border-b border-slate-100/60">
+                            <View className={`w-14 h-14 ${item.bg} border ${item.border} rounded-2xl items-center justify-center mr-3 flex-shrink-0`}>
+                                <Text className="text-3xl">{item.emoji}</Text>
+                            </View>
+                            <View className="flex-1 pr-2">
+                                <Text className="font-bold text-slate-900 text-sm">{item.name}</Text>
+                                <Text className="text-slate-400 text-xs mt-0.5">{item.desc}</Text>
+                            </View>
+                            <View className="items-end justify-between py-0.5 h-12">
+                                <Text className="text-slate-400 text-xs font-medium">{item.qty}</Text>
+                                <Text className="font-bold text-slate-900 text-sm">{item.price}</Text>
+                            </View>
+                        </View>
+                    ))}
+
+                    <Pressable className="flex-row items-center justify-center pt-3">
+                        <Text className="text-slate-600 font-bold text-xs mr-1">View more items</Text>
+                        <ChevronDown size={14} color="#64748b" />
+                    </Pressable>
+                </View>
+
+                {/* 8. Next Action Card */}
+                <View className="mx-5 mt-4 bg-purple-50/40 border border-purple-100 p-4 rounded-[28px] shadow-sm space-y-3">
+                    <View className="flex-row justify-between items-center">
                         <Text className="font-bold text-slate-900 text-xs">Next Action</Text>
-                        <View className="bg-purple-100 px-2 py-0.5 rounded">
-                            <Text className="text-primary text-[8px] font-bold">Rider waiting</Text>
+                        <View className="bg-purple-100 px-2.5 py-0.5 rounded-full">
+                            <Text className="text-primary text-[10px] font-bold">Rider waiting</Text>
                         </View>
                     </View>
-                    <Text className="text-slate-500 text-[10px] mb-4">Hand over the order to the rider</Text>
+                    <Text className="text-slate-500 text-[11px]">Hand over the order to the rider</Text>
 
-                    <View className="flex-row space-x-3">
-                        <Pressable className="flex-1 h-12 border border-primary/20 rounded-2xl flex-row items-center justify-center">
-                            <User size={16} color="#4F26D9" />
-                            <Text className="text-primary font-bold ml-2 text-xs">Assign Rider</Text>
+                    <View className="flex-row space-x-2.5 pt-1">
+                        <Pressable className="flex-1 h-12 bg-white border border-primary rounded-2xl flex-row items-center justify-center active:bg-purple-50">
+                            <ShoppingBag size={16} color="#4F26D9" />
+                            <Text className="text-primary font-bold text-xs ml-1.5">Assign Rider</Text>
                         </Pressable>
+
                         <Pressable
                             onPress={() => router.push('/orders/confirmation')}
-                            className="flex-1 h-12 bg-primary rounded-2xl flex-row items-center justify-center shadow-md shadow-primary/20"
+                            className="flex-1 h-12 bg-primary rounded-2xl flex-row items-center justify-center shadow-md shadow-primary/30 active:bg-primary/90"
                         >
                             <Bike size={18} color="white" />
-                            <Text className="text-white font-bold ml-2 text-xs">Handover to Rider</Text>
+                            <Text className="text-white font-bold text-xs ml-1.5">Handover to Rider</Text>
                         </Pressable>
                     </View>
                 </View>
 
-                {/* 8. Assigned Rider Card */}
-                <View className="px-6 mt-8">
-                    <View className="flex-row justify-between items-center mb-4">
+                {/* 9. Assigned Rider Card */}
+                <View className="mx-5 mt-4 bg-white border border-slate-100 p-4 rounded-[28px] shadow-sm space-y-3">
+                    <View className="flex-row justify-between items-center">
                         <View className="flex-row items-center">
                             <User size={16} color="#4F26D9" />
-                            <Text className="font-bold text-slate-900 ml-2">Assigned Rider</Text>
+                            <Text className="font-bold text-slate-900 text-xs ml-2">Assigned Rider</Text>
                         </View>
-                        <View className="bg-green-100 px-2 py-0.5 rounded">
-                            <Text className="text-green-700 text-[8px] font-bold">On the way</Text>
+                        <View className="bg-emerald-100 px-2.5 py-0.5 rounded-full">
+                            <Text className="text-emerald-700 text-[10px] font-bold">On the way</Text>
                         </View>
                     </View>
 
-                    <View className="bg-white border border-slate-100 p-4 rounded-[32px] shadow-sm flex-row items-center">
-                        <Image source={{ uri: 'https://avatar.iran.liara.run/public/33' }} className="w-14 h-14 rounded-full bg-slate-100" />
-                        <View className="flex-1 ml-3">
-                            <View className="flex-row items-center">
-                                <Text className="font-bold text-slate-900">Michael Daniel</Text>
-                                <View className="flex-row items-center ml-2">
-                                    <Star size={10} color="#f59e0b" fill="#f59e0b" />
-                                    <Text className="text-slate-900 text-[10px] font-bold ml-1">4.8</Text>
+                    <View className="flex-row items-center justify-between pt-1">
+                        <View className="flex-row items-center flex-1 mr-2">
+                            <Image
+                                source={{ uri: 'https://avatar.iran.liara.run/public/33' }}
+                                className="w-14 h-14 rounded-full bg-slate-100 mr-3"
+                            />
+                            <View className="flex-1">
+                                <View className="flex-row items-center">
+                                    <Text className="font-bold text-slate-900 text-sm mr-1.5">Michael Daniel</Text>
+                                    <View className="flex-row items-center">
+                                        <Star size={12} color="#f59e0b" fill="#f59e0b" />
+                                        <Text className="text-slate-900 font-bold text-[10px] ml-0.5">4.8</Text>
+                                    </View>
                                 </View>
+                                <Text className="text-slate-500 text-[11px] mt-0.5">0908 123 4567</Text>
+                                <Text className="text-slate-400 text-[10px]">BKJ 123 XY</Text>
                             </View>
-                            <Text className="text-slate-400 text-[10px] mt-0.5">0908 123 4567</Text>
-                            <Text className="text-slate-400 text-[10px]">BKJ 123 XY</Text>
                         </View>
-                        <View className="items-end mr-4">
+
+                        <View className="items-end mr-2">
                             <Text className="text-slate-400 text-[8px] font-bold uppercase">Arriving in</Text>
-                            <Text className="text-slate-900 font-bold text-sm">05:30</Text>
-                            <Text className="text-slate-400 text-[8px]">2.4 km away</Text>
+                            <Text className="text-slate-900 font-extrabold text-base">05:30</Text>
+                            <Text className="text-slate-400 text-[9px]">2.4 km away</Text>
                         </View>
-                        <View className="flex-row space-x-2">
-                            <Pressable className="w-9 h-9 bg-slate-50 rounded-full items-center justify-center"><Phone size={16} color="#4F26D9" /></Pressable>
-                            <Pressable className="w-9 h-9 bg-slate-50 rounded-full items-center justify-center"><MessageSquare size={16} color="#4F26D9" /></Pressable>
+
+                        <View className="flex-row space-x-1.5">
+                            <Pressable className="w-8 h-8 bg-purple-50 rounded-full items-center justify-center border border-purple-100">
+                                <Phone size={14} color="#4F26D9" />
+                            </Pressable>
+                            <Pressable className="w-8 h-8 bg-purple-50 rounded-full items-center justify-center border border-purple-100">
+                                <MessageSquare size={14} color="#4F26D9" />
+                            </Pressable>
                         </View>
                     </View>
                 </View>
 
-                {/* 9. Order Summary (Condensed) */}
-                <View className="px-6 mt-8 mb-20">
-                    <Text className="text-slate-900 font-bold text-xs mb-4">Order Summary</Text>
-                    <View className="space-y-3">
-                        <SummaryLine label="Subtotal" value="₦20,200" />
-                        <SummaryLine label="Delivery Fee" value="₦1,000" />
-                        <SummaryLine label="Service Fee" value="₦500" />
-                        <View className="flex-row justify-between pt-2 border-t border-slate-50">
-                            <Text className="text-lg font-bold text-slate-900">Total</Text>
-                            <Text className="text-lg font-bold text-slate-900">₦21,700</Text>
+                {/* 10. Order Summary Card */}
+                <View className="mx-5 mt-4 bg-white border border-slate-100 p-4.5 rounded-[28px] shadow-sm space-y-2.5">
+                    <View className="flex-row items-center mb-1">
+                        <ShoppingBag size={14} color="#4F26D9" />
+                        <Text className="font-bold text-slate-900 text-xs ml-2">Order Summary</Text>
+                    </View>
+
+                    <View className="flex-row justify-between items-center">
+                        <Text className="text-slate-500 text-xs font-medium">Subtotal</Text>
+                        <Text className="font-bold text-slate-900 text-xs">₦20,200</Text>
+                    </View>
+                    <View className="flex-row justify-between items-center">
+                        <Text className="text-slate-500 text-xs font-medium">Delivery Fee</Text>
+                        <Text className="font-bold text-slate-900 text-xs">₦1,000</Text>
+                    </View>
+                    <View className="flex-row justify-between items-center">
+                        <View className="flex-row items-center">
+                            <Text className="text-slate-500 text-xs font-medium">Service Fee</Text>
+                            <Info size={11} color="#94a3b8" className="ml-1" />
                         </View>
+                        <Text className="font-bold text-slate-900 text-xs">₦500</Text>
+                    </View>
+
+                    <View className="flex-row justify-between items-center pt-3 border-t border-slate-100 mt-2">
+                        <Text className="text-lg font-extrabold text-slate-900">Total</Text>
+                        <Text className="text-xl font-extrabold text-slate-900">₦21,700</Text>
                     </View>
                 </View>
+
+                {/* 11. Bottom Action Buttons
+                <View className="mx-5 mt-5 mb-10 flex-row space-x-2">
+                    <Pressable className="flex-1 bg-white border border-slate-200 h-11 rounded-2xl flex-row items-center justify-center shadow-sm active:bg-slate-50">
+                        <Printer size={14} color="#4F26D9" />
+                        <Text className="text-slate-800 font-bold text-[11px] ml-1.5">Print Receipt</Text>
+                    </Pressable>
+
+                    <Pressable className="flex-1 bg-white border border-slate-200 h-11 rounded-2xl flex-row items-center justify-center shadow-sm active:bg-slate-50">
+                        <MessageSquare size={14} color="#4F26D9" />
+                        <Text className="text-slate-800 font-bold text-[11px] ml-1.5">Message Customer</Text>
+                    </Pressable>
+
+                    <Pressable className="flex-1 bg-white border border-slate-200 h-11 rounded-2xl flex-row items-center justify-center shadow-sm active:bg-slate-50">
+                        <MoreVertical size={14} color="#64748b" />
+                        <Text className="text-slate-800 font-bold text-[11px] ml-1.5">More Actions</Text>
+                    </Pressable>
+                </View>
+ */}
+                <View className="h-10" />
             </ScrollView>
-
-            {/* 10. Footer Footer */}
-            <View className="px-6 py-6 border-t border-slate-50 bg-white flex-row space-x-3">
-                <FooterAction icon={Printer} label="Print Receipt" />
-                <FooterAction icon={MessageSquare} label="Message Customer" />
-                <FooterAction icon={MoreVertical} label="More Actions" />
-            </View>
         </SafeAreaView>
     );
 }
 
 // Helpers
-function LogisticsChip({ icon: Icon, label, color = 'text-primary' }: any) {
+function LogisticsCard({ icon: Icon, label, value, color = 'text-slate-900' }: any) {
     return (
-        <View className="bg-slate-50/50 border border-slate-100 rounded-xl px-3 py-2 flex-row items-center mb-2">
-            <Icon size={12} color="#4F26D9" />
-            <Text className={`text-[10px] font-bold ml-2 ${color}`}>{label}</Text>
-        </View>
-    );
-}
-
-function SummaryLine({ label, value }: any) {
-    return (
-        <View className="flex-row justify-between items-center">
-            <Text className="text-slate-400 text-[10px] font-medium">{label}</Text>
-            <Text className="text-slate-900 font-bold text-xs">{value}</Text>
-        </View>
-    );
-}
-
-function FooterAction({ icon: Icon, label }: any) {
-    return (
-        <Pressable className="flex-1 h-14 border border-slate-200 rounded-2xl flex-row items-center justify-center bg-slate-50">
+        <View className="flex-1 bg-white border border-slate-100 p-2.5 rounded-2xl shadow-sm min-h-[72px] justify-between">
             <Icon size={16} color="#4F26D9" />
-            <Text className="text-slate-600 font-bold ml-2 text-[10px]" numberOfLines={1}>{label}</Text>
-        </Pressable>
+            <View>
+                <Text className="text-slate-400 text-[8px] font-bold uppercase tracking-wider">{label}</Text>
+                <Text className={`${color} text-[10px] font-bold mt-0.5`} numberOfLines={1}>
+                    {value}
+                </Text>
+            </View>
+        </View>
     );
 }

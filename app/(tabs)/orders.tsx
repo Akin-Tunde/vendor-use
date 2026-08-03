@@ -1,262 +1,703 @@
-import React, { useState } from 'react';
-import { View, Text, ScrollView, Pressable, TextInput, Image } from 'react-native';
-import { 
-  Search, Filter, Bell, Menu, ChevronRight, 
-  Clock, Bike, CreditCard, Check, X, 
-  AlertTriangle, Play, PackageCheck, ShoppingBag,
-  ChevronLeft, ChevronRight as ChevronRightIcon,
-  Plus
+import { useRouter } from 'expo-router';
+import {
+   AlertTriangle,
+   ArrowUpDown,
+   Bell,
+   Bike,
+   Calendar,
+   Check,
+   CheckSquare,
+   ChefHat,
+   ChevronDown,
+   ChevronLeft,
+   ChevronRight,
+   Clock,
+   CreditCard,
+   Filter,
+   PackageCheck,
+   Search,
+   ShoppingBag,
+   Square,
+   TrendingUp,
+   Wifi,
+   X,
+   Zap
 } from 'lucide-react-native';
+import { useState } from 'react';
+import { Pressable, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+
 const TABS = [
-  { id: 'all', label: 'All', count: 24 },
-  { id: 'new', label: 'New', count: 6 },
-  { id: 'confirmed', label: 'Confirmed', count: 3 },
-  { id: 'preparing', label: 'Preparing', count: 5 },
-  { id: 'ready', label: 'Ready', count: 4 },
-  { id: 'picked', label: 'Picked Up', count: 2 },
+   { id: 'all', label: 'All', count: 24, badgeBg: 'bg-purple-900', badgeText: 'text-white' },
+   { id: 'new', label: 'New', count: 6, badgeBg: 'bg-red-100', badgeText: 'text-red-600' },
+   { id: 'confirmed', label: 'Confirmed', count: 3, badgeBg: 'bg-amber-100', badgeText: 'text-amber-700' },
+   { id: 'preparing', label: 'Preparing', count: 5, badgeBg: 'bg-blue-100', badgeText: 'text-blue-600' },
+   { id: 'ready', label: 'Ready', count: 4, badgeBg: 'bg-emerald-100', badgeText: 'text-emerald-700' },
+   { id: 'picked', label: 'Picked Up', count: 2, badgeBg: 'bg-cyan-100', badgeText: 'text-cyan-700' },
+   { id: 'delivery', label: 'Out for Delivery', count: 7, badgeBg: 'bg-indigo-100', badgeText: 'text-indigo-700' },
+   { id: 'delivered', label: 'Delivered', count: 18, badgeBg: 'bg-slate-200', badgeText: 'text-slate-700' },
+];
+
+const FILTER_CHIPS = [
+   { id: 'all', label: 'All' },
+   { id: 'pickup', label: 'Pickup', icon: ShoppingBag },
+   { id: 'delivery', label: 'Delivery', icon: Bike },
+   { id: 'express', label: 'Express', icon: Zap },
+   { id: 'scheduled', label: 'Scheduled', icon: Clock },
+   { id: 'cash', label: 'Cash', icon: CreditCard },
+   { id: 'card', label: 'Card', icon: CreditCard },
+];
+
+const ORDERS = [
+   {
+      id: '#ORD-8921',
+      customer: 'John Doe',
+      phone: '0803 123 4567',
+      time: 'Today, 09:31 AM',
+      amount: '₦18,650',
+      type: 'Express Delivery',
+      typeIsExpress: true,
+      paymentStatus: 'Paid • Card',
+      status: 'NEW',
+      statusBg: 'bg-red-100',
+      statusText: 'text-red-500',
+      timer: 'Waiting 6 min',
+      timerColor: 'text-red-500',
+      itemCount: '2 items',
+      items: ['🍌', '🍎'],
+      itemExtraCount: '+1',
+      actionType: 'accept_reject',
+      route: '/orders/1',
+   },
+   {
+      id: '#ORD-8920',
+      customer: 'Mary Johnson',
+      phone: '0807 654 3210',
+      time: 'Today, 09:15 AM',
+      amount: '₦32,800',
+      type: 'Standard Delivery',
+      typeIsExpress: false,
+      paymentStatus: 'Paid • Online',
+      status: 'CONFIRMED',
+      statusBg: 'bg-amber-100',
+      statusText: 'text-amber-800',
+      timer: 'Waiting 12 min',
+      timerColor: 'text-amber-600',
+      itemCount: '4 items',
+      items: ['🧃', '🌾', '🛢️'],
+      itemExtraCount: '+1',
+      actionType: 'start_preparing',
+      actionLabel: 'Start Preparing',
+      route: '/orders/preparing',
+   },
+   {
+      id: '#ORD-8919',
+      customer: 'Alex Brown',
+      phone: '0812 345 6789',
+      time: 'Today, 08:45 AM',
+      amount: '₦22,500',
+      type: 'Express Delivery',
+      typeIsExpress: true,
+      paymentStatus: 'Paid • Card',
+      status: 'PREPARING',
+      statusBg: 'bg-blue-100',
+      statusText: 'text-blue-700',
+      timer: 'Preparing 8 min',
+      timerColor: 'text-amber-600',
+      itemCount: '3 items',
+      items: ['🍊', '🍞', '🥛'],
+      itemExtraCount: null,
+      actionType: 'mark_ready',
+      actionLabel: 'Mark Ready',
+      route: '/orders/ready',
+   },
+   {
+      id: '#ORD-8918',
+      customer: 'Chioma Okafor',
+      phone: '0909 876 5432',
+      time: 'Today, 08:20 AM',
+      amount: '₦41,200',
+      type: 'Standard Delivery',
+      typeIsExpress: false,
+      paymentStatus: 'Paid • Cash',
+      status: 'READY',
+      statusBg: 'bg-emerald-100',
+      statusText: 'text-emerald-700',
+      timer: 'Ready 2 min',
+      timerColor: 'text-emerald-600',
+      itemCount: '5 items',
+      items: ['🍌', '🥩', '🥬'],
+      itemExtraCount: '+2',
+      actionType: 'handover_rider',
+      actionLabel: 'Handover to Rider',
+      route: '/orders/confirmation',
+   },
+   {
+      id: '#ORD-8917',
+      customer: 'David Williams',
+      phone: '0806 222 3333',
+      time: 'Today, 08:05 AM',
+      amount: '₦28,750',
+      type: 'Standard Delivery',
+      typeIsExpress: false,
+      paymentStatus: 'Paid • Card',
+      status: 'PICKED UP',
+      statusBg: 'bg-cyan-100',
+      statusText: 'text-cyan-700',
+      timer: 'Picked up 7 min',
+      timerColor: 'text-blue-600',
+      itemCount: '6 items',
+      items: ['🍾', '🍟', '🥚'],
+      itemExtraCount: '+3',
+      actionType: 'badge_only',
+      badgeLabel: '• Rider is on the way',
+      badgeStyle: 'bg-blue-50 text-blue-600 border border-blue-200',
+      route: '/orders/tracking',
+   },
+   {
+      id: '#ORD-8916',
+      customer: 'Fatima Yusuf',
+      phone: '0908 111 2222',
+      time: 'Today, 07:50 AM',
+      amount: '₦12,300',
+      type: 'Express Delivery',
+      typeIsExpress: true,
+      paymentStatus: 'Paid • Online',
+      status: 'OUT FOR DELIVERY',
+      statusBg: 'bg-indigo-100',
+      statusText: 'text-indigo-700',
+      timer: 'Out for delivery 12 min',
+      timerColor: 'text-blue-600',
+      itemCount: '2 items',
+      items: ['🍇', '🥣'],
+      itemExtraCount: null,
+      actionType: 'badge_only',
+      badgeLabel: '• Est. delivery 10:15 AM',
+      badgeStyle: 'bg-blue-50 text-blue-600 border border-blue-200',
+      route: '/orders/delivery',
+   },
+   {
+      id: '#ORD-8915',
+      customer: 'Bola Ahmed',
+      phone: '0803 999 8888',
+      time: 'Today, 07:15 AM',
+      amount: '₦15,600',
+      type: 'Standard Delivery',
+      typeIsExpress: false,
+      paymentStatus: 'Paid • Card',
+      status: 'DELIVERED',
+      statusBg: 'bg-slate-200',
+      statusText: 'text-slate-700',
+      timer: 'Delivered 07:32 AM',
+      timerColor: 'text-emerald-600',
+      itemCount: '3 items',
+      items: ['🍾', '🍞', '🧈'],
+      itemExtraCount: null,
+      actionType: 'badge_only',
+      badgeLabel: 'Completed',
+      badgeStyle: 'bg-emerald-50 text-emerald-700 font-bold border border-emerald-200',
+      route: '/orders/delivered',
+   },
 ];
 
 export default function ManageOrdersScreen() {
-  const [activeTab, setActiveTab] = useState('all');
+   const router = useRouter();
+   const [activeTab, setActiveTab] = useState('all');
+   const [activeChip, setActiveChip] = useState('all');
+   const [selectedOrders, setSelectedOrders] = useState<string[]>([]);
+   const [selectAll, setSelectAll] = useState(false);
 
-  return (
-    <SafeAreaView className="flex-1 bg-[#F8F9FE]">
-      {/* 1. Header */}
-      <View className="px-6 py-4 bg-white flex-row justify-between items-center border-b border-slate-50">
-        <View className="flex-row items-center">
-          <Menu size={24} color="#64748b" />
-          <View className="ml-4">
-            <Text className="text-xl font-bold text-slate-900">Manage Orders</Text>
-            <Text className="text-slate-400 text-[10px]">View and manage customer orders</Text>
-          </View>
-        </View>
-        <View className="flex-row items-center space-x-4">
-          <Search size={24} color="#64748b" />
-          <View className="p-2 border border-slate-100 rounded-xl">
-            <Filter size={20} color="#64748b" />
-          </View>
-          <View className="relative">
-            <Bell size={24} color="#64748b" />
-            <View className="absolute -top-1 -right-1 bg-red-500 w-4 h-4 rounded-full border-2 border-white items-center justify-center">
-              <Text className="text-[8px] text-white font-bold">3</Text>
+   const toggleSelectOrder = (id: string) => {
+      if (selectedOrders.includes(id)) {
+         setSelectedOrders(selectedOrders.filter((item) => item !== id));
+      } else {
+         setSelectedOrders([...selectedOrders, id]);
+      }
+   };
+
+   const toggleSelectAll = () => {
+      if (selectAll) {
+         setSelectedOrders([]);
+         setSelectAll(false);
+      } else {
+         setSelectedOrders(ORDERS.map((o) => o.id));
+         setSelectAll(true);
+      }
+   };
+
+   return (
+      <SafeAreaView className="flex-1 bg-[#F8F9FE]">
+         {/* 1. Header */}
+         <View className="px-5 py-3.5 bg-white flex-row justify-between items-center border-b border-slate-100">
+            <View className="flex-row items-center">
+
+               <View className="ml-3">
+                  <Text className="text-xl font-bold text-slate-900">Manage Orders</Text>
+                  <Text className="text-slate-400 text-xs">View and manage customer orders</Text>
+               </View>
             </View>
-          </View>
-        </View>
-      </View>
-
-      <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
-        {/* 2. Top Status Tabs */}
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} className="bg-white py-3 px-6 space-x-3 border-b border-slate-50">
-          {TABS.map((tab) => (
-            <Pressable 
-              key={tab.id}
-              onPress={() => setActiveTab(tab.id)}
-              className={`px-4 py-2 rounded-xl flex-row items-center ${activeTab === tab.id ? 'bg-primary' : 'bg-slate-50'}`}
-            >
-              <Text className={`font-bold text-xs ${activeTab === tab.id ? 'text-white' : 'text-slate-500'}`}>{tab.label}</Text>
-              <View className={`ml-2 px-1.5 rounded-md ${activeTab === tab.id ? 'bg-white/20' : 'bg-slate-200'}`}>
-                <Text className={`text-[10px] font-bold ${activeTab === tab.id ? 'text-white' : 'text-slate-600'}`}>{tab.count}</Text>
-              </View>
-            </Pressable>
-          ))}
-        </ScrollView>
-
-        {/* 3. Summary Stats Grid */}
-        <View className="flex-row flex-wrap px-6 py-4 justify-between">
-          <SummaryCard icon={ShoppingBag} label="New Orders" value="6" sub="Needs action" color="text-red-500" bg="bg-red-50" />
-          <SummaryCard icon={Clock} label="Preparing" value="5" sub="In progress" color="text-primary" bg="bg-primary/5" />
-          <SummaryCard icon={PackageCheck} label="Ready for Pickup" value="4" sub="Waiting rider" color="text-green-500" bg="bg-green-50" />
-          <SummaryCard icon={Bike} label="Out for Delivery" value="7" sub="On the way" color="text-blue-500" bg="bg-blue-50" />
-        </View>
-
-        {/* 4. Priority Queue */}
-        <View className="px-6 mb-4">
-          <View className="flex-row justify-between items-center mb-3">
-             <Text className="font-bold text-slate-900">🔥 Priority Queue</Text>
-             <Text className="text-primary font-bold text-xs">View all (5) &gt;</Text>
-          </View>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false} className="space-x-3">
-             <PriorityBadge icon={Clock} label="3 New Orders" sub="Accept within 2 min" color="border-red-100 bg-red-50/30" iconColor="#ef4444" />
-             <PriorityBadge icon={Bike} label="Rider Waiting" sub="2 orders" color="border-orange-100 bg-orange-50/30" iconColor="#f59e0b" />
-             <PriorityBadge icon={AlertTriangle} label="2 Orders Delayed" sub="Tap to review" color="border-amber-100 bg-amber-50/30" iconColor="#d97706" />
-          </ScrollView>
-        </View>
-
-        {/* 5. Filters & Search */}
-        <View className="px-6 space-y-3">
-           <View className="flex-row space-x-2">
-              <View className="flex-1 bg-white border border-slate-100 rounded-2xl flex-row items-center px-4 h-12 shadow-sm">
-                 <Search size={18} color="#94a3b8" />
-                 <TextInput placeholder="Search by order ID, customer or phone..." className="flex-1 ml-2 text-xs" />
-              </View>
-              <View className="bg-white border border-slate-100 rounded-2xl flex-row items-center px-4 h-12 shadow-sm">
-                 <Clock size={18} color="#64748b" />
-                 <Text className="ml-2 font-bold text-slate-700 text-xs">Today</Text>
-                 <ChevronRight size={14} color="#94a3b8" className="rotate-90 ml-1" />
-              </View>
-           </View>
-           <ScrollView horizontal showsHorizontalScrollIndicator={false} className="space-x-2">
-              <FilterChip label="All" active />
-              <FilterChip label="Pickup" icon={ShoppingBag} />
-              <FilterChip label="Delivery" icon={Bike} />
-              <FilterChip label="Express" icon={Plus} />
-              <FilterChip label="Cash" icon={CreditCard} />
-           </ScrollView>
-        </View>
-
-        {/* 6. Orders List */}
-        <View className="px-6 py-6 space-y-4">
-           <OrderCard 
-             id="#ORD-8921" customer="John Doe" phone="0803 123 4567" 
-             time="09:31 AM" amount="₦18,650" type="Express Delivery" 
-             status="NEW" timer="Waiting 6 min" timerColor="text-red-500"
-             items={['🍌', '🍎']}
-           />
-           <OrderCard 
-             id="#ORD-8920" customer="Mary Johnson" phone="0807 654 3210" 
-             time="09:15 AM" amount="₦32,800" type="Standard Delivery" 
-             status="CONFIRMED" timer="Waiting 12 min" timerColor="text-orange-500"
-             items={['🥫', '🥣', '🍼']}
-           />
-        </View>
-
-        {/* Pagination Placeholder */}
-        <View className="items-center py-6">
-           <Text className="text-slate-400 text-xs mb-4">Showing 1 to 7 of 24 orders</Text>
-           <View className="flex-row items-center space-x-2">
-              <Pressable className="w-8 h-8 rounded-lg bg-slate-100 items-center justify-center"><ChevronLeft size={16} color="#64748b"/></Pressable>
-              <Pressable className="w-8 h-8 rounded-lg bg-primary items-center justify-center"><Text className="text-white font-bold">1</Text></Pressable>
-              <Pressable className="w-8 h-8 rounded-lg bg-slate-50 items-center justify-center"><Text className="text-slate-600">2</Text></Pressable>
-              <Pressable className="w-8 h-8 rounded-lg bg-slate-100 items-center justify-center"><ChevronRightIcon size={16} color="#64748b"/></Pressable>
-           </View>
-        </View>
-
-        <View className="h-20" />
-      </ScrollView>
-
-      {/* Floating Bottom Alert Banner */}
-      <View className="absolute bottom-[90px] left-4 right-4 bg-white border border-slate-100 rounded-2xl shadow-xl p-4 flex-row items-center">
-         <View className="bg-red-50 p-2 rounded-full mr-3">
-            <Bell size={20} color="#ef4444" />
+            <View className="flex-row items-center space-x-2.5">
+               <Pressable className="w-9 h-9 bg-slate-50 border border-slate-200 rounded-xl items-center justify-center">
+                  <Search size={18} color="#475569" />
+               </Pressable>
+               <Pressable className="flex-row items-center bg-slate-50 border border-slate-200 px-2.5 h-9 rounded-xl">
+                  <Filter size={15} color="#475569" />
+                  <Text className="text-xs font-bold text-slate-700 ml-1.5">Filter</Text>
+               </Pressable>
+               <Pressable className="relative w-9 h-9 bg-slate-50 border border-slate-200 rounded-xl items-center justify-center">
+                  <Bell size={18} color="#475569" />
+                  <View className="absolute -top-1 -right-1 bg-red-500 min-w-[16px] h-4 rounded-full px-1 items-center justify-center border-2 border-white">
+                     <Text className="text-[9px] text-white font-extrabold">3</Text>
+                  </View>
+               </Pressable>
+            </View>
          </View>
-         <View className="flex-1">
-            <Text className="font-bold text-slate-900 text-xs">3 New Orders</Text>
-            <Text className="text-slate-500 text-[10px]">Needs your attention</Text>
+
+         <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
+            {/* 2. Top Status Tabs */}
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} className="bg-white py-3 px-5 border-b border-slate-100">
+               <View className="flex-row space-x-2 pr-6">
+                  {TABS.map((tab) => {
+                     const isActive = activeTab === tab.id;
+                     return (
+                        <Pressable
+                           key={tab.id}
+                           onPress={() => setActiveTab(tab.id)}
+                           className={`px-3.5 py-2 rounded-xl flex-row items-center ${isActive ? 'bg-primary' : 'bg-slate-50 border border-slate-100'
+                              }`}
+                        >
+                           <Text className={`font-bold text-xs ${isActive ? 'text-white' : 'text-slate-700'}`}>
+                              {tab.label}
+                           </Text>
+                           <View
+                              className={`ml-1.5 px-1.5 py-0.5 rounded-full ${isActive ? 'bg-white/20' : tab.badgeBg
+                                 }`}
+                           >
+                              <Text className={`text-[10px] font-bold ${isActive ? 'text-white' : tab.badgeText}`}>
+                                 {tab.count}
+                              </Text>
+                           </View>
+                        </Pressable>
+                     );
+                  })}
+                  <Pressable className="px-3 py-2 rounded-xl flex-row items-center bg-slate-50 border border-slate-100">
+                     <Text className="font-bold text-xs text-slate-700 mr-1">More</Text>
+                     <ChevronDown size={14} color="#64748b" />
+                  </Pressable>
+               </View>
+            </ScrollView>
+
+            {/* 3. Summary Stats Grid (5 Cards Horizontal Scroll) */}
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} className="px-5 py-4">
+               <View className="flex-row space-x-3 pr-6">
+                  <SummaryCard
+                     icon={ShoppingBag}
+                     label="New Orders"
+                     value="6"
+                     sub="Needs action"
+                     color="text-red-500"
+                     bg="bg-red-50"
+                     iconColor="#ef4444"
+                  />
+                  <SummaryCard
+                     icon={ChefHat}
+                     label="Preparing"
+                     value="5"
+                     sub="In progress"
+                     color="text-primary"
+                     bg="bg-primary/10"
+                     iconColor="#4F26D9"
+                  />
+                  <SummaryCard
+                     icon={PackageCheck}
+                     label="Ready for Pickup"
+                     value="4"
+                     sub="Waiting rider"
+                     color="text-emerald-600"
+                     bg="bg-emerald-50"
+                     iconColor="#10b981"
+                  />
+                  <SummaryCard
+                     icon={Bike}
+                     label="Out for Delivery"
+                     value="7"
+                     sub="On the way"
+                     color="text-indigo-600"
+                     bg="bg-indigo-50"
+                     iconColor="#6366f1"
+                  />
+                  <SummaryCard
+                     icon={TrendingUp}
+                     label="Today's Revenue"
+                     value="₦245,800"
+                     sub="+12.5% vs yesterday"
+                     color="text-emerald-600"
+                     bg="bg-amber-50"
+                     iconColor="#f59e0b"
+                  />
+               </View>
+            </ScrollView>
+
+            {/* 4. Priority Queue Section */}
+            <View className="px-5 mb-4">
+               <View className="flex-row justify-between items-center mb-2.5">
+                  <View className="flex-row items-center">
+                     <Text className="text-base font-bold text-slate-900">🔥 Priority Queue</Text>
+                  </View>
+                  <Pressable className="flex-row items-center">
+                     <Text className="text-primary font-bold text-xs mr-0.5">View all (5)</Text>
+                     <ChevronRight size={14} color="#4F26D9" />
+                  </Pressable>
+               </View>
+
+               <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                  <View className="flex-row space-x-3 pr-6">
+                     <PriorityBadge
+                        icon={Clock}
+                        label="3 New Orders"
+                        sub="Accept within 2 min"
+                        bg="bg-red-50/50"
+                        border="border-red-200"
+                        iconColor="#ef4444"
+                        chevronColor="#f87171"
+                     />
+                     <PriorityBadge
+                        icon={Bike}
+                        label="Rider Waiting"
+                        sub="2 orders"
+                        bg="bg-amber-50/50"
+                        border="border-amber-200"
+                        iconColor="#f59e0b"
+                        chevronColor="#fbbf24"
+                     />
+                     <PriorityBadge
+                        icon={AlertTriangle}
+                        label="2 Orders Delayed"
+                        sub="Tap to review"
+                        bg="bg-amber-50/50"
+                        border="border-amber-200"
+                        iconColor="#d97706"
+                        chevronColor="#f59e0b"
+                     />
+                     <PriorityBadge
+                        icon={Calendar}
+                        label="Scheduled Soon"
+                        sub="2 orders in 10 min"
+                        bg="bg-blue-50/50"
+                        border="border-blue-200"
+                        iconColor="#3b82f6"
+                        chevronColor="#60a5fa"
+                     />
+                  </View>
+               </ScrollView>
+            </View>
+
+            {/* 6. Sorting & Bulk Actions Bar */}
+            <View className="px-5 mt-4 flex-row justify-between items-center">
+               <View className="flex-row items-center">
+                  <Text className="text-xs text-slate-500 font-medium mr-1.5">Sort by:</Text>
+                  <Pressable className="flex-row items-center bg-white border border-slate-200 px-2.5 py-1.5 rounded-xl shadow-sm">
+                     <Text className="text-xs font-bold text-slate-900 mr-1">Newest</Text>
+                     <ChevronDown size={14} color="#64748b" />
+                  </Pressable>
+                  <Pressable className="ml-2 p-1.5 bg-white border border-slate-200 rounded-xl shadow-sm">
+                     <ArrowUpDown size={14} color="#64748b" />
+                  </Pressable>
+               </View>
+
+               <View className="flex-row items-center space-x-3">
+                  <Pressable onPress={toggleSelectAll} className="flex-row items-center">
+                     {selectAll ? (
+                        <CheckSquare size={18} color="#4F26D9" />
+                     ) : (
+                        <Square size={18} color="#94a3b8" />
+                     )}
+                     <Text className="text-xs font-bold text-slate-700 ml-1.5">Select All</Text>
+                  </Pressable>
+
+                  <Pressable className="flex-row items-center bg-white border border-slate-200 px-3 py-1.5 rounded-xl shadow-sm">
+                     <Text className="text-xs font-bold text-primary mr-1">Bulk Actions</Text>
+                     <ChevronDown size={14} color="#4F26D9" />
+                  </Pressable>
+               </View>
+            </View>
+
+            {/* 7. Orders Detailed Cards List */}
+            <View className="px-5 py-4 space-y-3.5">
+               {ORDERS.map((order) => {
+                  const isSelected = selectedOrders.includes(order.id);
+                  return (
+                     <View
+                        key={order.id}
+                        className="bg-white border border-slate-100 rounded-[28px] p-4 shadow-sm"
+                     >
+                        {/* Top ID & Status Header */}
+                        <View className="flex-row justify-between items-center">
+                           <View className="flex-row items-center flex-1 pr-2">
+                              <Pressable onPress={() => toggleSelectOrder(order.id)} className="mr-2.5">
+                                 {isSelected ? (
+                                    <CheckSquare size={18} color="#4F26D9" />
+                                 ) : (
+                                    <Square size={18} color="#cbd5e1" />
+                                 )}
+                              </Pressable>
+
+                              <View className={`px-2 py-0.5 rounded-md mr-2 ${order.statusBg}`}>
+                                 <Text className={`text-[9px] font-extrabold ${order.statusText}`}>
+                                    {order.status}
+                                 </Text>
+                              </View>
+
+                              <Text className="font-bold text-slate-900 text-sm">{order.id}</Text>
+                           </View>
+
+                           <Pressable
+                              onPress={() => router.push(order.route as any)}
+                              className="flex-row items-center"
+                           >
+                              <Text className="font-extrabold text-slate-900 text-base mr-1">{order.amount}</Text>
+                              <ChevronRight size={18} color="#cbd5e1" />
+                           </Pressable>
+                        </View>
+
+                        {/* Middle Info & Tag Badges */}
+                        <View className="flex-row mt-3 items-start justify-between">
+                           {/* Customer Info */}
+                           <View className="flex-1 pr-2">
+                              <Text className="text-slate-900 font-bold text-xs">{order.customer}</Text>
+                              <Text className="text-slate-400 text-[11px] mt-0.5">{order.phone}</Text>
+                              <Text className="text-slate-400 text-[10px] mt-0.5">{order.time}</Text>
+                           </View>
+
+                           {/* Delivery & Payment Badges */}
+                           <View className="flex-1 space-y-1.5">
+                              <View className="flex-row items-center">
+                                 {order.typeIsExpress ? (
+                                    <Zap size={12} color="#ef4444" />
+                                 ) : (
+                                    <Bike size={12} color="#4F26D9" />
+                                 )}
+                                 <Text
+                                    className={`text-[10px] font-bold ml-1.5 ${order.typeIsExpress ? 'text-red-500' : 'text-primary'
+                                       }`}
+                                 >
+                                    {order.type}
+                                 </Text>
+                              </View>
+
+                              <View className="flex-row items-center">
+                                 {order.paymentStatus.includes('Online') ? (
+                                    <Wifi size={12} color="#10b981" />
+                                 ) : (
+                                    <CreditCard size={12} color="#10b981" />
+                                 )}
+                                 <Text className="text-emerald-600 font-bold text-[10px] ml-1.5">
+                                    {order.paymentStatus}
+                                 </Text>
+                              </View>
+
+                              <View className="flex-row items-center">
+                                 <Clock size={12} color="#94a3b8" />
+                                 <Text className={`${order.timerColor} font-bold text-[10px] ml-1.5`}>
+                                    {order.timer}
+                                 </Text>
+                              </View>
+                           </View>
+
+                           {/* Items Preview */}
+                           <View className="items-end">
+                              <Text className="text-[10px] text-slate-400 font-bold mb-1">{order.itemCount}</Text>
+                              <View className="flex-row items-center space-x-1">
+                                 {order.items.map((emoji, idx) => (
+                                    <View
+                                       key={idx}
+                                       className="w-8 h-8 bg-slate-50 border border-slate-100 rounded-lg items-center justify-center"
+                                    >
+                                       <Text className="text-sm">{emoji}</Text>
+                                    </View>
+                                 ))}
+                                 {order.itemExtraCount && (
+                                    <View className="bg-slate-100 px-1.5 py-1 rounded-md">
+                                       <Text className="text-[9px] font-bold text-slate-600">
+                                          {order.itemExtraCount}
+                                       </Text>
+                                    </View>
+                                 )}
+                              </View>
+                           </View>
+                        </View>
+
+                        {/* Bottom Actions Row */}
+                        <View className="mt-3.5 pt-3 border-t border-slate-50 flex-row justify-end items-center">
+                           {order.actionType === 'accept_reject' && (
+                              <View className="flex-row space-x-2 flex-1 justify-end">
+                                 <Pressable
+                                    onPress={() => router.push('/orders/1')}
+                                    className="bg-red-500 px-5 h-10 rounded-xl flex-row items-center justify-center shadow-sm active:bg-red-600"
+                                 >
+                                    <Check size={16} color="white" />
+                                    <Text className="text-white font-bold text-xs ml-1">Accept</Text>
+                                 </Pressable>
+                                 <Pressable className="bg-white border border-slate-200 px-4 h-10 rounded-xl flex-row items-center justify-center">
+                                    <X size={16} color="#64748b" />
+                                    <Text className="text-slate-700 font-bold text-xs ml-1">Reject</Text>
+                                 </Pressable>
+                              </View>
+                           )}
+
+                           {order.actionType === 'start_preparing' && (
+                              <Pressable
+                                 onPress={() => router.push('/orders/preparing')}
+                                 className="bg-purple-50 border border-primary/20 px-4 h-10 rounded-xl flex-row items-center justify-center active:bg-purple-100"
+                              >
+                                 <ChefHat size={16} color="#4F26D9" />
+                                 <Text className="text-primary font-bold text-xs ml-1.5">{order.actionLabel}</Text>
+                              </Pressable>
+                           )}
+
+                           {order.actionType === 'mark_ready' && (
+                              <Pressable
+                                 onPress={() => router.push('/orders/ready')}
+                                 className="bg-purple-50 border border-primary/20 px-4 h-10 rounded-xl flex-row items-center justify-center active:bg-purple-100"
+                              >
+                                 <ShoppingBag size={16} color="#4F26D9" />
+                                 <Text className="text-primary font-bold text-xs ml-1.5">{order.actionLabel}</Text>
+                              </Pressable>
+                           )}
+
+                           {order.actionType === 'handover_rider' && (
+                              <Pressable
+                                 onPress={() => router.push('/orders/confirmation')}
+                                 className="bg-purple-50 border border-primary/20 px-4 h-10 rounded-xl flex-row items-center justify-center active:bg-purple-100"
+                              >
+                                 <Bike size={16} color="#4F26D9" />
+                                 <Text className="text-primary font-bold text-xs ml-1.5">{order.actionLabel}</Text>
+                              </Pressable>
+                           )}
+
+                           {order.actionType === 'badge_only' && (
+                              <View className={`px-3 py-1.5 rounded-full ${order.badgeStyle}`}>
+                                 <Text className="text-xs font-bold">{order.badgeLabel}</Text>
+                              </View>
+                           )}
+                        </View>
+                     </View>
+                  );
+               })}
+            </View>
+
+            {/* 8. Pagination Section */}
+            <View className="px-5 py-6 flex-row justify-between items-center">
+               <Text className="text-slate-400 text-xs font-medium">Showing 1 to 7 of 24 orders</Text>
+               <View className="flex-row items-center space-x-1.5">
+                  <Pressable className="w-8 h-8 rounded-xl bg-slate-100 items-center justify-center border border-slate-200">
+                     <ChevronLeft size={16} color="#94a3b8" />
+                  </Pressable>
+                  <Pressable className="w-8 h-8 rounded-xl bg-primary items-center justify-center shadow-sm">
+                     <Text className="text-white font-bold text-xs">1</Text>
+                  </Pressable>
+                  <Pressable className="w-8 h-8 rounded-xl bg-white border border-slate-200 items-center justify-center">
+                     <Text className="text-slate-700 font-bold text-xs">2</Text>
+                  </Pressable>
+                  <Pressable className="w-8 h-8 rounded-xl bg-white border border-slate-200 items-center justify-center">
+                     <Text className="text-slate-700 font-bold text-xs">3</Text>
+                  </Pressable>
+                  <Text className="text-slate-400 font-bold text-xs px-0.5">...</Text>
+                  <Pressable className="w-8 h-8 rounded-xl bg-white border border-slate-200 items-center justify-center">
+                     <Text className="text-slate-700 font-bold text-xs">4</Text>
+                  </Pressable>
+                  <Pressable className="w-8 h-8 rounded-xl bg-white border border-slate-200 items-center justify-center">
+                     <ChevronRight size={16} color="#475569" />
+                  </Pressable>
+               </View>
+            </View>
+
+            <View className="h-28" />
+         </ScrollView>
+
+         {/* 9. Floating Multi-Alert Summary Bar at Bottom */}
+         <View className="absolute bottom-4 left-4 right-4 bg-white border border-slate-200 rounded-2xl shadow-xl p-3 flex-row items-center justify-between">
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} className="flex-1">
+               <View className="flex-row items-center space-x-4 pr-3">
+                  <View className="flex-row items-center">
+                     <View className="bg-red-50 p-1.5 rounded-full mr-2">
+                        <Bell size={16} color="#ef4444" />
+                     </View>
+                     <View>
+                        <Text className="font-bold text-red-500 text-xs">3 New Orders</Text>
+                        <Text className="text-slate-400 text-[9px]">Needs your attention</Text>
+                     </View>
+                  </View>
+
+                  <View className="h-6 w-[1px] bg-slate-200" />
+
+                  <View className="flex-row items-center">
+                     <View className="bg-amber-50 p-1.5 rounded-full mr-2">
+                        <Clock size={16} color="#f59e0b" />
+                     </View>
+                     <View>
+                        <Text className="font-bold text-amber-700 text-xs">2 Orders Delayed</Text>
+                        <Text className="text-slate-400 text-[9px]">Tap to review</Text>
+                     </View>
+                  </View>
+
+                  <View className="h-6 w-[1px] bg-slate-200" />
+
+                  <View className="flex-row items-center">
+                     <View className="bg-emerald-50 p-1.5 rounded-full mr-2">
+                        <Bike size={16} color="#10b981" />
+                     </View>
+                     <View>
+                        <Text className="font-bold text-emerald-800 text-xs">Rider Waiting</Text>
+                        <Text className="text-slate-400 text-[9px]">2 riders at store</Text>
+                     </View>
+                  </View>
+
+                  <View className="h-6 w-[1px] bg-slate-200" />
+
+                  <View className="flex-row items-center">
+                     <View className="bg-blue-50 p-1.5 rounded-full mr-2">
+                        <CreditCard size={16} color="#3b82f6" />
+                     </View>
+                     <View>
+                        <Text className="font-bold text-blue-700 text-xs">Payment Issues</Text>
+                        <Text className="text-slate-400 text-[9px]">1 order</Text>
+                     </View>
+                  </View>
+               </View>
+            </ScrollView>
+
+            <ChevronDown size={18} color="#64748b" className="ml-1" />
          </View>
-         <View className="flex-row items-center space-x-4">
-            <View className="h-8 w-[1px] bg-slate-100" />
-            <Bike size={20} color="#64748b" />
-            <Text className="font-bold text-slate-900 text-xs">2</Text>
-            <ChevronRight size={16} color="#94a3b8" className="-rotate-90" />
-         </View>
-      </View>
-    </SafeAreaView>
-  );
+      </SafeAreaView>
+   );
 }
 
 // Subcomponents
-function SummaryCard({ icon: Icon, label, value, sub, color, bg }: any) {
-  return (
-    <View className="w-[48%] bg-white border border-slate-100 p-4 rounded-[28px] mb-4 shadow-sm">
-       <View className={`w-10 h-10 ${bg} rounded-xl items-center justify-center mb-3`}>
-          <Icon size={20} color={color === 'text-primary' ? '#4F26D9' : (color === 'text-red-500' ? '#ef4444' : '#22c55e')} />
-       </View>
-       <Text className="text-slate-400 text-[10px] font-bold uppercase tracking-wider">{label}</Text>
-       <Text className="text-2xl font-bold text-slate-900 mt-1">{value}</Text>
-       <Text className={`${color} text-[10px] font-bold mt-1`}>{sub}</Text>
-    </View>
-  );
+function SummaryCard({ icon: Icon, label, value, sub, color, bg, iconColor }: any) {
+   return (
+      <View className="w-36 bg-white border border-slate-100 p-3.5 rounded-[22px] shadow-sm">
+         <View className={`w-8 h-8 ${bg} rounded-xl items-center justify-center mb-2.5`}>
+            <Icon size={18} color={iconColor} />
+         </View>
+         <Text className="text-slate-400 text-[9px] font-bold uppercase tracking-wider">{label}</Text>
+         <Text className="text-xl font-bold text-slate-900 mt-0.5">{value}</Text>
+         <Text className={`${color} text-[9px] font-bold mt-0.5`}>{sub}</Text>
+      </View>
+   );
 }
 
-function PriorityBadge({ icon: Icon, label, sub, color, iconColor }: any) {
-  return (
-    <Pressable className={`border px-4 py-3 rounded-2xl flex-row items-center min-w-[180px] ${color}`}>
-       <Icon size={20} color={iconColor} />
-       <View className="ml-3">
-          <Text className="font-bold text-slate-900 text-xs">{label}</Text>
-          <Text className="text-slate-500 text-[10px]">{sub}</Text>
-       </View>
-       <ChevronRight size={14} color="#94a3b8" className="ml-2" />
-    </Pressable>
-  );
-}
-
-function FilterChip({ label, icon: Icon, active }: any) {
-  return (
-    <Pressable className={`flex-row items-center px-4 py-2 rounded-xl border ${active ? 'bg-primary border-primary' : 'bg-white border-slate-100'}`}>
-       {Icon && <Icon size={14} color={active ? 'white' : '#64748b'} className="mr-2" />}
-       <Text className={`text-xs font-bold ${active ? 'text-white' : 'text-slate-600'}`}>{label}</Text>
-    </Pressable>
-  );
-}
-
-function OrderCard({ id, customer, phone, time, amount, type, status, timer, timerColor, items }: any) {
-  const isNew = status === 'NEW';
-  return (
-    <View className="bg-white border border-slate-100 rounded-[32px] p-5 shadow-sm">
-       <View className="flex-row justify-between">
-          <View className="flex-row items-center">
-             <View className="w-5 h-5 border border-slate-200 rounded mr-3" />
-             <View className={`px-2 py-0.5 rounded mr-2 ${isNew ? 'bg-red-50' : 'bg-orange-50'}`}>
-                <Text className={`text-[8px] font-bold ${isNew ? 'text-red-500' : 'text-orange-500'}`}>{status}</Text>
-             </View>
-             <Text className="font-bold text-slate-900 text-base">{id}</Text>
-          </View>
-          <Text className="font-bold text-slate-900 text-lg">{amount}</Text>
-       </View>
-
-       <View className="flex-row mt-4 items-start">
-          <View className="flex-1">
-             <Text className="text-slate-900 font-bold text-sm">{customer}</Text>
-             <Text className="text-slate-400 text-[11px] mt-0.5">{phone}</Text>
-             <Text className="text-slate-400 text-[10px] mt-1">Today, {time}</Text>
-          </View>
-          <View className="flex-1 space-y-2">
-             <View className="flex-row items-center">
-                <Bike size={12} color="#4F26D9" />
-                <Text className="text-primary font-bold text-[10px] ml-2">{type}</Text>
-             </View>
-             <View className="flex-row items-center">
-                <CreditCard size={12} color="#22c55e" />
-                <Text className="text-green-600 font-bold text-[10px] ml-2">Paid • Card</Text>
-             </View>
-             <View className="flex-row items-center">
-                <Clock size={12} color="#94a3b8" />
-                <Text className={`${timerColor} font-bold text-[10px] ml-2`}>{timer}</Text>
-             </View>
-          </View>
-          <View className="flex-row items-center">
-             <View className="flex-row -space-x-2 mr-2">
-                {items.map((img, i) => (
-                  <View key={i} className="w-10 h-10 bg-slate-50 border-2 border-white rounded-lg items-center justify-center">
-                     <Text className="text-lg">{img}</Text>
-                  </View>
-                ))}
-             </View>
-             <ChevronRight size={20} color="#cbd5e1" />
-          </View>
-       </View>
-
-       <View className="flex-row mt-6 space-x-3">
-          {isNew ? (
-            <>
-              <Pressable className="flex-1 bg-red-500 h-12 rounded-2xl flex-row items-center justify-center">
-                 <Check size={18} color="white" />
-                 <Text className="text-white font-bold ml-2">Accept</Text>
-              </Pressable>
-              <Pressable className="bg-slate-50 border border-slate-100 px-6 rounded-2xl items-center justify-center">
-                 <X size={18} color="#64748b" />
-                 <Text className="text-slate-500 text-[10px] font-bold mt-1">Reject</Text>
-              </Pressable>
-            </>
-          ) : (
-            <Pressable className="flex-1 bg-primary/10 border border-primary/20 h-12 rounded-2xl flex-row items-center justify-center">
-               <Play size={16} color="#4F26D9" />
-               <Text className="text-primary font-bold ml-2">Start Preparing</Text>
-            </Pressable>
-          )}
-       </View>
-    </View>
-  );
+function PriorityBadge({ icon: Icon, label, sub, bg, border, iconColor, chevronColor }: any) {
+   return (
+      <Pressable className={`border px-3.5 py-2.5 rounded-2xl flex-row items-center ${bg} ${border}`}>
+         <View className="w-8 h-8 rounded-xl bg-white items-center justify-center mr-2.5 shadow-sm">
+            <Icon size={16} color={iconColor} />
+         </View>
+         <View className="mr-2">
+            <Text className="font-bold text-slate-900 text-xs">{label}</Text>
+            <Text className="text-slate-500 text-[10px] mt-0.5">{sub}</Text>
+         </View>
+         <ChevronRight size={14} color={chevronColor} />
+      </Pressable>
+   );
 }

@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import {
    ArrowUpRight,
    Bell,
@@ -18,6 +19,7 @@ import { Image, Pressable, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function Dashboard() {
+   const router = useRouter();
    return (
       <SafeAreaView className="flex-1 bg-[#F8F9FE]">
          {/* Top Header */}
@@ -113,11 +115,11 @@ export default function Dashboard() {
             <View className="mx-6 mt-6">
                <Text className="text-base font-bold text-slate-900 mb-3">Quick Actions</Text>
                <View className="flex-row justify-between">
-                  <ActionItem label="Add Product" icon={ShoppingBag} />
-                  <ActionItem label="Manage Products" icon={Tag} />
-                  <ActionItem label="Manage Orders" icon={ReceiptText} />
-                  <ActionItem label="Promotions" icon={Percent} />
-                  <ActionItem label="Payouts" icon={Wallet} />
+                  <ActionItem label="Add Product" icon={ShoppingBag} onPress={() => router.push('/products/add')} />
+                  <ActionItem label="Manage Products" icon={Tag} onPress={() => router.push('/products/inventory')} />
+                  <ActionItem label="Manage Orders" icon={ReceiptText} onPress={() => router.push('/orders')} />
+                  <ActionItem label="Promotions" icon={Percent} onPress={() => router.push('/marketing')} />
+                  <ActionItem label="Payouts" icon={Wallet} onPress={() => router.push('/finance/payouts')} />
                </View>
             </View>
 
@@ -125,17 +127,17 @@ export default function Dashboard() {
             <View className="mx-3 mt-6 bg-white border border-slate-100 p-5 rounded-[32px] shadow-sm">
                <View className="flex-row justify-between items-center mb-3">
                   <Text className="text-base font-bold text-slate-900">Recent Orders</Text>
-                  <Pressable className="flex-row items-center">
-                     <Text className="text-primary text-xs font-bold mr-1">View All Orders</Text>
-                     <ChevronRight size={14} color="#4F26D9" />
-                  </Pressable>
+                   <Pressable onPress={() => router.push('/orders')} className="flex-row items-center">
+                      <Text className="text-primary text-xs font-bold mr-1">View All Orders</Text>
+                      <ChevronRight size={14} color="#4F26D9" />
+                   </Pressable>
                </View>
 
-               <OrderItem id="#ORD-8921" tag="New" name="John Doe" count="2 items" price="₦18,650" status="Pending" statusColor="bg-green-100 text-green-700" dotColor="bg-green-500" iconBg="bg-purple-100" />
-               <OrderItem id="#ORD-8920" tag="Preparing" name="Mary Johnson" count="4 items" price="₦32,800" status="Preparing" statusColor="bg-blue-100 text-blue-700" dotColor="bg-blue-500" iconBg="bg-orange-100" />
-               <OrderItem id="#ORD-8919" tag="Out for Delivery" name="Alex Brown" count="3 items" price="₦22,500" status="Out for Delivery" statusColor="bg-emerald-100 text-emerald-700" dotColor="bg-emerald-500" iconBg="bg-green-100" />
+                <OrderItem id="#ORD-8921" tag="New" name="John Doe" count="2 items" price="₦18,650" status="Pending" statusColor="bg-green-100 text-green-700" dotColor="bg-green-500" iconBg="bg-purple-100" onPress={() => router.push('/orders/confirmation')} />
+                <OrderItem id="#ORD-8920" tag="Preparing" name="Mary Johnson" count="4 items" price="₦32,800" status="Preparing" statusColor="bg-blue-100 text-blue-700" dotColor="bg-blue-500" iconBg="bg-orange-100" onPress={() => router.push('/orders/preparing')} />
+                <OrderItem id="#ORD-8919" tag="Out for Delivery" name="Alex Brown" count="3 items" price="₦22,500" status="Out for Delivery" statusColor="bg-emerald-100 text-emerald-700" dotColor="bg-emerald-500" iconBg="bg-green-100" onPress={() => router.push('/orders/delivery')} />
 
-               <Pressable className="items-center border-t border-slate-50 mt-3 pt-3">
+                <Pressable onPress={() => router.push('/orders')} className="items-center border-t border-slate-50 mt-3 pt-3">
                   <Text className="text-primary font-bold text-xs">View All Orders</Text>
                </Pressable>
             </View>
@@ -160,9 +162,9 @@ function StatCard({ title, value, trend, icon: Icon, iconBg, iconColor }: any) {
    );
 }
 
-function ActionItem({ label, icon: Icon }: any) {
+function ActionItem({ label, icon: Icon, onPress }: any) {
    return (
-      <Pressable className="items-center w-[18%]">
+      <Pressable onPress={onPress} className="items-center w-[18%]">
          <View className="w-12 h-12 bg-white border border-slate-100 rounded-2xl items-center justify-center mb-2 shadow-sm active:bg-purple-50">
             <Icon size={20} color="#4F26D9" />
          </View>
@@ -171,9 +173,9 @@ function ActionItem({ label, icon: Icon }: any) {
    );
 }
 
-function OrderItem({ id, tag, name, count, price, status, statusColor, dotColor, iconBg }: any) {
+function OrderItem({ id, tag, name, count, price, status, statusColor, dotColor, iconBg, onPress }: any) {
    return (
-      <View className="flex-row items-center py-3 border-b border-slate-50">
+      <Pressable onPress={onPress} className="flex-row items-center py-3 border-b border-slate-50 active:bg-slate-50">
          <View className={`w-10 h-10 ${iconBg} rounded-2xl items-center justify-center mr-3`}>
             <ShoppingBag size={18} color="#4F26D9" />
          </View>
@@ -194,7 +196,7 @@ function OrderItem({ id, tag, name, count, price, status, statusColor, dotColor,
                <Text className={`text-[8px] font-bold ${statusColor.split(' ')[1]}`}>{status}</Text>
             </View>
          </View>
-         <ChevronRight size={16} color="#94a3b8" className="ml-2" />
-      </View>
+          <ChevronRight size={16} color="#94a3b8" className="ml-2" />
+      </Pressable>
    );
 }

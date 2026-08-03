@@ -4,6 +4,7 @@ import {
     ArrowLeft,
     Bike,
     CheckCircle2,
+    ChevronDown,
     Clock,
     FileText,
     Headphones,
@@ -15,8 +16,9 @@ import {
     Star
 } from 'lucide-react-native';
 import React from 'react';
-import { Image, Pressable,  ScrollView, Text, View } from 'react-native';
+import { Image, Pressable, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+
 const STEPS = [
     { label: 'Confirmed', time: '09:05 AM' },
     { label: 'Preparing', time: '09:20 AM' },
@@ -34,7 +36,7 @@ export default function OrderDeliveredScreen() {
             {/* 1. Header */}
             <View className="px-6 py-4 flex-row justify-between items-center bg-white border-b border-slate-50">
                 <View className="flex-row items-center">
-                    <Pressable onPress={() => router.back()} className="mr-4">
+                    <Pressable onPress={() => router.back()} className="mr-4 p-1">
                         <ArrowLeft size={24} color="#000" />
                     </Pressable>
                     <View>
@@ -113,7 +115,6 @@ export default function OrderDeliveredScreen() {
                             <View className="flex-1">
                                 <Text className="text-slate-400 text-[8px] font-bold uppercase mb-2">Delivery Photo</Text>
                                 <View className="h-24 bg-slate-200 rounded-xl overflow-hidden">
-                                    {/* Placeholder for delivery photo */}
                                     <Image source={{ uri: 'https://images.unsplash.com/photo-1530124560676-4fbc91848b9b?q=80&w=1000' }} className="w-full h-full" />
                                 </View>
                             </View>
@@ -143,10 +144,9 @@ export default function OrderDeliveredScreen() {
                     </View>
                 </View>
 
-                {/* 7. Order & Payment Breakdown */}
-                <View className="flex-row px-6 mt-6 space-x-4">
-                    {/* Order Summary */}
-                    <View className="flex-1 bg-white border border-slate-100 p-5 rounded-[32px] shadow-sm">
+                {/* 7. Order Summary (Full Width) */}
+                <View className="px-6 mt-6">
+                    <View className="bg-white border border-slate-100 p-5 rounded-[32px] shadow-sm">
                         <Text className="font-bold text-slate-900 text-xs mb-4">Order Summary</Text>
                         <View className="flex-row items-center mb-3">
                             <View className="w-8 h-8 bg-slate-50 rounded-lg items-center justify-center mr-2"><Text>🥤</Text></View>
@@ -162,6 +162,10 @@ export default function OrderDeliveredScreen() {
                                 <View className="flex-row justify-between"><Text className="text-slate-400 text-[8px]">x1</Text><Text className="text-slate-900 font-bold text-[8px]">₦1,500</Text></View>
                             </View>
                         </View>
+                        <Pressable className="flex-row items-center justify-center py-2">
+                            <Text className="text-slate-500 font-bold text-[10px] mr-1">View all items</Text>
+                            <ChevronDown size={12} color="#64748b" />
+                        </Pressable>
                         <View className="space-y-2 pt-2 border-t border-slate-50">
                             <SummaryLine label="Subtotal" value="₦24,800" />
                             <SummaryLine label="Delivery Fee" value="₦1,000" />
@@ -172,32 +176,11 @@ export default function OrderDeliveredScreen() {
                             </View>
                         </View>
                     </View>
-
-                    {/* Payment Breakdown */}
-                    <View className="flex-1 bg-white border border-slate-100 p-5 rounded-[32px] shadow-sm">
-                        <View className="flex-row justify-between items-center mb-4">
-                            <Text className="font-bold text-slate-900 text-xs">Payment Information</Text>
-                            <View className="bg-green-100 px-2 py-0.5 rounded"><Text className="text-green-700 text-[8px] font-bold">Payment Received</Text></View>
-                        </View>
-                        <Text className="text-slate-400 text-[9px] font-bold">Paid with</Text>
-                        <View className="flex-row items-center mt-1 mb-4">
-                            <Text className="text-slate-900 font-bold text-[11px]">Mastercard •••• 4242</Text>
-                            <View className="w-4 h-2.5 bg-red-500 rounded-sm ml-2" />
-                        </View>
-                        <View className="space-y-3">
-                            <SummaryLine label="Paid Amount" value="₦26,300" />
-                            <SummaryLine label="Vendor Earnings" value="₦24,800" highlight />
-                            <SummaryLine label="Platform Commission" value="- ₦1,500" red />
-                            <View className="bg-green-50 p-3 rounded-2xl mt-4">
-                                <Text className="text-green-800 text-[10px] font-bold">You Earned</Text>
-                                <Text className="text-green-600 text-lg font-bold mt-1">₦23,300</Text>
-                            </View>
-                        </View>
-                    </View>
                 </View>
 
-                {/* 8. Ratings Section */}
-                <View className="px-6 mt-6 mb-10">
+
+                {/* 9. Ratings Section */}
+                <View className="px-6 mt-4 mb-10">
                     <View className="bg-white border border-slate-100 p-5 rounded-[32px] shadow-sm flex-row justify-between">
                         <RatingCol label="Customer Rating" score="5.0" />
                         <RatingCol label="Delivery Rating" score="5.0" />
@@ -206,7 +189,7 @@ export default function OrderDeliveredScreen() {
                 </View>
             </ScrollView>
 
-            {/* 9. Final Footer Actions */}
+            {/* 10. Final Footer Actions */}
             <View className="px-6 py-6 border-t border-slate-50 bg-white flex-row space-x-3">
                 <FooterIconBtn icon={Printer} label="Print Receipt" />
                 <FooterIconBtn icon={History} label="View Timeline" />
@@ -273,7 +256,7 @@ function RatingCol({ label, score }: any) {
 
 function FooterIconBtn({ icon: Icon, label }: any) {
     return (
-        <Pressable className="flex-1 h-14 bg-slate-50 border border-slate-200 rounded-2xl items-center justify-center">
+        <Pressable className="flex-1 h-14 bg-slate-50 border border-slate-200 rounded-2xl items-center justify-center active:bg-slate-100">
             <Icon size={18} color="#4F26D9" />
             <Text className="text-slate-600 font-bold text-[8px] mt-1.5" numberOfLines={1}>{label}</Text>
         </Pressable>
