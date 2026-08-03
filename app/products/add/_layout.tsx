@@ -1,6 +1,6 @@
 import { Stack, useRouter } from 'expo-router';
-import { Pressable, Text } from 'react-native';
 import { ArrowLeft } from 'lucide-react-native';
+import { Pressable, Text } from 'react-native';
 
 export default function AddProductLayout() {
   const router = useRouter();
@@ -22,6 +22,9 @@ export default function AddProductLayout() {
         ),
         headerShadowVisible: false,
       }}
-    />
+    >
+      {/* Hide default layout header for variants screen */}
+      <Stack.Screen name="variants" options={{ headerShown: false }} />
+    </Stack>
   );
 }

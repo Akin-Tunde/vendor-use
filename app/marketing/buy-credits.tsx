@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { View, Text, SafeAreaView, ScrollView, Pressable } from 'react-native';
+import { View, Text,  ScrollView, Pressable } from 'react-native';
 import { useRouter } from 'expo-router';
 import { ArrowLeft, Check, Lock, Plus } from 'lucide-react-native';
-
+import { SafeAreaView } from 'react-native-safe-area-context';
 const PACKAGES = [
   { amount: '5,000', get: '5,250', bonus: '250' },
   { amount: '10,000', get: '10,600', bonus: '600', selected: true },

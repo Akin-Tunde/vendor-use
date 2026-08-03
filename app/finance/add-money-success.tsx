@@ -1,8 +1,8 @@
 import React from 'react';
-import { View, Text, SafeAreaView, ScrollView, Pressable } from 'react-native';
+import { View, Text,  ScrollView, Pressable } from 'react-native';
 import { useRouter } from 'expo-router';
 import { ArrowLeft, Share2, Check, Copy, ArrowRight } from 'lucide-react-native';
-
+import { SafeAreaView } from 'react-native-safe-area-context';
 export default function AddMoneySuccessScreen() {
   const router = useRouter();
 

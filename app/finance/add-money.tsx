@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { View, Text, SafeAreaView, ScrollView, Pressable, TextInput } from 'react-native';
+import { View, Text, ScrollView, Pressable, TextInput } from 'react-native';
 import { useRouter } from 'expo-router';
 import { ArrowLeft, History, Plus, Check } from 'lucide-react-native';
-
+import { SafeAreaView } from 'react-native-safe-area-context';
 const QUICK_AMOUNTS = ['5,000', '10,000', '20,000', '50,000', '100,000', '200,000'];
 
 export default function AddMoneyScreen() {

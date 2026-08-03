@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { View, Text, ScrollView, Pressable, SafeAreaView } from 'react-native';
+import { View, Text, ScrollView, Pressable,  } from 'react-native';
 import { useRouter } from 'expo-router';
 import { 
   ArrowLeft, Headphones, MoreVertical, Phone, MessageSquare, 
-  Clock, CheckCircle2, ChevronDown, Package, Info, 
+  Clock, CheckCircle2, ChevronDown, Package, Info, X,
   PlayCircle, Check, Timer
 } from 'lucide-react-native';
-
+import { SafeAreaView } from 'react-native-safe-area-context';
 const STEPS = [
   { label: 'Confirmed', time: '09:15 AM', active: false, completed: true },
   { label: 'Preparing', time: '09:20 AM', active: true, completed: false },

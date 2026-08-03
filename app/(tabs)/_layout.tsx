@@ -8,7 +8,7 @@ export default function TabLayout() {
       tabBarActiveTintColor: '#4F26D9',
       tabBarInactiveTintColor: '#94a3b8',
       headerShown: false,
-      tabBarStyle: { height: 90, paddingBottom: 30, paddingTop: 10 }
+      tabBarStyle: { height: 70, paddingBottom: 30, paddingTop: 10 }
     }}>
       <Tabs.Screen name="index" options={{
         title: 'Dashboard',

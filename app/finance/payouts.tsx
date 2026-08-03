@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { View, Text, SafeAreaView, ScrollView, Pressable, TextInput } from 'react-native';
+import { View, Text,  ScrollView, Pressable, TextInput } from 'react-native';
 import { useRouter } from 'expo-router';
 import { ArrowLeft, Upload, Filter, Search, ChevronDown, ShieldCheck } from 'lucide-react-native';
-
+import { SafeAreaView } from 'react-native-safe-area-context';
 const STATUS_FILTERS = ['All', 'Completed', 'Processing', 'Failed'];
 
 export default function PayoutHistoryScreen() {

@@ -1,12 +1,12 @@
 import React from 'react';
-import { View, Text, SafeAreaView, ScrollView, Pressable } from 'react-native';
+import { View, Text,  ScrollView, Pressable } from 'react-native';
 import { useRouter } from 'expo-router';
 import { 
   ArrowLeft, HelpCircle, ChevronDown, Plus, 
   Sparkles, Megaphone, Zap, Tag, Gift, ShoppingBag, 
   ChevronRight, ArrowUpRight
 } from 'lucide-react-native';
-
+import { SafeAreaView } from 'react-native-safe-area-context';
 export default function MarketingHubScreen() {
   const router = useRouter();
 

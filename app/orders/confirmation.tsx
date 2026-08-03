@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import { View, Text, ScrollView, Pressable, Image, SafeAreaView, TextInput } from 'react-native';
+import { View, Text, ScrollView, Pressable, Image,  TextInput } from 'react-native';
 import { useRouter } from 'expo-router';
 import { 
   ArrowLeft, Headphones, MoreVertical, Phone, MessageSquare, 
   CheckCircle2, Clock, ScanQrCode, Keyboard, 
-  AlertTriangle, Info, Check, ShieldCheck, 
+  AlertTriangle, Info, Check, ShieldCheck, ShoppingBag, Bell,
   Minus, Plus, MapPin, Bike
 } from 'lucide-react-native';
-
+import { SafeAreaView } from 'react-native-safe-area-context';
 const STEPS = [
   { label: 'Confirmed', active: false, completed: true },
   { label: 'Preparing', active: false, completed: true },

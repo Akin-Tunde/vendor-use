@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { View, Text, SafeAreaView, ScrollView, Pressable, TextInput } from 'react-native';
+import { View, Text,  ScrollView, Pressable, TextInput } from 'react-native';
 import { useRouter } from 'expo-router';
 import { ArrowLeft, Filter, Upload, Search, ChevronDown, ArrowDownLeft, ArrowUpRight } from 'lucide-react-native';
-
+import { SafeAreaView } from 'react-native-safe-area-context';
 const FILTERS = ['All', 'Money In', 'Money Out', 'Withdrawals', 'Add Money'];
 
 export default function TransactionsScreen() {

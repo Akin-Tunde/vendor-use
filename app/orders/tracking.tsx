@@ -1,12 +1,12 @@
 import React from 'react';
-import { View, Text, ScrollView, Pressable, Image, SafeAreaView } from 'react-native';
+import { View, Text, ScrollView, Pressable, Image,  } from 'react-native';
 import { useRouter } from 'expo-router';
 import { 
   ArrowLeft, Headphones, MoreVertical, Phone, MessageSquare, 
   CheckCircle2, Bike, MapPin, Printer, ArrowRight,
-  Info, Clock, Navigation, Map as MapIcon, ChevronRight
+  Info, Clock, Navigation, Map as MapIcon, ChevronRight, ShoppingBag , Wallet, Bell, Package
 } from 'lucide-react-native';
-
+import { SafeAreaView } from 'react-native-safe-area-context';
 const STEPS = [
   { label: 'Confirmed', time: '09:15 AM', completed: true },
   { label: 'Preparing', time: '09:20 AM', completed: true },

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { View, Text, SafeAreaView, ScrollView, Pressable, TextInput } from 'react-native';
+import { View, Text, ScrollView, Pressable, TextInput } from 'react-native';
 import { useRouter } from 'expo-router';
 import { ArrowLeft, X, Lock, ShieldCheck } from 'lucide-react-native';
-
+import { SafeAreaView } from 'react-native-safe-area-context';
 export default function ReviewWithdrawalScreen() {
   const router = useRouter();
   const [pin, setPin] = useState(['', '', '', '', '', '']);

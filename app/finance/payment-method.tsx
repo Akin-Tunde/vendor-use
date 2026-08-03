@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { View, Text, SafeAreaView, ScrollView, Pressable } from 'react-native';
+import { View, Text,  ScrollView, Pressable } from 'react-native';
 import { useRouter } from 'expo-router';
 import { ArrowLeft, ShieldCheck, Lock, Check } from 'lucide-react-native';
-
+import { SafeAreaView } from 'react-native-safe-area-context';
 const METHODS = [
   { id: 'paystack', name: 'Paystack', desc: 'Pay securely with Paystack', badge: 'VISA / Mastercard / Verve' },
   { id: 'flutterwave', name: 'Flutterwave', desc: 'Pay securely with Flutterwave', badge: 'VISA / Mastercard / Verve' },

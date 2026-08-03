@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { View, Text, SafeAreaView, ScrollView, Pressable } from 'react-native';
+import { View, Text,  ScrollView, Pressable } from 'react-native';
 import { useRouter } from 'expo-router';
 import { ArrowLeft, Check, Sparkles } from 'lucide-react-native';
-
+import { SafeAreaView } from 'react-native-safe-area-context';
 const CAMPAIGN_TYPES = [
   { id: 'product', title: 'Sponsored Product', desc: 'Promote specific products to increase visibility and sales.', emoji: '📦' },
   { id: 'store', title: 'Sponsored Store', desc: 'Boost your store visibility to attract more customers.', emoji: '🏪' },

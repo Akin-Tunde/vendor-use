@@ -1,36 +1,41 @@
 import { useRouter } from 'expo-router';
 import { ArrowLeft, CheckCircle2, Eye, Lock, Mail, Store, User } from 'lucide-react-native';
 import React from 'react';
-import { Image, Pressable, SafeAreaView, ScrollView, Text, TextInput, View } from 'react-native';
+import { Image, Pressable, ScrollView, Text, TextInput, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function SignupStep1() {
   const router = useRouter();
 
   return (
     <SafeAreaView className="flex-1 bg-white">
-      {/* Top Header: Back Arrow beside Step Numbers */}
-      <View className="flex-row items-center px-6 pt-4 ">
+      {/* Centered Top Header */}
+      <View className="flex-row items-center px-6 ">
         <Pressable
           onPress={() => router.back()}
-          className="w-10 h-10 bg-purple-50 border border-purple-100 rounded-2xl items-center justify-center mr-3"
+          className="w-10 h-10 bg-slate-50 border border-slate-200 rounded-2xl items-center justify-center active:bg-purple-50 active:border-purple-200"
         >
-          <ArrowLeft size={20} color="#4F26D9" />
+          <ArrowLeft size={20} color="#000" />
         </Pressable>
 
-        {/* Progress Indicator */}
-        <View className="flex-1 flex-row items-center justify-between">
-          {[1, 2, 3, 4, 5, 6].map((step) => (
-            <React.Fragment key={step}>
-              <View className={`w-7 h-7 rounded-full items-center justify-center ${step === 1 ? 'bg-primary' : 'border border-slate-200 bg-white'}`}>
-                <Text className={`text-xs ${step === 1 ? 'text-white font-bold' : 'text-slate-400'}`}>{step}</Text>
-              </View>
-              {step < 6 && <View className="flex-1 h-[2px] bg-slate-100 mx-0.5" />}
-            </React.Fragment>
-          ))}
-        </View>
+        <Text className="flex-1 text-center text-primary font-bold text-sm">Step 1 of 6</Text>
+
+        <View className="w-10" />
       </View>
 
-      <ScrollView className="flex-1 px-6 pt-4" showsVerticalScrollIndicator={false}>
+      {/* Progress Bar */}
+      <View className="flex-row items-center justify-center px-5 mt-4 mb-3">
+        {[1, 2, 3, 4, 5, 6].map((step) => (
+          <React.Fragment key={step}>
+            <View className={`w-7 h-7 rounded-full items-center justify-center ${step === 1 ? 'bg-primary' : 'border border-slate-200 bg-white'}`}>
+              <Text className={`text-xs ${step === 1 ? 'text-white font-bold' : 'text-slate-400'}`}>{step}</Text>
+            </View>
+            {step < 6 && <View className="flex-1 h-[2px] bg-slate-100 mx-0.5" />}
+          </React.Fragment>
+        ))}
+      </View>
+
+      <ScrollView className="flex-1 px-6" showsVerticalScrollIndicator={false}>
         <View className="flex-row items-center">
           <View className="flex-1 mr-4">
             <Text className="text-3xl font-bold text-slate-900">Create Your Vendor Account</Text>
@@ -40,7 +45,6 @@ export default function SignupStep1() {
         </View>
 
         <View className="mt-8 space-y-5">
-          {/* Input Groups */}
           <InputGroup label="Full Name" placeholder="Enter your full name" icon={User} />
           <InputGroup label="Business Name" placeholder="Enter your business name" icon={Store} />
           <InputGroup label="Email Address" placeholder="Enter your email address" icon={Mail} />
@@ -68,12 +72,17 @@ export default function SignupStep1() {
           </Text>
         </Pressable>
 
-        <Pressable
-          className="bg-primary h-16 rounded-2xl justify-center items-center mt-8 shadow-lg shadow-primary/30"
-          onPress={() => router.push('/(auth)/signup/step2' as any)}
-        >
-          <Text className="text-white font-bold text-lg">Continue</Text>
-        </Pressable>
+        {/* Side-by-Side Action Buttons */}
+        <View className="flex-row space-x-5 mt-8">
+
+
+          <Pressable
+            className="flex-1 bg-primary h-16 rounded-2xl justify-center items-center shadow-lg shadow-primary/30 active:bg-primary/90"
+            onPress={() => router.push('/(auth)/signup/step2' as any)}
+          >
+            <Text className="text-white font-bold text-base">Continue</Text>
+          </Pressable>
+        </View>
 
         <View className="flex-row items-center my-6">
           <View className="flex-1 h-[1px] bg-slate-100" />
@@ -96,7 +105,6 @@ export default function SignupStep1() {
   );
 }
 
-// Reusable Input Component
 function InputGroup({ label, placeholder, icon: Icon, isPassword = false }: any) {
   return (
     <View>
@@ -105,11 +113,7 @@ function InputGroup({ label, placeholder, icon: Icon, isPassword = false }: any)
         <View style={{ marginRight: 12 }}>
           <Icon size={20} color="#4F26D9" />
         </View>
-        <TextInput
-          placeholder={placeholder}
-          secureTextEntry={isPassword}
-          className="flex-1 text-slate-900 text-base"
-        />
+        <TextInput placeholder={placeholder} secureTextEntry={isPassword} className="flex-1 text-slate-900 text-base" />
         {isPassword && <Eye size={20} color="#64748b" />}
       </View>
     </View>

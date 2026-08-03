@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { View, Text, SafeAreaView, ScrollView, Pressable } from 'react-native';
+import { View, Text,  ScrollView, Pressable } from 'react-native';
 import { useRouter } from 'expo-router';
 import { 
   Eye, EyeOff, ArrowUp, ArrowDown, History, 
   FileText, HelpCircle, Settings, ChevronRight, 
   ArrowDownLeft, ArrowUpRight, Calendar, Wallet as WalletIcon
 } from 'lucide-react-native';
-
+import { SafeAreaView } from 'react-native-safe-area-context';
 export default function FinanceScreen() {
   const router = useRouter();
   const [showBalance, setShowBalance] = useState(true);

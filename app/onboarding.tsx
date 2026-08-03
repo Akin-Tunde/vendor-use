@@ -1,19 +1,10 @@
 import { useRouter } from 'expo-router';
 import {
-  BarChart3,
-  Bell,
-  ChevronRight,
-  ClipboardList,
-  MapPin,
-  Megaphone,
-  Package,
-  ShoppingBag,
-  Star,
-  TrendingUp
+  ChevronRight
 } from 'lucide-react-native';
 import { useRef, useState } from 'react';
-import { Dimensions, FlatList, Image, Pressable, SafeAreaView, Text, View } from 'react-native';
-
+import { Dimensions, FlatList, Image, Pressable, Text, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 const { width } = Dimensions.get('window');
 
 // Define the data for all 4 screens based on your images
@@ -35,11 +26,11 @@ const ONBOARDING_DATA = [
     buttonText: 'Next',
     bg: 'bg-white',
     image: require('../assets/icons/onboarding-1.png'),
-  /*  features: [
-      { icon: ShoppingBag, title: 'Manage Easily', desc: 'Add products, manage inventory and track orders.', color: 'bg-green-100' },
-      { icon: TrendingUp, title: 'Boost Sales', desc: 'Reach more customers and increase your earnings.', color: 'bg-purple-100' },
-      { icon: Bell, title: 'Stay Updated', desc: 'Get real-time updates on orders and payments.', color: 'bg-orange-100' },
-    ] */
+    /*  features: [
+        { icon: ShoppingBag, title: 'Manage Easily', desc: 'Add products, manage inventory and track orders.', color: 'bg-green-100' },
+        { icon: TrendingUp, title: 'Boost Sales', desc: 'Reach more customers and increase your earnings.', color: 'bg-purple-100' },
+        { icon: Bell, title: 'Stay Updated', desc: 'Get real-time updates on orders and payments.', color: 'bg-orange-100' },
+      ] */
   },
   {
     id: '3',
@@ -50,11 +41,11 @@ const ONBOARDING_DATA = [
     buttonText: 'Next',
     bg: 'bg-white',
     image: require('../assets/icons/onboarding-2.png'),
-   /* features: [
-      { icon: Package, title: 'Product Management', desc: 'Add, edit and organize your products with ease.', color: 'bg-purple-100' },
-      { icon: ClipboardList, title: 'Order Management', desc: 'Receive and manage orders in real-time.', color: 'bg-blue-100' },
-      { icon: BarChart3, title: 'Business Insights', desc: 'Track your sales and growth with analytics.', color: 'bg-green-100' },
-    ]*/
+    /* features: [
+       { icon: Package, title: 'Product Management', desc: 'Add, edit and organize your products with ease.', color: 'bg-purple-100' },
+       { icon: ClipboardList, title: 'Order Management', desc: 'Receive and manage orders in real-time.', color: 'bg-blue-100' },
+       { icon: BarChart3, title: 'Business Insights', desc: 'Track your sales and growth with analytics.', color: 'bg-green-100' },
+     ]*/
   },
   {
     id: '4',
@@ -65,11 +56,11 @@ const ONBOARDING_DATA = [
     buttonText: 'Get Started',
     bg: 'bg-white',
     image: require('../assets/icons/onboarding-3.png'),
-   /* features: [
-      { icon: Megaphone, title: 'Promote Your Store', desc: 'Run promotions and discounts to attract customers.', color: 'bg-purple-100' },
-      { icon: MapPin, title: 'Reach Local Customers', desc: 'Get discovered by nearby customers looking for you.', color: 'bg-green-100' },
-      { icon: Star, title: 'Build Your Brand', desc: 'Grow your reputation and keep customers coming back.', color: 'bg-orange-100' },
-    ]*/
+    /* features: [
+       { icon: Megaphone, title: 'Promote Your Store', desc: 'Run promotions and discounts to attract customers.', color: 'bg-purple-100' },
+       { icon: MapPin, title: 'Reach Local Customers', desc: 'Get discovered by nearby customers looking for you.', color: 'bg-green-100' },
+       { icon: Star, title: 'Build Your Brand', desc: 'Grow your reputation and keep customers coming back.', color: 'bg-orange-100' },
+     ]*/
   },
 ];
 
@@ -93,7 +84,7 @@ export default function OnboardingScreen() {
       <View style={{ width }} className={`flex-1 ${item.bg}`}>
         <SafeAreaView className="flex-1">
           {/* Header Area */}
-          <View className="px-6 pt-6 flex-row justify-end items-center">
+          <View className="px-6  flex-row justify-end items-center">
             {!isWelcome && (
               <Pressable onPress={() => router.replace('/(auth)/login')}>
                 <Text className="text-primary font-bold text-lg">Skip</Text>

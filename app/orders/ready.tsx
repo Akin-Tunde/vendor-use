@@ -17,8 +17,8 @@ import {
     Wallet
 } from 'lucide-react-native';
 import React from 'react';
-import { Image, Pressable, SafeAreaView, ScrollView, Text, View } from 'react-native';
-
+import { Image, Pressable,  ScrollView, Text, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 const STEPS = [
     { label: 'Confirmed', time: '09:10 AM', active: false, completed: true },
     { label: 'Preparing', time: '09:20 AM', active: false, completed: true },

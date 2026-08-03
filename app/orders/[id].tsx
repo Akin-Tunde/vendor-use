@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, ScrollView, Pressable, Image, SafeAreaView } from 'react-native';
+import { View, Text, ScrollView, Pressable, Image } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { 
   ArrowLeft, Headphones, MoreVertical, Phone, MessageSquare, 
@@ -7,7 +7,7 @@ import {
   ChevronRight, Info, CheckCircle2, Clock, Printer, 
   User, X, Check
 } from 'lucide-react-native';
-
+import { SafeAreaView } from 'react-native-safe-area-context';
 const STEPS = [
   { label: 'New', time: '09:31 AM', active: true, completed: false },
   { label: 'Confirmed', active: false, completed: false },

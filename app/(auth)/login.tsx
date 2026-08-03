@@ -1,8 +1,8 @@
 import React from 'react';
-import { View, Text, TextInput, Pressable, ScrollView, SafeAreaView, Image } from 'react-native';
+import { View, Text, TextInput, Pressable, ScrollView,  Image } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Mail, Lock, Eye, ArrowLeft, Globe } from 'lucide-react-native';
-
+import { SafeAreaView } from 'react-native-safe-area-context';
 export default function LoginScreen() {
   const router = useRouter();
 
@@ -10,18 +10,18 @@ export default function LoginScreen() {
     <SafeAreaView className="flex-1 bg-white">
       <ScrollView className="flex-1 px-6" showsVerticalScrollIndicator={false}>
         {/* Header */}
-        <View className="flex-row justify-between items-center pt-7 ">
+        <View className="flex-row justify-between items-center  ">
           <Pressable onPress={() => router.back()} className="p-2 border border-slate-100 rounded-full">
             <ArrowLeft size={20} color="#000" />
           </Pressable>
-          <Pressable className="flex-row items-center space-x-1">
+          <Pressable className="flex-row items-center space-x-5">
             <Text className="font-semibold text-slate-900">English</Text>
             <Globe size={14} color="#000" />
           </Pressable>
         </View>
 
         {/* Branding & Illustration */}
-        <View className="flex-row justify-between items-center mt-6">
+        <View className="flex-row justify-between items-center ">
           <View className="items-center">
             <View className="w-16 h- bg-white rounded-2xl items-center justify-center shadow-sm">
               <Image source={require('../../assets/icons/logo-1.png')} className="w-30 h-24" resizeMode="contain" />

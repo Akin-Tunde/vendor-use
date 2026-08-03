@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, ScrollView, Pressable, SafeAreaView } from 'react-native';
+import { View, Text, ScrollView, Pressable,  } from 'react-native';
 import { useRouter } from 'expo-router';
 import { 
   ArrowLeft, Headphones, MoreVertical, 
@@ -9,7 +9,7 @@ import {
   Copy, History, Archive, ShieldAlert,
   ChevronRight, ShoppingBag
 } from 'lucide-react-native';
-
+import { SafeAreaView } from 'react-native-safe-area-context';
 export default function MoreActionsScreen() {
   const router = useRouter();
 

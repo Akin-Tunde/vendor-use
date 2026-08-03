@@ -1,8 +1,8 @@
 import React from 'react';
-import { View, Text, SafeAreaView, ScrollView, Pressable } from 'react-native';
+import { View, Text, ScrollView, Pressable } from 'react-native';
 import { useRouter } from 'expo-router';
 import { ArrowLeft, ChevronRight, Star, ShieldCheck, Image as ImageIcon, Upload, BarChart3, PieChart, MessageSquare } from 'lucide-react-native';
-
+import { SafeAreaView } from 'react-native-safe-area-context';
 const SERVICES = [
   { id: 'featured', title: 'Featured Store', desc: 'Get featured on the homepage and category pages.', icon: Star, color: 'bg-amber-100 text-amber-600' },
   { id: 'verified', title: 'Verified Business', desc: 'Get verified badge and build trust with customers.', icon: ShieldCheck, color: 'bg-green-100 text-green-600' },

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, ScrollView, Pressable, TextInput, Image, SafeAreaView } from 'react-native';
+import { View, Text, ScrollView, Pressable, TextInput, Image } from 'react-native';
 import { 
   Search, Filter, Bell, Menu, ChevronRight, 
   Clock, Bike, CreditCard, Check, X, 
@@ -7,7 +7,7 @@ import {
   ChevronLeft, ChevronRight as ChevronRightIcon,
   Plus
 } from 'lucide-react-native';
-
+import { SafeAreaView } from 'react-native-safe-area-context';
 const TABS = [
   { id: 'all', label: 'All', count: 24 },
   { id: 'new', label: 'New', count: 6 },
