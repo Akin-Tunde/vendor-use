@@ -1,7 +1,7 @@
 import { useRouter } from 'expo-router';
 import { ArrowLeft, CheckCircle2, Eye, EyeOff, Lock } from 'lucide-react-native';
 import { useState } from 'react';
-import { Pressable, ScrollView, Text, TextInput, View } from 'react-native';
+import { Pressable, ScrollView, Text, TextInput, View ,Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function CreateNewPasswordScreen() {
@@ -11,34 +11,27 @@ export default function CreateNewPasswordScreen() {
 
     return (
         <SafeAreaView className="flex-1 bg-white">
-            {/* Header */}
-            <View className="px-6 pt-4 pb-2 flex-row items-center justify-between">
-                <Pressable
-                    onPress={() => router.back()}
-                    className="w-10 h-10 bg-slate-50 border border-slate-200 rounded-2xl items-center justify-center active:bg-purple-50"
-                >
-                    <ArrowLeft size={20} color="#000" />
+            {/* Top Back Button */}
+            <View className="px-6 pt-4 pb-2 flex-row items-center">
+                <Pressable onPress={() => router.back()} className="p-2 -ml-2 active:opacity-60">
+                    <ArrowLeft size={24} color="#000" />
                 </Pressable>
-
-                <Text className="text-lg font-bold text-slate-900">Create New Password</Text>
-
-                <View className="w-10" />
             </View>
 
             <ScrollView className="flex-1 px-6" showsVerticalScrollIndicator={false}>
-                {/* Top Illustration */}
-                <View className="items-center justify-center my-6">
-                    <View className="w-28 h-28 bg-purple-50 rounded-full items-center justify-center border border-purple-100">
-                        <Text className="text-5xl">🔐</Text>
-                    </View>
+                {/* Large Page Title & Subtitle */}
+                <View className="mt-2 mb-4">
+                    <Text className="text-3xl font-bold text-slate-900">Create New Password</Text>
+                    <Text className="text-slate-500 text-xs mt-2 leading-5">
+                        Your new password must be different from previously used passwords.
+                    </Text>
                 </View>
 
-                {/* Heading */}
-                <View className="items-center mb-6">
-                    <Text className="text-2xl font-bold text-slate-900 text-center">Set a new password</Text>
-                    <Text className="text-slate-500 text-xs text-center mt-2 leading-5 px-4">
-                        Your new password must be different from previous used passwords.
-                    </Text>
+                {/* Top Illustration Graphic */}
+                <View className="items-center justify-center my-4">
+                    <View className="w-40 h-40  items-center justify-center">
+                      <Image source={require('../../../assets/icons/verify-otp.png')} className="w-full h-full" />
+          </View>
                 </View>
 
                 {/* New Password Input */}
@@ -47,34 +40,35 @@ export default function CreateNewPasswordScreen() {
                     <View className="flex-row items-center border border-slate-200 rounded-2xl px-4 h-14 bg-slate-50/50">
                         <Lock size={18} color="#4F26D9" className="mr-3" />
                         <TextInput
+                            placeholder="Enter new password"
                             secureTextEntry={!showPass}
-                            defaultValue="••••••••••••"
                             className="flex-1 text-slate-900 text-base"
                         />
                         <Pressable onPress={() => setShowPass(!showPass)}>
-                            {showPass ? <EyeOff size={18} color="#64748b" /> : <Eye size={18} color="#64748b" />}
+                            {showPass ? <EyeOff size={18} color="#4F26D9" /> : <Eye size={18} color="#64748b" />}
                         </Pressable>
                     </View>
                 </View>
 
-                {/* Password Strength Meter */}
+                {/* Segmented Password Strength Bar */}
                 <View className="mb-4">
                     <View className="flex-row justify-between items-center mb-1">
-                        <View className="flex-1 flex-row space-x-1 mr-3">
-                            <View className="flex-1 h-1 bg-green-500 rounded-full" />
-                            <View className="flex-1 h-1 bg-green-500 rounded-full" />
-                            <View className="flex-1 h-1 bg-green-500 rounded-full" />
+                        <View className="flex-1 flex-row space-x-2 mr-4">
+                            <View className="flex-1 h-1.5 bg-green-500 rounded-full" />
+                            <View className="flex-1 h-1.5 bg-slate-200 rounded-full" />
+                            <View className="flex-1 h-1.5 bg-slate-200 rounded-full" />
                         </View>
-                        <Text className="text-green-600 font-bold text-[10px]">Strong</Text>
+                        <Text className="text-green-600 font-bold text-xs">Strong</Text>
                     </View>
                 </View>
 
                 {/* Password Requirements Checklist */}
-                <View className="space-y-2 mb-6">
+                <View className="mb-6 space-y-2.5">
+                    <Text className="text-slate-600 font-semibold text-xs mb-1">Password must contain:</Text>
                     <CheckItem label="At least 8 characters" checked />
                     <CheckItem label="Contains uppercase letter" checked />
                     <CheckItem label="Contains number" checked />
-                    <CheckItem label="Contains special character" checked />
+                    <CheckItem label="Contains special character (e.g. !@#$%^&*)" checked />
                 </View>
 
                 {/* Confirm Password Input */}
@@ -83,12 +77,12 @@ export default function CreateNewPasswordScreen() {
                     <View className="flex-row items-center border border-slate-200 rounded-2xl px-4 h-14 bg-slate-50/50">
                         <Lock size={18} color="#4F26D9" className="mr-3" />
                         <TextInput
+                            placeholder="Confirm new password"
                             secureTextEntry={!showConfirm}
-                            defaultValue="••••••••••••"
                             className="flex-1 text-slate-900 text-base"
                         />
                         <Pressable onPress={() => setShowConfirm(!showConfirm)}>
-                            {showConfirm ? <EyeOff size={18} color="#64748b" /> : <Eye size={18} color="#64748b" />}
+                            {showConfirm ? <EyeOff size={18} color="#4F26D9" /> : <Eye size={18} color="#64748b" />}
                         </Pressable>
                     </View>
                 </View>
@@ -96,9 +90,17 @@ export default function CreateNewPasswordScreen() {
                 {/* Reset Password Button */}
                 <Pressable
                     onPress={() => router.push('/(auth)/forgot-password/success' as any)}
-                    className="bg-primary h-14 rounded-2xl justify-center items-center shadow-lg shadow-primary/30 active:bg-primary/90 mb-12"
+                    className="bg-primary h-14 rounded-2xl justify-center items-center shadow-lg shadow-primary/30 active:bg-primary/90"
                 >
                     <Text className="text-white font-bold text-base">Reset Password</Text>
+                </Pressable>
+
+                {/* Back to Login Link */}
+                <Pressable
+                    onPress={() => router.push('/(auth)/login' as any)}
+                    className="items-center mt-6 pb-12"
+                >
+                    <Text className="text-primary font-bold text-sm">Back to Login</Text>
                 </Pressable>
             </ScrollView>
         </SafeAreaView>
@@ -108,7 +110,7 @@ export default function CreateNewPasswordScreen() {
 function CheckItem({ label, checked }: any) {
     return (
         <View className="flex-row items-center">
-            <CheckCircle2 size={14} color={checked ? "#22c55e" : "#cbd5e1"} className="mr-2" />
+            <CheckCircle2 size={16} color={checked ? "#22c55e" : "#cbd5e1"} className="mr-2.5" />
             <Text className={`text-xs font-medium ${checked ? 'text-slate-700' : 'text-slate-400'}`}>{label}</Text>
         </View>
     );

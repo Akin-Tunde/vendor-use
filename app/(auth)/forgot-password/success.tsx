@@ -1,7 +1,6 @@
-import React from 'react';
-import { View, Text, ScrollView, Pressable } from 'react-native';
 import { useRouter } from 'expo-router';
-import { Check, ShieldCheck, ChevronRight } from 'lucide-react-native';
+import { Check, ChevronRight, ShieldCheck } from 'lucide-react-native';
+import { Pressable, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function PasswordResetSuccessScreen() {
@@ -10,10 +9,12 @@ export default function PasswordResetSuccessScreen() {
   return (
     <SafeAreaView className="flex-1 bg-white">
       <ScrollView className="flex-1 px-6 pt-10" showsVerticalScrollIndicator={false}>
-        {/* Celebration Confetti Icon */}
+        {/* Top Graphic Illustration */}
         <View className="items-center justify-center py-6">
-          <View className="w-28 h-28 bg-green-500 rounded-full items-center justify-center shadow-lg shadow-green-500/30">
-            <Check size={50} color="white" strokeWidth={4} />
+          <View className="w-32 h-32 bg-emerald-50 rounded-full items-center justify-center border border-emerald-100 shadow-sm relative">
+            <View className="w-20 h-20 bg-green-500 rounded-full items-center justify-center shadow-lg shadow-green-500/30">
+              <Check size={40} color="white" strokeWidth={4} />
+            </View>
           </View>
 
           <Text className="text-2xl font-bold text-slate-900 text-center mt-8">Password Reset Successfully!</Text>
@@ -23,7 +24,7 @@ export default function PasswordResetSuccessScreen() {
         </View>
 
         {/* Security Card */}
-        <View className="mx-2 my-8 bg-purple-50/60 border border-purple-100 p-5 rounded-[32px] flex-row items-center shadow-sm">
+        <View className="mx-2 my-6 bg-purple-50/60 border border-purple-100 p-5 rounded-[28px] flex-row items-center shadow-sm">
           <View className="w-10 h-10 bg-primary/10 rounded-2xl items-center justify-center mr-3">
             <ShieldCheck size={20} color="#4F26D9" />
           </View>
@@ -35,13 +36,22 @@ export default function PasswordResetSuccessScreen() {
           </View>
         </View>
 
-        {/* Back to Login Button */}
-        <Pressable 
+        {/* Action Button 1: Back to Login */}
+        <Pressable
           onPress={() => router.replace('/(auth)/login' as any)}
-          className="bg-primary h-14 rounded-2xl flex-row justify-center items-center shadow-lg shadow-primary/30 active:bg-primary/90 mt-4"
+          className="bg-primary h-14 rounded-2xl flex-row justify-center items-center shadow-lg shadow-primary/30 active:bg-primary/90 mt-2"
         >
           <Text className="text-white font-bold text-base mr-2">Back to Login</Text>
           <ChevronRight size={18} color="white" />
+        </Pressable>
+
+        {/* Action Button 2: Go to Dashboard */}
+        <Pressable
+          onPress={() => router.replace('/(tabs)' as any)}
+          className="border-2 border-primary/20 bg-white h-14 rounded-2xl flex-row justify-center items-center active:bg-purple-50 mt-3"
+        >
+          <ShieldCheck size={18} color="#4F26D9" className="mr-2" />
+          <Text className="text-primary font-bold text-base">Go to Dashboard</Text>
         </Pressable>
 
         {/* Help Link */}

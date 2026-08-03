@@ -27,7 +27,7 @@ export default function LoginScreen() {
         </View>
 
         {/* Branding & Illustration */}
-        <View className="flex-row justify-between items-center mt-6">
+        <View className="flex-row justify-between items-center ">
           <View className="items-center">
             <View className="w-16 h-16 bg-white rounded-2xl items-center justify-center shadow-sm">
               <Image source={require('../../assets/icons/logo-1.png')} className="w-14 h-14" resizeMode="contain" />

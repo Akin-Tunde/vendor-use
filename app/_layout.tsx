@@ -49,13 +49,9 @@ function RootLayoutNav() {
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <Stack screenOptions={{ headerShown: false }}>
-        {/* Onboarding Screen (Initial route) */}
         <Stack.Screen name="onboarding" options={{ animation: 'fade' }} />
-        
-        {/* Main App Tabs */}
+        <Stack.Screen name="(auth)" />
         <Stack.Screen name="(tabs)" options={{ gestureEnabled: false }} />
-        
-        {/* Modal screens */}
         <Stack.Screen name="modal" options={{ presentation: 'modal', headerShown: true }} />
       </Stack>
     </ThemeProvider>
