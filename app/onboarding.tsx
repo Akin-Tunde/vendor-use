@@ -7,7 +7,6 @@ import { Dimensions, FlatList, Image, Pressable, Text, View } from 'react-native
 import { SafeAreaView } from 'react-native-safe-area-context';
 const { width } = Dimensions.get('window');
 
-// Define the data for all 4 screens based on your images
 const ONBOARDING_DATA = [
   {
     id: '1',
@@ -22,45 +21,30 @@ const ONBOARDING_DATA = [
     type: 'features',
     title: 'Welcome to useMarket',
     subtitle: 'Vendor',
-    description: 'Everything you need to manage your store, reach more customers and grow your business.',
+    description: 'Everything you need to manage your store, \nreach more customers and \ngrow your business.',
     buttonText: 'Next',
     bg: 'bg-white',
     image: require('../assets/icons/onboarding-1.png'),
-    /*  features: [
-        { icon: ShoppingBag, title: 'Manage Easily', desc: 'Add products, manage inventory and track orders.', color: 'bg-green-100' },
-        { icon: TrendingUp, title: 'Boost Sales', desc: 'Reach more customers and increase your earnings.', color: 'bg-purple-100' },
-        { icon: Bell, title: 'Stay Updated', desc: 'Get real-time updates on orders and payments.', color: 'bg-orange-100' },
-      ] */
   },
   {
     id: '3',
     type: 'features',
     title: 'Manage Your Store',
     subtitle: 'All in One Place',
-    description: 'Add products, track orders, manage inventory and view performance easily.',
+    description: 'Add products, track orders, manage inventory \nand view performance easily.',
     buttonText: 'Next',
     bg: 'bg-white',
     image: require('../assets/icons/onboarding-2.png'),
-    /* features: [
-       { icon: Package, title: 'Product Management', desc: 'Add, edit and organize your products with ease.', color: 'bg-purple-100' },
-       { icon: ClipboardList, title: 'Order Management', desc: 'Receive and manage orders in real-time.', color: 'bg-blue-100' },
-       { icon: BarChart3, title: 'Business Insights', desc: 'Track your sales and growth with analytics.', color: 'bg-green-100' },
-     ]*/
   },
   {
     id: '4',
     type: 'features',
     title: 'Grow Your Business',
     subtitle: 'Reach More Customers',
-    description: 'Get discovered by thousands of customers in your area and grow every day.',
+    description: 'Get discovered by thousands of customers \nin your area and grow every day.',
     buttonText: 'Get Started',
     bg: 'bg-white',
     image: require('../assets/icons/onboarding-3.png'),
-    /* features: [
-       { icon: Megaphone, title: 'Promote Your Store', desc: 'Run promotions and discounts to attract customers.', color: 'bg-purple-100' },
-       { icon: MapPin, title: 'Reach Local Customers', desc: 'Get discovered by nearby customers looking for you.', color: 'bg-green-100' },
-       { icon: Star, title: 'Build Your Brand', desc: 'Grow your reputation and keep customers coming back.', color: 'bg-orange-100' },
-     ]*/
   },
 ];
 
@@ -73,7 +57,7 @@ export default function OnboardingScreen() {
     if (currentIndex < ONBOARDING_DATA.length - 1) {
       flatListRef.current?.scrollToIndex({ index: currentIndex + 1 });
     } else {
-      router.replace('/(auth)/login'); // Go to main app
+      router.replace('/(auth)/login');
     }
   };
 
@@ -84,7 +68,7 @@ export default function OnboardingScreen() {
       <View style={{ width }} className={`flex-1 ${item.bg}`}>
         <SafeAreaView className="flex-1">
           {/* Header Area */}
-          <View className="px-6  flex-row justify-end items-center">
+          <View className="px-6 pt-6 flex-row justify-end items-center">
             {!isWelcome && (
               <Pressable onPress={() => router.replace('/(auth)/login')}>
                 <Text className="text-primary font-bold text-lg">Skip</Text>
@@ -108,23 +92,24 @@ export default function OnboardingScreen() {
               </View>
             ) : (
               /* SCREEN 2-4: WHITE FEATURES */
-              <View className="flex-1 justify-center items-center">
-                {/* Illustration */}
-                <View className="h-80 w-full  rounded-3xl mb-8 -mt-12 items-center justify-center overflow-hidden">
+              <View className="flex-1">
+                {/* Illustration - anchored to the top */}
+                <View className="h-80 w-full rounded-3xl mt-2 items-center justify-center overflow-hidden">
                   <Image source={item.image} className="w-full h-full" resizeMode="contain" />
                 </View>
 
-                <View className="items-center mb-8">
-                  <Text className="text-2xl font-bold text-slate-900 text-center">{item.title}</Text>
+                {/* Text - now sits directly under the image */}
+                <View className="items-center mt-2">
+                  <Text className="text-3xl font-bold text-slate-900 text-center">{item.title}</Text>
                   <Text className="text-2xl font-bold text-primary text-center">{item.subtitle}</Text>
-                  <Text className="text-muted text-center mt-3 text-base px-2">
+                  <Text className="text-muted  text-center mt-3 text-base px-2">
                     {item.description}
                   </Text>
                 </View>
 
                 {/* Feature Cards */}
                 {item.id !== '2' && (
-                  <View className="space-y-3">
+                  <View className="space-y-3 mt-8">
                     {item.features?.map((f: any, i: number) => (
                       <View key={i} className="flex-row items-center bg-white p-4 rounded-3xl border border-slate-100 shadow-sm">
                         <View className={`w-12 h-12 rounded-2xl items-center justify-center mr-4 ${f.color}`}>
@@ -165,11 +150,11 @@ export default function OnboardingScreen() {
 
       {/* Footer: Pagination & Button */}
       <View className="absolute bottom-12 left-0 right-0 px-8 items-center">
-        {/* Pagination Dots */}
-        <View className="flex-row mb-8">
+        {/* Pagination Dots - moved further up, away from the button */}
+        <View className="flex-row mb-16">
           {ONBOARDING_DATA.map((_, i) => (
             <View key={i}
-              className={`h-2 mx-1 rounded-full ${currentIndex === i ? 'w-8 bg-primary' : 'w-4 bg-slate-200'}`}
+              className={`h-2 mx-1 rounded-full ${currentIndex === i ? 'w-2 bg-primary' : 'w-2 bg-slate-200'}`}
               style={currentIndex === 0 ? { backgroundColor: currentIndex === i ? 'white' : 'rgba(255,255,255,0.3)' } : null}
             />
           ))}

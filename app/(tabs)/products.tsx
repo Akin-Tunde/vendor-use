@@ -14,7 +14,6 @@ import {
     Search,
     Tag
 } from 'lucide-react-native';
-import { useState } from 'react';
 import { Pressable, ScrollView, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -28,18 +27,8 @@ const PRODUCTS = [
     { name: 'Power Oil (1L)', category: 'Groceries', price: '₦1,900', stock: 'Out of Stock', status: 'Out of Stock', image: '🛢️' },
 ];
 
-const CATEGORIES = [
-    { id: 'all', label: 'All', active: true },
-    { id: 'groceries', label: 'Groceries', emoji: '🧺' },
-    { id: 'fruits', label: 'Fruits', emoji: '🍎' },
-    { id: 'vegetables', label: 'Vegetables', emoji: '🌱' },
-    { id: 'drinks', label: 'Drinks', emoji: '🥤' },
-    { id: 'household', label: 'Household', emoji: '🍾' },
-];
-
 export default function ProductsScreen() {
     const router = useRouter();
-    const [selectedCategory, setSelectedCategory] = useState('all');
 
     return (
         <SafeAreaView className="flex-1 bg-[#F8F9FE]">
@@ -60,10 +49,10 @@ export default function ProductsScreen() {
             </View>
             <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
                 {/* 1. Quick Management Shortcuts (Inventory & Categories) */}
-                <View className="px-6 mt-4 flex-row space-x-3">
+                <View className="px-6 mt-4 flex-row">
                     <Pressable
                         onPress={() => router.push('/products/inventory')}
-                        className="flex-1 bg-purple-50 border border-purple-100 p-3.5 rounded-3xl flex-row items-center shadow-sm"
+                        className="flex-1 bg-purple-50 border border-purple-100 p-3.5 rounded-3xl flex-row items-center shadow-sm mr-3"
                     >
                         <View className="w-10 h-10 bg-primary/10 rounded-2xl items-center justify-center mr-3">
                             <Boxes size={20} color="#4F26D9" />
@@ -88,7 +77,7 @@ export default function ProductsScreen() {
                     </Pressable>
                 </View>
 
-            {/* 2x2 Summary Grid */}
+                {/* 2x2 Summary Grid */}
                 <View className="px-6 mt-4">
                     <View className="flex-row flex-wrap justify-between gap-y-3">
                         <SummaryCard label="Total Products" value="128" sub="All products" icon={Package} bg="bg-purple-100" iconColor="#4F26D9" />
@@ -98,38 +87,14 @@ export default function ProductsScreen() {
                     </View>
                 </View>
 
-                {/* 3. Category Chips Filter Bar 
-                <ScrollView horizontal showsHorizontalScrollIndicator={false} className="px-6 mt-5 space-x-2">
-                    {CATEGORIES.map((cat) => {
-                        const isSelected = selectedCategory === cat.id;
-                        return (
-                            <Pressable
-                                key={cat.id}
-                                onPress={() => setSelectedCategory(cat.id)}
-                                className={`px-4 py-2 rounded-xl flex-row items-center border ${isSelected ? 'bg-primary border-primary' : 'bg-white border-slate-100'
-                                    }`}
-                            >
-                                {cat.emoji && <Text className="mr-1.5 text-xs">{cat.emoji}</Text>}
-                                <Text className={`text-xs font-bold ${isSelected ? 'text-white' : 'text-slate-600'}`}>
-                                    {cat.label}
-                                </Text>
-                            </Pressable>
-                        );
-                    })}
-                    <Pressable className="px-3 py-2 rounded-xl flex-row items-center border border-slate-100 bg-white">
-                        <Text className="text-xs font-bold text-primary mr-1">More</Text>
-                        <ChevronDown size={14} color="#4F26D9" />
-                    </Pressable>
-                </ScrollView>
-*/}
-                {/* 4. Search, Filter & Sort Action Row */}
-                <View className="px-6 mt-4 flex-row space-x-2">
-                    <View className="flex-1 bg-white border border-slate-100 h-11 rounded-2xl flex-row items-center px-3 shadow-sm">
+                {/* 2. Search, Filter & Sort Action Row */}
+                <View className="px-6 mt-4 flex-row">
+                    <View className="flex-1 bg-white border border-slate-100 h-11 rounded-2xl flex-row items-center px-3 shadow-sm mr-2">
                         <Search size={16} color="#94a3b8" />
                         <TextInput placeholder="Search products..." className="flex-1 ml-2 text-xs text-slate-900" />
                     </View>
 
-                    <Pressable className="bg-white border border-slate-100 px-3.5 h-11 rounded-2xl flex-row items-center shadow-sm">
+                    <Pressable className="bg-white border border-slate-100 px-3.5 h-11 rounded-2xl flex-row items-center shadow-sm mr-2">
                         <Filter size={14} color="#64748b" className="mr-1.5" />
                         <Text className="font-bold text-slate-700 text-xs">Filter</Text>
                     </Pressable>
@@ -140,7 +105,7 @@ export default function ProductsScreen() {
                     </Pressable>
                 </View>
 
-                {/* 5. Product List Card */}
+                {/* 3. Product List Card */}
                 <View className="mx-3 mt-4 bg-white border border-slate-100 rounded-[32px] p-4 shadow-sm">
                     {PRODUCTS.map((p, i) => (
                         <View key={i} className="flex-row items-center py-3 border-b border-slate-50">
@@ -175,21 +140,21 @@ export default function ProductsScreen() {
                     <View className="flex-row justify-between items-center pt-4 mt-2 border-t border-slate-50">
                         <Text className="text-slate-400 text-[10px] font-medium">Showing 1 to 10 of 128 products</Text>
 
-                        <View className="flex-row items-center space-x-1">
-                            <Pressable className="w-7 h-7 rounded-lg bg-slate-50 border border-slate-100 items-center justify-center">
+                        <View className="flex-row items-center">
+                            <Pressable className="w-7 h-7 rounded-lg bg-slate-50 border border-slate-100 items-center justify-center mr-1">
                                 <ChevronLeft size={14} color="#64748b" />
                             </Pressable>
-                            <Pressable className="w-7 h-7 rounded-lg bg-primary items-center justify-center">
+                            <Pressable className="w-7 h-7 rounded-lg bg-primary items-center justify-center mr-1">
                                 <Text className="text-white font-bold text-xs">1</Text>
                             </Pressable>
-                            <Pressable className="w-7 h-7 rounded-lg bg-slate-50 items-center justify-center">
+                            <Pressable className="w-7 h-7 rounded-lg bg-slate-50 items-center justify-center mr-1">
                                 <Text className="text-slate-600 text-xs font-bold">2</Text>
                             </Pressable>
-                            <Pressable className="w-7 h-7 rounded-lg bg-slate-50 items-center justify-center">
+                            <Pressable className="w-7 h-7 rounded-lg bg-slate-50 items-center justify-center mr-1">
                                 <Text className="text-slate-600 text-xs font-bold">3</Text>
                             </Pressable>
-                            <Text className="text-slate-400 text-xs">...</Text>
-                            <Pressable className="w-7 h-7 rounded-lg bg-slate-50 items-center justify-center">
+                            <Text className="text-slate-400 text-xs mr-1">...</Text>
+                            <Pressable className="w-7 h-7 rounded-lg bg-slate-50 items-center justify-center mr-1">
                                 <Text className="text-slate-600 text-xs font-bold">13</Text>
                             </Pressable>
                             <Pressable className="w-7 h-7 rounded-lg bg-slate-50 border border-slate-100 items-center justify-center">

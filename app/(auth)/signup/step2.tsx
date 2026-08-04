@@ -40,18 +40,17 @@ export default function BusinessTypeScreen() {
       <ScrollView className="flex-1 px-6" showsVerticalScrollIndicator={false}>
         <View className="flex-row justify-between items-start">
           <View className="flex-1 pr-4">
-            <Text className="text-3xl font-bold text-slate-900 leading-tight">Choose Your Business Type</Text>
+            <Text className="text-2xl font-bold text-slate-900 leading-tight">Choose Your Business Type</Text>
             <Text className="text-slate-500 mt-2 leading-5">Select the option that best describes your business to help us tailor your experience.</Text>
           </View>
           <View className="w-32 h-32 rounded-2xl items-center justify-center">
-           <Image source={require('../../../assets/icons/step-2.png')} className="w-64 h-64" resizeMode="contain" />
-               
-                 </View>
+            <Image source={require('../../../assets/icons/step-2.png')} className="w-64 h-64" />
+          </View>
         </View>
 
-        <Text className="font-bold text-slate-900 text-lg mt-10 mb-6">Select Business Type</Text>
+        <Text className="font-bold text-slate-900 text-lg mt-7 mb-4">Select Business Type</Text>
 
-        <View className="space-y-4 pb-12">
+        <View style={{ gap: 16 }} className="pb-12">
           {BUSINESS_TYPES.map((type) => (
             <Pressable
               key={type.id}
@@ -73,7 +72,7 @@ export default function BusinessTypeScreen() {
         </View>
       </ScrollView>
 
-      <View className="p-6 bg-white border-t border-slate-50 flex-row space-x-5">
+      <View className="p-6 bg-white border-t border-slate-50 flex-row" style={{ gap: 16 }}>
         <Pressable className="flex-1 border border-slate-200 bg-white h-16 rounded-2xl justify-center items-center active:bg-purple-50 active:border-primary" onPress={() => router.back()}>
           <Text className="text-slate-700 font-bold text-base">Previous</Text>
         </Pressable>

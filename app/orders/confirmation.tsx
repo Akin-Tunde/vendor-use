@@ -1,25 +1,23 @@
 import { useRouter } from 'expo-router';
 import {
    ArrowLeft,
-   Bell,
    Bike,
    Check,
+   CheckCircle2,
    Clock,
    Headphones,
-   Keyboard,
    MessageSquare,
    Minus,
    MoreVertical,
    Phone,
    Plus,
-   ScanQrCode,
    ShieldCheck,
    ShoppingBag,
    Star,
    User
 } from 'lucide-react-native';
-import React, { useState } from 'react';
-import { Image, Pressable, ScrollView, Text, View } from 'react-native';
+import React, { useRef, useState } from 'react';
+import { Image, Pressable, ScrollView, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 const STEPS = [
@@ -31,17 +29,29 @@ const STEPS = [
    { label: 'Out for Delivery', active: false, completed: false },
 ];
 
-const CHECKLIST = [
-   { label: 'All items packed', sub: 'All items are packed correctly' },
-   { label: 'Receipt included', sub: 'Receipt is in the package' },
-   { label: 'Sealed package', sub: 'Package is sealed properly' },
-   { label: 'Drinks secured', sub: "Drinks are secured and won't spill" },
-];
-
 export default function PickupConfirmationScreen() {
    const router = useRouter();
    const [bagCount, setBagCount] = useState(2);
-   const [verifyTab, setVerifyTab] = useState<'qr' | 'code'>('qr');
+   const [pickupCode, setPickupCode] = useState(['', '', '', '', '', '']);
+   const inputRefs = useRef<Array<TextInput | null>>([]);
+
+   const isVerified = pickupCode.every((d) => d.length === 1);
+
+   function handleCodeChange(text: string, index: number) {
+      const digit = text.replace(/[^0-9]/g, '').slice(-1);
+      const next = [...pickupCode];
+      next[index] = digit;
+      setPickupCode(next);
+      if (digit && index < 5) {
+         inputRefs.current[index + 1]?.focus();
+      }
+   }
+
+   function handleKeyPress(e: any, index: number) {
+      if (e.nativeEvent.key === 'Backspace' && !pickupCode[index] && index > 0) {
+         inputRefs.current[index - 1]?.focus();
+      }
+   }
 
    return (
       <SafeAreaView className="flex-1 bg-white">
@@ -70,7 +80,7 @@ export default function PickupConfirmationScreen() {
 
          <ScrollView className="flex-1 bg-[#F8F9FE]" showsVerticalScrollIndicator={false}>
             {/* 2. Status Stepper */}
-            <View className="px-5 py-5 bg-white border-b border-slate-100">
+            <View className="px-5 py-3.5 bg-white border-b border-slate-100">
                <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                   <View className="flex-row items-center pr-6">
                      {STEPS.map((step, i) => (
@@ -109,8 +119,9 @@ export default function PickupConfirmationScreen() {
                            </View>
                            {i < STEPS.length - 1 && (
                               <View
-                                 className={`w-8 h-[1px] mx-1 border-dashed -mt-5 ${step.completed ? 'bg-primary' : 'bg-slate-200'
+                                 className={`w-8 mx-1 -mt-5 ${step.completed ? 'border-primary' : 'border-slate-200'
                                     }`}
+                                 style={{ borderTopWidth: 1, borderStyle: 'dashed' }}
                               />
                            )}
                         </React.Fragment>
@@ -164,27 +175,13 @@ export default function PickupConfirmationScreen() {
                               </View>
                            </View>
 
-                           <Text className="text-slate-500 text-xs mt-1">0908 123 4567</Text>
+    
                            <Text className="text-slate-400 text-xs">Purple Bajaj Boxer</Text>
                            <Text className="text-slate-900 font-bold text-xs mt-0.5">BKJ 123 XY</Text>
                         </View>
                      </View>
 
-                     <View className="flex-row space-x-2">
-                        <View className="items-center">
-                           <Pressable className="w-10 h-10 bg-purple-50 border border-purple-100 rounded-full items-center justify-center active:bg-purple-100">
-                              <Phone size={18} color="#4F26D9" />
-                           </Pressable>
-                           <Text className="text-[9px] font-bold text-slate-500 mt-1">Call</Text>
-                        </View>
-
-                        <View className="items-center">
-                           <Pressable className="w-10 h-10 bg-purple-50 border border-purple-100 rounded-full items-center justify-center active:bg-purple-100">
-                              <MessageSquare size={18} color="#4F26D9" />
-                           </Pressable>
-                           <Text className="text-[9px] font-bold text-slate-500 mt-1">Message</Text>
-                        </View>
-                     </View>
+                  
                   </View>
 
                   {/* Bottom Rider Stats */}
@@ -212,85 +209,50 @@ export default function PickupConfirmationScreen() {
 
             {/* 5. Verify Rider Section */}
             <View className="mx-5 mt-5">
-               <View className="flex-row items-center mb-1">
-                  <ShieldCheck size={16} color="#4F26D9" />
-                  <Text className="font-bold text-slate-900 text-xs ml-1.5">Verify Rider</Text>
+               <View className="flex-row items-center justify-between mb-1">
+                  <View className="flex-row items-center">
+                     <ShieldCheck size={16} color="#4F26D9" />
+                     <Text className="font-bold text-slate-900 text-xs ml-1.5">Verify Rider</Text>
+                  </View>
+                  {isVerified && (
+                     <View className="flex-row items-center bg-emerald-50 px-2 py-0.5 rounded-full">
+                        <CheckCircle2 size={11} color="#10b981" />
+                        <Text className="text-emerald-600 font-bold text-[9px] ml-1">Verified</Text>
+                     </View>
+                  )}
                </View>
                <Text className="text-slate-400 text-[10px] mb-3">
-                  Scan QR code or enter the 6-digit pickup code provided by the rider.
+                  Enter the 6-digit pickup code provided by the rider.
                </Text>
 
                <View className="bg-white border border-slate-100 rounded-[28px] overflow-hidden shadow-sm p-3">
-                  {/* Segmented Tab Bar */}
-                  <View className="flex-row bg-slate-100/80 p-1 rounded-2xl mb-4">
-                     <Pressable
-                        onPress={() => setVerifyTab('qr')}
-                        className={`flex-1 flex-row items-center justify-center py-2.5 rounded-xl ${verifyTab === 'qr' ? 'bg-primary shadow-sm' : ''
-                           }`}
-                     >
-                        <ScanQrCode size={16} color={verifyTab === 'qr' ? 'white' : '#64748b'} />
-                        <Text className={`font-bold text-xs ml-1.5 ${verifyTab === 'qr' ? 'text-white' : 'text-slate-600'}`}>
-                           Scan QR Code
-                        </Text>
-                     </Pressable>
-
-                     <Pressable
-                        onPress={() => setVerifyTab('code')}
-                        className={`flex-1 flex-row items-center justify-center py-2.5 rounded-xl ${verifyTab === 'code' ? 'bg-primary shadow-sm' : ''
-                           }`}
-                     >
-                        <Keyboard size={16} color={verifyTab === 'code' ? 'white' : '#64748b'} />
-                        <Text className={`font-bold text-xs ml-1.5 ${verifyTab === 'code' ? 'text-white' : 'text-slate-600'}`}>
-                           Enter Pickup Code
-                        </Text>
-                     </Pressable>
-                  </View>
-
-                  {/* Inner QR & Code Container */}
-                  <View className="border-2 border-dashed border-purple-200 bg-purple-50/20 rounded-2xl p-5 flex-row items-center justify-between relative">
-                     {/* QR Side */}
-                     <View className="items-center flex-1 pr-2">
-                        <View className="w-16 h-16 border-2 border-primary rounded-2xl items-center justify-center mb-2 bg-white">
-                           <ScanQrCode size={32} color="#4F26D9" />
-                        </View>
-                        <Text className="font-bold text-slate-900 text-xs text-center">
-                           Scan the rider's QR code
-                        </Text>
-                        <Text className="text-slate-400 text-[9px] text-center mt-0.5">
-                           Ask the rider to show the QR code in their app
-                        </Text>
+                  <View className="border-2 border-dashed border-purple-200 bg-purple-50/20 rounded-2xl p-5 items-center">
+                     <View className="flex-row space-x-1.5 mb-2">
+                        {pickupCode.map((digit, i) => (
+                           <TextInput
+                              key={i}
+                              ref={(ref) => { inputRefs.current[i] = ref; }}
+                              value={digit}
+                              onChangeText={(text) => handleCodeChange(text, i)}
+                              onKeyPress={(e) => handleKeyPress(e, i)}
+                              keyboardType="number-pad"
+                              maxLength={1}
+                              className={`w-9 h-11 border rounded-md bg-white text-center font-bold text-slate-900 text-base ${digit ? 'border-primary' : 'border-slate-300'
+                                 }`}
+                           />
+                        ))}
                      </View>
-
-                     {/* OR Circle Divider */}
-                     <View className="w-7 h-7 bg-white border border-slate-200 rounded-full items-center justify-center z-10 mx-1">
-                        <Text className="text-[9px] font-bold text-slate-400">OR</Text>
-                     </View>
-
-                     {/* Pickup Code Side */}
-                     <View className="items-center flex-1 pl-2">
-                        <View className="flex-row space-x-1 mb-2">
-                           {[1, 2, 3, 4, 5, 6].map((i) => (
-                              <View
-                                 key={i}
-                                 className="w-5 h-7 border border-slate-300 rounded-md bg-white items-center justify-center"
-                              >
-                                 <View className="w-2 h-0.5 bg-slate-300 rounded-full" />
-                              </View>
-                           ))}
-                        </View>
-                        <Text className="font-bold text-slate-900 text-xs text-center">
-                           Enter 6-digit pickup code
-                        </Text>
-                        <Text className="text-slate-400 text-[9px] text-center mt-0.5">
-                           Ask the rider for the 6-digit code to confirm pickup
-                        </Text>
-                     </View>
+                     <Text className="font-bold text-slate-900 text-xs text-center">
+                        Enter 6-digit pickup code
+                     </Text>
+                     <Text className="text-slate-400 text-[9px] text-center mt-0.5">
+                        Ask the rider for the code to confirm pickup
+                     </Text>
                   </View>
                </View>
             </View>
 
-
-            {/* 7. Package Details */}
+            {/* 6. Package Details */}
             <View className="mx-5 mt-5 bg-white border border-slate-100 p-4 rounded-[28px] shadow-sm space-y-2.5">
                <View className="flex-row items-center mb-0.5">
                   <ShoppingBag size={14} color="#4F26D9" />
@@ -336,42 +298,28 @@ export default function PickupConfirmationScreen() {
                </View>
             </View>
 
-         
-
-            {/* 9. Confirm Handover Primary Button */}
+            {/* 7. Confirm Handover Primary Button */}
             <View className="mx-5 mt-5">
                <Pressable
                   onPress={() => router.push('/orders/tracking')}
-                  className="bg-primary h-14 rounded-2xl flex-row justify-center items-center shadow-lg shadow-primary/30 active:bg-primary/90 p-2"
+                  className="h-14 rounded-2xl flex-row justify-center items-center p-2 bg-primary shadow-lg shadow-primary/30 active:bg-primary/90"
                >
-                  <ShieldCheck size={20} color="white" className="mr-2" />
+                  <View style={{ marginRight: 8 }}>
+                     <ShieldCheck size={20} color="white" />
+                  </View>
                   <View className="items-center">
-                     <Text className="text-white font-extrabold text-sm">
+                     <Text className="font-extrabold text-sm text-white">
                         Confirm Handover to Rider
                      </Text>
-                     <Text className="text-white/80 font-medium text-[9px] mt-0.5">
+                     <Text className="font-medium text-[9px] mt-0.5 text-white/80">
                         Order will be marked as Picked Up
                      </Text>
                   </View>
                </Pressable>
             </View>
 
-
-
             <View className="h-10" />
          </ScrollView>
       </SafeAreaView>
-   );
-}
-
-// Subcomponent
-function ReminderBullet({ text }: { text: string }) {
-   return (
-      <View className="flex-row items-start space-x-1.5">
-         <Text className="text-primary font-bold text-xs">•</Text>
-         <Text className="text-slate-600 text-[10px] flex-1 leading-3.5 font-medium">
-            {text}
-         </Text>
-      </View>
    );
 }

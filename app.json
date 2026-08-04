@@ -35,7 +35,8 @@
           "backgroundColor": "#ffffff"
         }
       ],
-      "expo-web-browser"
+      "expo-web-browser",
+      "@react-native-community/datetimepicker"
     ],
     "experiments": {
       "typedRoutes": true
@@ -43,9 +44,15 @@
     "extra": {
       "router": {},
       "eas": {
-        "projectId": "5dd80625-6f26-4013-8384-5ca50f82051d"
+        "projectId": "b358b038-2707-41c7-90c7-9d392d35984b"
       }
     },
-    "owner": "ryde9ja-dev"
+    "owner": "ryde9ja-dev",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/b358b038-2707-41c7-90c7-9d392d35984b"
+    }
   }
 }

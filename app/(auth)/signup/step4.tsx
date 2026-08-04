@@ -29,26 +29,26 @@ export default function BusinessVerificationScreen() {
                     <ArrowLeft size={20} color="#000" />
                 </Pressable>
 
-                <Text className="flex-1 text-center text-primary font-bold text-sm">Step 4 of 6</Text>
+                <Text className="flex-1 text-center text-primary font-bold text-sm">Step 3 of 5</Text>
 
                 <View className="w-10" />
             </View>
 
             {/* Progress Indicator */}
             <View className="flex-row items-center justify-center px-5 mt-4 mb-3">
-                {[1, 2, 3, 4, 5, 6].map((step) => (
+                {[1, 2, 3, 4, 5].map((step) => (
                     <React.Fragment key={step}>
                         <View
                             className={`w-8 h-8 rounded-full items-center justify-center 
-                                ${step < 4 ? 'bg-primary' : step === 4 ? 'border-2 border-primary bg-white' : 'border border-slate-200 bg-white'}`}
+                                ${step < 3 ? 'bg-primary' : step === 3 ? 'border-2 border-primary bg-white' : 'border border-slate-200 bg-white'}`}
                         >
-                            {step < 4 ? (
+                            {step < 3 ? (
                                 <CheckCircle2 size={18} color="white" />
                             ) : (
-                                <Text className={step === 4 ? 'text-primary font-bold' : 'text-slate-400'}>{step}</Text>
+                                <Text className={step === 3 ? 'text-primary font-bold' : 'text-slate-400'}>{step}</Text>
                             )}
                         </View>
-                        {step < 6 && <View className={`flex-1 h-[2px] mx-1 ${step < 4 ? 'bg-primary' : 'bg-slate-100'}`} />}
+                        {step < 5 && <View className={`flex-1 h-[2px] mx-1 ${step < 3 ? 'bg-primary' : 'bg-slate-100'}`} />}
                     </React.Fragment>
                 ))}
             </View>
@@ -57,14 +57,15 @@ export default function BusinessVerificationScreen() {
                 {/* Illustration & Title Section */}
                 <View className="px-6 flex-row justify-between items-start">
                     <View className="flex-1 pr-4">
-                        <Text className="text-3xl font-bold text-slate-900 leading-tight">Verify Your Business</Text>
-                        <Text className="text-slate-500 mt-2 leading-5">
+                        <Text className="text-2xl font-bold text-slate-900 leading-tight">Verify Your Business</Text>
+                        <Text className="text-slate-500 mt-2 text-sm leading-5">
                             We need to verify your identity and business to keep our platform safe and trusted.
                         </Text>
                     </View>
-                    <View className="w-32 h-32 rounded-2xl items-center justify-center overflow-hidden">
-                        <Image source={require('../../../assets/icons/step-4.png')} className="w-full h-full"  />
+                  {/*  <View className="w-32 h-32 rounded-2xl items-center justify-center overflow-hidden">
+                        <Image source={require('../../../assets/icons/step-4.png')} className="w-full h-full" />
                     </View>
+                    */}
                 </View>
 
                 {/* Verification Checklist */}
@@ -108,7 +109,7 @@ export default function BusinessVerificationScreen() {
 
             {/* Action Footer Side-by-Side */}
             <View className="p-6 bg-white border-t border-slate-50">
-                <View className="flex-row space-x-5">
+                <View className="flex-row" style={{ gap: 20 }}>
                     <Pressable
                         className="flex-1 border border-slate-200 bg-white h-16 rounded-2xl justify-center items-center active:bg-purple-50 active:border-primary"
                         onPress={() => router.back()}
@@ -124,10 +125,6 @@ export default function BusinessVerificationScreen() {
                     </Pressable>
                 </View>
 
-                <View className="flex-row items-center justify-center mt-6">
-                    <ShieldCheck size={14} color="#64748b" />
-                    <Text className="text-slate-400 text-[10px] ml-1.5 font-medium">Verification usually takes 5–24 hours.</Text>
-                </View>
             </View>
         </SafeAreaView>
     );
@@ -173,14 +170,14 @@ function VerificationItem({ icon: Icon, bg, iconColor, title, desc, isSelfie }: 
                 <Icon size={24} color={iconColor} />
             </View>
 
-            <View className="flex-1 pr-2">
+          <View className="flex-1 pr-2">
                 <View className="flex-row items-center mb-1">
                     <Text className="font-bold text-slate-900 text-sm mr-2">{title}</Text>
-                    <View className={fileUri ? "bg-purple-100 px-2 py-0.5 rounded" : "bg-green-100 px-2 py-0.5 rounded"}>
-                        <Text className={fileUri ? "text-primary text-[8px] font-bold" : "text-green-700 text-[8px] font-bold"}>
-                            {fileUri ? "Uploaded ✓" : "Required"}
-                        </Text>
-                    </View>
+                    {fileUri && (
+                        <View className="bg-green-100 px-2 py-0.5 rounded">
+                            <Text className="text-green-700 text-[8px] font-bold">Uploaded ✓</Text>
+                        </View>
+                    )}
                 </View>
                 <Text className="text-slate-400 text-[10px] leading-4">{desc}</Text>
             </View>

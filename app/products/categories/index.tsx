@@ -4,12 +4,13 @@ import {
   CheckCircle2,
   ChevronRight,
   EyeOff,
-  Filter, FolderKanban,
+  Filter,
   GripVertical,
   LayoutGrid,
   MoreVertical,
   Package,
-  Plus, Search,
+  Plus,
+  Search,
   X
 } from 'lucide-react-native';
 import { Pressable, ScrollView, Text, TextInput, View } from 'react-native';
@@ -56,12 +57,9 @@ export default function CategoriesListScreen() {
       </View>
 
       <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
-        {/* Helper Banner Card */}
-       
-
         {/* Search & Filter Bar */}
-        <View className="px-6 mt-4 flex-row space-x-3">
-          <View className="flex-1 bg-white border border-slate-100 h-11 rounded-2xl flex-row items-center px-4 shadow-sm">
+        <View className="px-6 mt-4 flex-row">
+          <View className="flex-1 bg-white border border-slate-100 h-11 rounded-2xl flex-row items-center px-4 shadow-sm mr-3">
             <Search size={16} color="#94a3b8" />
             <TextInput placeholder="Search categories..." className="flex-1 ml-2 text-xs text-slate-900" />
           </View>
@@ -72,17 +70,20 @@ export default function CategoriesListScreen() {
         </View>
 
         {/* Category Metric Grid */}
-        <View className="flex-row px-6 mt-4 space-x-2">
-          <StatBox icon={LayoutGrid} label="Total Categories" value="12" />
-          <StatBox icon={CheckCircle2} label="Active Categories" value="10" iconColor="#22c55e" />
-          <StatBox icon={Package} label="Products" value="2,145" iconColor="#f59e0b" />
+        <View className="flex-row px-6 mt-4">
+          <StatBox icon={LayoutGrid} label="Total Categories" value="12" style="mr-2" />
+          <StatBox icon={CheckCircle2} label="Active Categories" value="10" iconColor="#22c55e" style="mr-2" />
+          <StatBox icon={Package} label="Products" value="2,145" iconColor="#f59e0b" style="mr-2" />
           <StatBox icon={EyeOff} label="Hidden Categories" value="2" iconColor="#ef4444" />
         </View>
 
         {/* Categories List */}
-        <View className="px-6 mt-5 pb-20 space-y-2.5">
-          {CATEGORIES.map((cat) => (
-            <View key={cat.id} className="bg-white border border-slate-100 p-3.5 rounded-2xl flex-row items-center shadow-sm">
+        <View className="px-6 mt-5 pb-20">
+          {CATEGORIES.map((cat, index) => (
+            <View
+              key={cat.id}
+              className={`bg-white border border-slate-100 p-3.5 rounded-2xl flex-row items-center shadow-sm ${index > 0 ? 'mt-2.5' : ''}`}
+            >
               <GripVertical size={16} color="#cbd5e1" className="mr-2" />
 
               <View className={`w-11 h-11 ${cat.iconBg} rounded-2xl items-center justify-center mr-3`}>
@@ -125,9 +126,9 @@ export default function CategoriesListScreen() {
   );
 }
 
-function StatBox({ icon: Icon, label, value, iconColor = "#4F26D9" }: any) {
+function StatBox({ icon: Icon, label, value, iconColor = "#4F26D9", style = "" }: any) {
   return (
-    <View className="flex-1 bg-white border border-slate-100 p-2.5 rounded-2xl items-start shadow-sm">
+    <View className={`flex-1 bg-white border border-slate-100 p-2.5 rounded-2xl items-start shadow-sm ${style}`}>
       <Icon size={16} color={iconColor} className="mb-1" />
       <Text className="text-slate-900 font-bold text-sm">{value}</Text>
       <Text className="text-slate-400 text-[8px] font-bold mt-0.5 uppercase" numberOfLines={1}>{label}</Text>

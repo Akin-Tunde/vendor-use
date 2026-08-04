@@ -16,18 +16,18 @@ export default function PayoutSetupScreen() {
         <Pressable onPress={() => router.back()} className="w-10 h-10 bg-slate-50 border border-slate-200 rounded-2xl items-center justify-center active:bg-purple-50 active:border-purple-200">
           <ArrowLeft size={20} color="#000" />
         </Pressable>
-        <Text className="flex-1 text-center text-primary font-bold text-sm">Step 5 of 6</Text>
+        <Text className="flex-1 text-center text-primary font-bold text-sm">Step 4 of 5</Text>
         <View className="w-10" />
       </View>
 
       {/* Progress Dots */}
       <View className="flex-row items-center justify-center px-6 mt-4 mb-3">
-        {[1, 2, 3, 4, 5, 6].map((step) => (
+        {[1, 2, 3, 4, 5].map((step) => (
           <React.Fragment key={step}>
-            <View className={`w-7 h-7 rounded-full items-center justify-center ${step < 5 ? 'bg-primary' : step === 5 ? 'border-2 border-primary bg-white' : 'border border-slate-200 bg-white'}`}>
-              {step < 5 ? <CheckCircle2 size={16} color="white" /> : <Text className={`text-xs ${step === 5 ? 'text-primary font-bold' : 'text-slate-400'}`}>{step}</Text>}
+            <View className={`w-7 h-7 rounded-full items-center justify-center ${step < 4 ? 'bg-primary' : step === 4 ? 'border-2 border-primary bg-white' : 'border border-slate-200 bg-white'}`}>
+              {step < 4 ? <CheckCircle2 size={16} color="white" /> : <Text className={`text-xs ${step === 4 ? 'text-primary font-bold' : 'text-slate-400'}`}>{step}</Text>}
             </View>
-            {step < 6 && <View className={`flex-1 h-[2px] mx-0.5 ${step < 5 ? 'bg-primary' : 'bg-slate-100'}`} />}
+            {step < 5 && <View className={`flex-1 h-[2px] mx-0.5 ${step < 4 ? 'bg-primary' : 'bg-slate-100'}`} />}
           </React.Fragment>
         ))}
       </View>
@@ -36,12 +36,12 @@ export default function PayoutSetupScreen() {
         {/* Banner with Step Image */}
         <View className="flex-row justify-between items-start">
           <View className="flex-1 pr-4">
-            <Text className="text-3xl font-bold text-slate-900 leading-tight">Set Up Your Payout Account</Text>
-            <Text className="text-slate-500 mt-2 leading-5">Add your bank details so we can send your earnings securely.</Text>
+            <Text className="text-2xl font-bold text-slate-900 leading-tight">Set Up Your Payout Account</Text>
+            <Text className="text-slate-500 mt-2 text-sm leading-5">Add your bank details so we can send your earnings securely.</Text>
           </View>
-          <View className="w-32 h-32 rounded-3xl items-center justify-center overflow-hidden">
+         {/* <View className="w-32 h-32 rounded-3xl items-center justify-center overflow-hidden">
             <Image source={require('../../../assets/icons/step-5.png')} className="w-full h-full" />
-          </View>
+          </View>*/}
         </View>
 
         {/* Bank Form Fields */}
@@ -50,7 +50,7 @@ export default function PayoutSetupScreen() {
           <View className="mb-5">
             <Text className="font-semibold text-slate-700 mb-2">Bank Name</Text>
             <Pressable className="flex-row items-center border border-slate-200 rounded-2xl px-4 h-14 bg-slate-50/50">
-              <Building2 size={18} color="#4F26D9" className="mr-3" />
+              <Building2 size={18} color="#4F26D9" style={{ marginRight: 12 }} />
               <Text className="flex-1 text-slate-400 text-base">Select your bank</Text>
               <ChevronDown size={20} color="#64748b" />
             </Pressable>
@@ -67,7 +67,7 @@ export default function PayoutSetupScreen() {
               <Text className="text-slate-400 text-xs">{accountNumber.length}/10</Text>
             </View>
             <View className="flex-row items-center border border-slate-200 rounded-2xl px-4 h-14 bg-slate-50/50">
-              <CreditCard size={18} color="#4F26D9" className="mr-3" />
+              <CreditCard size={18} color="#4F26D9" style={{ marginRight: 12 }} />
               <TextInput placeholder="Enter account number" keyboardType="numeric" maxLength={10} onChangeText={setAccountNumber} className="flex-1 text-slate-900 text-base" />
             </View>
           </View>
@@ -91,7 +91,7 @@ export default function PayoutSetupScreen() {
           <View className="mb-5">
             <Text className="font-semibold text-slate-700 mb-2">BVN <Text className="text-slate-400 font-normal">(Optional)</Text></Text>
             <View className="flex-row items-center border border-slate-200 rounded-2xl px-4 h-14 bg-slate-50/50">
-              <CreditCard size={18} color="#4F26D9" className="mr-3" />
+              <CreditCard size={18} color="#4F26D9" style={{ marginRight: 12 }} />
               <TextInput placeholder="Enter your BVN" secureTextEntry={!showBVN} keyboardType="numeric" className="flex-1 text-slate-900 text-base" />
               <Pressable onPress={() => setShowBVN(!showBVN)}>
                 {showBVN ? <EyeOff size={20} color="#64748b" /> : <Eye size={20} color="#64748b" />}
@@ -103,26 +103,12 @@ export default function PayoutSetupScreen() {
             </View>
           </View>
 
-          {/* Verification Box */}
-          <View className="bg-primary/5 border border-primary/10 rounded-3xl p-4 flex-row items-center justify-between">
-            <View className="flex-row items-center flex-1 pr-4">
-              <View className="w-10 h-10 bg-primary/10 rounded-full items-center justify-center mr-3">
-                <ShieldCheck size={20} color="#4F26D9" />
-              </View>
-              <View className="flex-1">
-                <Text className="font-bold text-slate-900 text-sm">Verify Your Account</Text>
-                <Text className="text-slate-500 text-[10px] leading-3 mt-1">We'll send a small deposit to verify your details.</Text>
-              </View>
-            </View>
-            <Pressable className="bg-white border border-primary/20 px-4 py-2 rounded-xl active:bg-purple-50">
-              <Text className="text-primary font-bold text-xs">Verify Now</Text>
-            </Pressable>
-          </View>
+       
         </View>
       </ScrollView>
 
       {/* Footer Side-by-Side */}
-      <View className="p-6 bg-white border-t border-slate-50 flex-row space-x-5">
+      <View className="p-6 bg-white border-t border-slate-50 flex-row" style={{ gap: 20 }}>
         <Pressable className="flex-1 border border-slate-200 bg-white h-16 rounded-2xl justify-center items-center active:bg-purple-50 active:border-primary" onPress={() => router.back()}>
           <Text className="text-slate-700 font-bold text-base">Previous</Text>
         </Pressable>

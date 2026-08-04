@@ -1,12 +1,8 @@
-import React from 'react';
-import { View, Text,  ScrollView, Pressable } from 'react-native';
 import { useRouter } from 'expo-router';
-import { 
-  ArrowLeft, HelpCircle, ChevronDown, Plus, 
-  Sparkles, Megaphone, Zap, Tag, Gift, ShoppingBag, 
-  ChevronRight, ArrowUpRight
-} from 'lucide-react-native';
+import { ArrowLeft, ChevronDown, HelpCircle, Plus } from 'lucide-react-native';
+import { Pressable, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+
 export default function MarketingHubScreen() {
   const router = useRouter();
 
@@ -54,7 +50,7 @@ export default function MarketingHubScreen() {
         </View>
 
         {/* Quick Access Services Row */}
-        <View className="mx-6 mt-4 flex-row space-x-2">
+        <View className="mx-6 mt-4 flex-row gap-2">
           <QuickServiceCard label="Subscription" icon="⭐" color="bg-amber-50 border-amber-100" onPress={() => router.push('/marketing/subscription')} />
           <QuickServiceCard label="Delivery Credits" icon="🚚" color="bg-blue-50 border-blue-100" onPress={() => router.push('/marketing/delivery-credits')} />
           <QuickServiceCard label="Business Services" icon="💼" color="bg-purple-50 border-purple-100" onPress={() => router.push('/marketing/business-services')} />
@@ -67,22 +63,22 @@ export default function MarketingHubScreen() {
             <Pressable><Text className="text-primary font-bold text-xs">See All</Text></Pressable>
           </View>
 
-          <View className="space-y-3">
-            <CampaignCard 
-              type="Sponsored Product" 
-              status="Active" 
-              budget="₦15,000" 
-              ends="2 days" 
-              pct={65} 
-              emoji="🍌" 
+          <View className="gap-3">
+            <CampaignCard
+              type="Sponsored Product"
+              status="Active"
+              budget="₦15,000"
+              ends="2 days"
+              pct={65}
+              emoji="🍌"
             />
-            <CampaignCard 
-              type="Flash Sale" 
-              status="Active" 
-              budget="₦20,000" 
-              ends="5 days" 
-              pct={40} 
-              emoji="🍓" 
+            <CampaignCard
+              type="Flash Sale"
+              status="Active"
+              budget="₦20,000"
+              ends="5 days"
+              pct={40}
+              emoji="🍓"
             />
           </View>
         </View>
@@ -117,11 +113,11 @@ export default function MarketingHubScreen() {
 
       {/* Floating Create Campaign Button */}
       <View className="p-6 bg-white border-t border-slate-50">
-        <Pressable 
+        <Pressable
           onPress={() => router.push('/marketing/create-campaign')}
-          className="bg-primary h-16 rounded-2xl flex-row justify-center items-center shadow-lg shadow-primary/30"
+          className="bg-primary h-16 rounded-2xl flex-row justify-center items-center gap-2 shadow-lg shadow-primary/30"
         >
-          <Plus size={20} color="white" className="mr-2" />
+          <Plus size={20} color="white" />
           <Text className="text-white font-bold text-lg">Create Campaign</Text>
         </Pressable>
       </View>
@@ -140,7 +136,7 @@ function QuickServiceCard({ label, icon, color, onPress }: any) {
 
 function CampaignCard({ type, status, budget, ends, pct, emoji }: any) {
   return (
-    <View className="bg-white border border-slate-100 p-4 rounded-3xl shadow-sm space-y-3">
+    <View className="bg-white border border-slate-100 p-4 rounded-3xl shadow-sm gap-3">
       <View className="flex-row justify-between items-center">
         <View className="flex-row items-center">
           <View className="w-10 h-10 bg-slate-50 border border-slate-100 rounded-2xl items-center justify-center mr-3">

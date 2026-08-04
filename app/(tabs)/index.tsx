@@ -1,15 +1,12 @@
 import { useRouter } from 'expo-router';
 import {
-   ArrowUpRight,
    Bell,
    Calendar,
    ChevronRight,
-   ExternalLink,
    Eye,
    Percent,
    ReceiptText,
    ShoppingBag,
-   Store,
    Tag,
    TrendingUp,
    Users,
@@ -25,7 +22,6 @@ export default function Dashboard() {
          {/* Top Header */}
          <View className="px-6 pt-4 pb-3 bg-white flex-row justify-between items-center border-b border-slate-50">
             <View className="flex-row items-center">
-
                <View className="ml-4">
                   <View className="flex-row items-center">
                      <Text className="text-xl font-bold text-primary">useMarket</Text>
@@ -36,8 +32,8 @@ export default function Dashboard() {
                </View>
             </View>
 
-            <View className="flex-row items-center space-x-4">
-               <View className="relative">
+            <View className="flex-row items-center">
+               <View className="relative mr-4">
                   <Bell size={24} color="#4F26D9" />
                   <View className="absolute -top-1 -right-1 bg-red-500 w-4 h-4 rounded-full border-2 border-white items-center justify-center">
                      <Text className="text-[8px] text-white font-bold">3</Text>
@@ -50,40 +46,6 @@ export default function Dashboard() {
          </View>
 
          <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
-            {/* Store Header Card */}
-            <View className="px-6 py-4 bg-white border-b border-slate-100">
-               <View className="flex-row items-center justify-between">
-                  <View className="flex-row items-center flex-1 pr-2">
-                     <View className="w-16 h-16 bg-green-800 rounded-2xl items-center justify-center mr-4 shadow-sm">
-                        <Store color="white" size={32} />
-                     </View>
-                     <View className="flex-1">
-                        <View className="flex-row items-center">
-                           <Text className="text-lg font-bold text-slate-900 mr-1" numberOfLines={1}>GreenMart Supermarket</Text>
-                           <View className="bg-primary rounded-full p-0.5">
-                              <Text className="text-[8px] text-white font-bold">✓</Text>
-                           </View>
-                        </View>
-                        <View className="flex-row items-center mt-1">
-                           <View className="bg-green-100 px-2 py-0.5 rounded-md mr-2">
-                              <Text className="text-green-700 text-[10px] font-bold">Open</Text>
-                           </View>
-                           <Text className="text-slate-400 text-xs">Closes at 10:00 PM</Text>
-                        </View>
-                        <View className="flex-row items-center mt-1">
-                           <ExternalLink size={12} color="#94a3b8" />
-                           <Text className="text-slate-400 text-xs ml-1">Ikeja, Lagos State</Text>
-                        </View>
-                     </View>
-                  </View>
-
-                  <Pressable className="bg-white border border-slate-200 px-3 py-2 rounded-2xl flex-row items-center active:bg-purple-50">
-                     <Text className="text-primary font-bold text-xs mr-1">View Store</Text>
-                     <ArrowUpRight size={12} color="#4F26D9" />
-                  </Pressable>
-               </View>
-            </View>
-
             {/* Overview Section Card */}
             <View className="mx-3 mt-6 bg-white border border-slate-100 p-5 rounded-[32px] shadow-sm">
                <View className="flex-row justify-between items-center mb-4">
@@ -95,7 +57,7 @@ export default function Dashboard() {
                   </Pressable>
                </View>
 
-               <ScrollView horizontal showsHorizontalScrollIndicator={false} className="space-x-3">
+               <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                   <StatCard title="Total Orders" value="24" trend="+ 20%" icon={ShoppingBag} iconBg="bg-purple-100" iconColor="#4F26D9" />
                   <StatCard title="Total Sales" value="₦158,450" trend="+ 18%" icon={Wallet} iconBg="bg-green-100" iconColor="#22c55e" />
                   <StatCard title="New Customers" value="12" trend="+ 9%" icon={Users} iconBg="bg-orange-100" iconColor="#f59e0b" />
@@ -127,22 +89,56 @@ export default function Dashboard() {
             <View className="mx-3 mt-6 bg-white border border-slate-100 p-5 rounded-[32px] shadow-sm">
                <View className="flex-row justify-between items-center mb-3">
                   <Text className="text-base font-bold text-slate-900">Recent Orders</Text>
-                   <Pressable onPress={() => router.push('/orders')} className="flex-row items-center">
-                      <Text className="text-primary text-xs font-bold mr-1">View All Orders</Text>
-                      <ChevronRight size={14} color="#4F26D9" />
-                   </Pressable>
+                  <Pressable onPress={() => router.push('/orders')} className="flex-row items-center">
+                     <Text className="text-primary text-xs font-bold mr-1">View All Orders</Text>
+                     <ChevronRight size={14} color="#4F26D9" />
+                  </Pressable>
                </View>
 
-                <OrderItem id="#ORD-8921" tag="New" name="John Doe" count="2 items" price="₦18,650" status="Pending" statusColor="bg-green-100 text-green-700" dotColor="bg-green-500" iconBg="bg-purple-100" onPress={() => router.push('/orders/confirmation')} />
-                <OrderItem id="#ORD-8920" tag="Preparing" name="Mary Johnson" count="4 items" price="₦32,800" status="Preparing" statusColor="bg-blue-100 text-blue-700" dotColor="bg-blue-500" iconBg="bg-orange-100" onPress={() => router.push('/orders/preparing')} />
-                <OrderItem id="#ORD-8919" tag="Out for Delivery" name="Alex Brown" count="3 items" price="₦22,500" status="Out for Delivery" statusColor="bg-emerald-100 text-emerald-700" dotColor="bg-emerald-500" iconBg="bg-green-100" onPress={() => router.push('/orders/delivery')} />
+               <OrderItem
+                  id="#ORD-8921"
+                  tag="New"
+                  name="John Doe"
+                  count="2 items"
+                  price="₦18,650"
+                  status="Pending"
+                  bgColor="bg-green-100"
+                  textColor="text-green-700"
+                  dotColor="bg-green-500"
+                  iconBg="bg-purple-100"
+                  onPress={() => router.push('/orders/confirmation')}
+               />
+               <OrderItem
+                  id="#ORD-8920"
+                  tag="Preparing"
+                  name="Mary Johnson"
+                  count="4 items"
+                  price="₦32,800"
+                  status="Preparing"
+                  bgColor="bg-blue-100"
+                  textColor="text-blue-700"
+                  dotColor="bg-blue-500"
+                  iconBg="bg-orange-100"
+                  onPress={() => router.push('/orders/preparing')}
+               />
+               <OrderItem
+                  id="#ORD-8919"
+                  tag="Out for Delivery"
+                  name="Alex Brown"
+                  count="3 items"
+                  price="₦22,500"
+                  status="Out for Delivery"
+                  bgColor="bg-emerald-100"
+                  textColor="text-emerald-700"
+                  dotColor="bg-emerald-500"
+                  iconBg="bg-green-100"
+                  onPress={() => router.push('/orders/delivery')}
+               />
 
-                <Pressable onPress={() => router.push('/orders')} className="items-center border-t border-slate-50 mt-3 pt-3">
+               <Pressable onPress={() => router.push('/orders')} className="items-center border-t border-slate-50 mt-3 pt-3">
                   <Text className="text-primary font-bold text-xs">View All Orders</Text>
                </Pressable>
             </View>
-
-
          </ScrollView>
       </SafeAreaView>
    );
@@ -151,7 +147,7 @@ export default function Dashboard() {
 // Subcomponents
 function StatCard({ title, value, trend, icon: Icon, iconBg, iconColor }: any) {
    return (
-      <View className="w-36 bg-slate-50/50 border border-slate-100 p-3.5 rounded-3xl">
+      <View className="w-36 bg-slate-50/50 border border-slate-100 p-3.5 rounded-3xl mr-3">
          <View className={`w-8 h-8 ${iconBg} rounded-xl items-center justify-center mb-3`}>
             <Icon size={16} color={iconColor} />
          </View>
@@ -173,7 +169,7 @@ function ActionItem({ label, icon: Icon, onPress }: any) {
    );
 }
 
-function OrderItem({ id, tag, name, count, price, status, statusColor, dotColor, iconBg, onPress }: any) {
+function OrderItem({ id, tag, name, count, price, status, bgColor, textColor, dotColor, iconBg, onPress }: any) {
    return (
       <Pressable onPress={onPress} className="flex-row items-center py-3 border-b border-slate-50 active:bg-slate-50">
          <View className={`w-10 h-10 ${iconBg} rounded-2xl items-center justify-center mr-3`}>
@@ -191,12 +187,12 @@ function OrderItem({ id, tag, name, count, price, status, statusColor, dotColor,
          </View>
          <View className="items-end">
             <Text className="font-bold text-slate-900 text-xs">{price}</Text>
-            <View className={`px-2 py-0.5 rounded-full mt-1 flex-row items-center ${statusColor.split(' ')[0]}`}>
+            <View className={`px-2 py-0.5 rounded-full mt-1 flex-row items-center ${bgColor}`}>
                <View className={`w-1.5 h-1.5 rounded-full mr-1 ${dotColor}`} />
-               <Text className={`text-[8px] font-bold ${statusColor.split(' ')[1]}`}>{status}</Text>
+               <Text className={`text-[8px] font-bold ${textColor}`}>{status}</Text>
             </View>
          </View>
-          <ChevronRight size={16} color="#94a3b8" className="ml-2" />
+         <ChevronRight size={16} color="#94a3b8" className="ml-2" />
       </Pressable>
    );
 }

@@ -1,5 +1,6 @@
+
 import { Tabs } from 'expo-router';
-import { BarChart3, LayoutDashboard, Settings, ShoppingCart, Tag, Wallet } from 'lucide-react-native';
+import { Home, ShoppingCart, Tag, User } from 'lucide-react-native';
 
 export default function TabLayout() {
   return (
@@ -7,11 +8,11 @@ export default function TabLayout() {
       tabBarActiveTintColor: '#4F26D9',
       tabBarInactiveTintColor: '#94a3b8',
       headerShown: false,
-      tabBarStyle: { height: 70, paddingBottom: 30, paddingTop: 10 }
+      tabBarStyle: { height: 70, paddingBottom: 12, paddingTop: 10 }
     }}>
       <Tabs.Screen name="index" options={{
-        title: 'Dashboard',
-        tabBarIcon: ({ color }) => <LayoutDashboard size={22} color={color} />,
+        title: 'Home',
+        tabBarIcon: ({ color }) => <Home size={22} color={color} />,
       }} />
       <Tabs.Screen name="orders" options={{
         title: 'Orders',
@@ -21,18 +22,15 @@ export default function TabLayout() {
         title: 'Products',
         tabBarIcon: ({ color }) => <Tag size={22} color={color} />,
       }} />
-      <Tabs.Screen name="analytics" options={{
-        title: 'Analytics',
-        tabBarIcon: ({ color }) => <BarChart3 size={22} color={color} />,
+      <Tabs.Screen name="profile" options={{
+        title: 'Profile',
+        tabBarIcon: ({ color }) => <User size={22} color={color} />,
       }} />
-      <Tabs.Screen name="finance" options={{
-        title: 'Finance',
-        tabBarIcon: ({ color }) => <Wallet size={22} color={color} />,
-      }} />
-      <Tabs.Screen name="settings" options={{
-        title: 'Settings',
-        tabBarIcon: ({ color }) => <Settings size={22} color={color} />,
-      }} />
+      
+      {/* Retain routes as hidden tabs so navigation and deep links continue to work */}
+      <Tabs.Screen name="analytics" options={{ href: null }} />
+      <Tabs.Screen name="finance" options={{ href: null }} />
+      <Tabs.Screen name="settings" options={{ href: null }} />
     </Tabs>
   );
 }

@@ -113,8 +113,8 @@ export default function InventoryManagementScreen() {
           </View>
         </View>
 
-        <View className="flex-row items-center space-x-3">
-          <Pressable className="items-center">
+        <View className="flex-row items-center">
+          <Pressable className="items-center mr-3">
             <View className="w-10 h-10 bg-slate-50 border border-slate-100 rounded-2xl items-center justify-center shadow-sm">
               <Scan size={18} color="#000" />
             </View>
@@ -132,7 +132,7 @@ export default function InventoryManagementScreen() {
       <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
         {/* Metric Summary Cards Bar */}
         <View className="px-6 mt-4">
-          <ScrollView horizontal showsHorizontalScrollIndicator={false} className="space-x-3">
+          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             <MetricCard
               icon={Package}
               value="256"
@@ -140,6 +140,7 @@ export default function InventoryManagementScreen() {
               sub="All products"
               iconBg="bg-purple-100"
               iconColor="#4F26D9"
+              style="mr-3"
             />
             <MetricCard
               icon={CheckCircle2}
@@ -149,6 +150,7 @@ export default function InventoryManagementScreen() {
               color="text-green-600"
               iconBg="bg-green-100"
               iconColor="#22c55e"
+              style="mr-3"
             />
             <MetricCard
               icon={AlertTriangle}
@@ -158,6 +160,7 @@ export default function InventoryManagementScreen() {
               color="text-amber-600"
               iconBg="bg-amber-100"
               iconColor="#f59e0b"
+              style="mr-3"
             />
             <MetricCard
               icon={XCircle}
@@ -189,8 +192,8 @@ export default function InventoryManagementScreen() {
         </View>
 
         {/* Search & Sort Action Row */}
-        <View className="px-6 mt-4 flex-row space-x-3">
-          <View className="flex-1 bg-white border border-slate-100 h-11 rounded-2xl flex-row items-center px-4 shadow-sm">
+        <View className="px-6 mt-4 flex-row">
+          <View className="flex-1 bg-white border border-slate-100 h-11 rounded-2xl flex-row items-center px-4 shadow-sm mr-3">
             <Search size={16} color="#94a3b8" />
             <TextInput placeholder="Search products..." className="flex-1 ml-2 text-xs text-slate-900" />
           </View>
@@ -201,10 +204,10 @@ export default function InventoryManagementScreen() {
         </View>
 
         {/* Filter Pills */}
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} className="px-6 mt-4 space-x-2">
-          <ActionPill icon={Edit3} label="Update Stock" />
-          <ActionPill icon={Grid} label="Bulk Update" />
-          <ActionPill icon={AlertTriangle} label="Low Stock" active iconColor="#f59e0b" />
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} className="px-6 mt-4">
+          <ActionPill icon={Edit3} label="Update Stock" style="mr-2" />
+          <ActionPill icon={Grid} label="Bulk Update" style="mr-2" />
+          <ActionPill icon={AlertTriangle} label="Low Stock" active iconColor="#f59e0b" style="mr-2" />
           <ActionPill icon={Upload} label="Export" />
         </ScrollView>
 
@@ -215,7 +218,7 @@ export default function InventoryManagementScreen() {
             <Text className="text-slate-400 text-xs font-medium">256 products</Text>
           </View>
 
-          <View className="space-y-1">
+          <View>
             {INVENTORY_ITEMS.map((item) => (
               <View key={item.id} className="py-3 border-b border-slate-50 flex-row items-center">
                 <View className="w-14 h-14 bg-slate-50 rounded-2xl items-center justify-center mr-3 border border-slate-100">
@@ -253,9 +256,9 @@ export default function InventoryManagementScreen() {
   );
 }
 
-function MetricCard({ icon: Icon, value, label, sub, color = "text-slate-900", iconBg, iconColor }: any) {
+function MetricCard({ icon: Icon, value, label, sub, color = "text-slate-900", iconBg, iconColor, style = "" }: any) {
   return (
-    <View className="w-32 bg-white border border-slate-100 p-3.5 rounded-3xl shadow-sm">
+    <View className={`w-32 bg-white border border-slate-100 p-3.5 rounded-3xl shadow-sm ${style}`}>
       <View className={`w-8 h-8 ${iconBg} rounded-xl items-center justify-center mb-2`}>
         <Icon size={16} color={iconColor} />
       </View>
@@ -266,9 +269,9 @@ function MetricCard({ icon: Icon, value, label, sub, color = "text-slate-900", i
   );
 }
 
-function ActionPill({ icon: Icon, label, active, iconColor = "#4F26D9" }: any) {
+function ActionPill({ icon: Icon, label, active, iconColor = "#4F26D9", style = "" }: any) {
   return (
-    <Pressable className={`flex-row items-center px-4 py-2 rounded-2xl border ${active ? 'bg-amber-50 border-amber-200' : 'bg-white border-slate-100 shadow-sm'}`}>
+    <Pressable className={`flex-row items-center px-4 py-2 rounded-2xl border ${active ? 'bg-amber-50 border-amber-200' : 'bg-white border-slate-100 shadow-sm'} ${style}`}>
       <Icon size={14} color={iconColor} className="mr-2" />
       <Text className={`text-xs font-bold ${active ? 'text-amber-900' : 'text-slate-700'}`}>{label}</Text>
     </Pressable>

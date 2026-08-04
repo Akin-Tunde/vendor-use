@@ -9,22 +9,59 @@ import {
    ChevronDown,
    ChevronLeft,
    ChevronRight,
-   Clock,
-   CreditCard,
-   Filter,
-   PackageCheck,
+
    Search,
    ShoppingBag,
    Square,
-   TrendingUp,
    X,
-   Zap
+   Zap,
 } from 'lucide-react-native';
 import { useState } from 'react';
 import { Pressable, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-const TABS = [
+// ----------------------------------------------------------------------
+// Types & Interfaces
+// ----------------------------------------------------------------------
+
+type OrderStatus = 'NEW' | 'CONFIRMED' | 'PREPARING' | 'READY' | 'PICKED UP' | 'OUT FOR DELIVERY' | 'DELIVERED';
+
+type ActionType = 'accept_reject' | 'start_preparing' | 'mark_ready' | 'handover_rider' | 'badge_only';
+
+interface OrderItem {
+   id: string;
+   customer: string;
+   phone: string;
+   time: string;
+   amount: string;
+   typeIsExpress: boolean;
+   status: OrderStatus;
+   statusBg: string;
+   statusText: string;
+   timerColor: string;
+   itemCount: string;
+   items: string[];
+   itemExtraCount: string | null;
+   actionType: ActionType;
+   actionLabel?: string;
+   badgeLabel?: string;
+   badgeStyle?: string;
+   route: string;
+}
+
+interface StatusTab {
+   id: string;
+   label: string;
+   count: number;
+   badgeBg: string;
+   badgeText: string;
+}
+
+// ----------------------------------------------------------------------
+// Constants & Mock Data
+// ----------------------------------------------------------------------
+
+const STATUS_TABS: StatusTab[] = [
    { id: 'all', label: 'All', count: 24, badgeBg: 'bg-purple-900', badgeText: 'text-white' },
    { id: 'new', label: 'New', count: 6, badgeBg: 'bg-red-100', badgeText: 'text-red-600' },
    { id: 'confirmed', label: 'Confirmed', count: 3, badgeBg: 'bg-amber-100', badgeText: 'text-amber-700' },
@@ -35,30 +72,17 @@ const TABS = [
    { id: 'delivered', label: 'Delivered', count: 18, badgeBg: 'bg-slate-200', badgeText: 'text-slate-700' },
 ];
 
-const FILTER_CHIPS = [
-   { id: 'all', label: 'All' },
-   { id: 'pickup', label: 'Pickup', icon: ShoppingBag },
-   { id: 'delivery', label: 'Delivery', icon: Bike },
-   { id: 'express', label: 'Express', icon: Zap },
-   { id: 'scheduled', label: 'Scheduled', icon: Clock },
-   { id: 'cash', label: 'Cash', icon: CreditCard },
-   { id: 'card', label: 'Card', icon: CreditCard },
-];
-
-const ORDERS = [
+const ORDERS: OrderItem[] = [
    {
       id: '#ORD-8921',
       customer: 'John Doe',
       phone: '0803 123 4567',
       time: 'Today, 09:31 AM',
       amount: '₦18,650',
-      //  type: 'Express Delivery',
       typeIsExpress: true,
-      // paymentStatus: 'Paid • Card',
       status: 'NEW',
       statusBg: 'bg-red-100',
-      statusText: 'text-red-500',
-      //   timer: 'Waiting 6 min',
+      statusText: 'text-red-600',
       timerColor: 'text-red-500',
       itemCount: '2 items',
       items: ['🍌', '🍎'],
@@ -72,13 +96,10 @@ const ORDERS = [
       phone: '0807 654 3210',
       time: 'Today, 09:15 AM',
       amount: '₦32,800',
-      type: 'Standard Delivery',
       typeIsExpress: false,
-      paymentStatus: 'Paid • Online',
       status: 'CONFIRMED',
       statusBg: 'bg-amber-100',
       statusText: 'text-amber-800',
-      timer: 'Waiting 12 min',
       timerColor: 'text-amber-600',
       itemCount: '4 items',
       items: ['🧃', '🌾', '🛢️'],
@@ -93,13 +114,10 @@ const ORDERS = [
       phone: '0812 345 6789',
       time: 'Today, 08:45 AM',
       amount: '₦22,500',
-      type: 'Express Delivery',
       typeIsExpress: true,
-      paymentStatus: 'Paid • Card',
       status: 'PREPARING',
       statusBg: 'bg-blue-100',
       statusText: 'text-blue-700',
-      timer: 'Preparing 8 min',
       timerColor: 'text-amber-600',
       itemCount: '3 items',
       items: ['🍊', '🍞', '🥛'],
@@ -114,13 +132,10 @@ const ORDERS = [
       phone: '0909 876 5432',
       time: 'Today, 08:20 AM',
       amount: '₦41,200',
-      type: 'Standard Delivery',
       typeIsExpress: false,
-      paymentStatus: 'Paid • Cash',
       status: 'READY',
       statusBg: 'bg-emerald-100',
       statusText: 'text-emerald-700',
-      timer: 'Ready 2 min',
       timerColor: 'text-emerald-600',
       itemCount: '5 items',
       items: ['🍌', '🥩', '🥬'],
@@ -135,13 +150,10 @@ const ORDERS = [
       phone: '0806 222 3333',
       time: 'Today, 08:05 AM',
       amount: '₦28,750',
-      type: 'Standard Delivery',
       typeIsExpress: false,
-      paymentStatus: 'Paid • Card',
       status: 'PICKED UP',
       statusBg: 'bg-cyan-100',
       statusText: 'text-cyan-700',
-      timer: 'Picked up 7 min',
       timerColor: 'text-blue-600',
       itemCount: '6 items',
       items: ['🍾', '🍟', '🥚'],
@@ -157,13 +169,10 @@ const ORDERS = [
       phone: '0908 111 2222',
       time: 'Today, 07:50 AM',
       amount: '₦12,300',
-      type: 'Express Delivery',
       typeIsExpress: true,
-      paymentStatus: 'Paid • Online',
       status: 'OUT FOR DELIVERY',
       statusBg: 'bg-indigo-100',
       statusText: 'text-indigo-700',
-      timer: 'Out for delivery 12 min',
       timerColor: 'text-blue-600',
       itemCount: '2 items',
       items: ['🍇', '🥣'],
@@ -179,36 +188,36 @@ const ORDERS = [
       phone: '0803 999 8888',
       time: 'Today, 07:15 AM',
       amount: '₦15,600',
-      type: 'Standard Delivery',
       typeIsExpress: false,
-      paymentStatus: 'Paid • Card',
       status: 'DELIVERED',
       statusBg: 'bg-slate-200',
       statusText: 'text-slate-700',
-      timer: 'Delivered 07:32 AM',
       timerColor: 'text-emerald-600',
       itemCount: '3 items',
       items: ['🍾', '🍞', '🧈'],
       itemExtraCount: null,
       actionType: 'badge_only',
-      badgeLabel: 'Completed',
+      badgeLabel: '✓ Completed',
       badgeStyle: 'bg-emerald-50 text-emerald-700 font-bold border border-emerald-200',
       route: '/orders/delivered',
    },
 ];
 
+// ----------------------------------------------------------------------
+// Main Screen Component
+// ----------------------------------------------------------------------
+
 export default function ManageOrdersScreen() {
    const router = useRouter();
    const [activeTab, setActiveTab] = useState('all');
-   const [activeChip, setActiveChip] = useState('all');
    const [selectedOrders, setSelectedOrders] = useState<string[]>([]);
    const [selectAll, setSelectAll] = useState(false);
 
    const toggleSelectOrder = (id: string) => {
       if (selectedOrders.includes(id)) {
-         setSelectedOrders(selectedOrders.filter((item) => item !== id));
+         setSelectedOrders((prev) => prev.filter((item) => item !== id));
       } else {
-         setSelectedOrders([...selectedOrders, id]);
+         setSelectedOrders((prev) => [...prev, id]);
       }
    };
 
@@ -224,24 +233,22 @@ export default function ManageOrdersScreen() {
 
    return (
       <SafeAreaView className="flex-1 bg-[#F8F9FE]">
-         {/* 1. Header */}
+         {/* 1. Header Bar */}
          <View className="px-5 py-3.5 bg-white flex-row justify-between items-center border-b border-slate-100">
             <View className="flex-row items-center">
-
-               <View className="ml-3">
+               <View className="ml-1">
                   <Text className="text-xl font-bold text-slate-900">Manage Orders</Text>
                   <Text className="text-slate-400 text-xs">View and manage customer orders</Text>
                </View>
             </View>
-            <View className="flex-row items-center space-x-2.5">
-               <Pressable className="w-9 h-9 bg-slate-50 border border-slate-200 rounded-xl items-center justify-center">
+
+            <View className="flex-row items-center gap-x-2.5">
+               <Pressable className="w-9 h-9 bg-slate-50 border border-slate-200 rounded-xl items-center justify-center active:bg-slate-100">
                   <Search size={18} color="#475569" />
                </Pressable>
-               <Pressable className="flex-row items-center bg-slate-50 border border-slate-200 px-2.5 h-9 rounded-xl">
-                  <Filter size={15} color="#475569" />
-                  <Text className="text-xs font-bold text-slate-700 ml-1.5">Filter</Text>
-               </Pressable>
-               <Pressable className="relative w-9 h-9 bg-slate-50 border border-slate-200 rounded-xl items-center justify-center">
+
+
+               <Pressable className="relative w-9 h-9 bg-slate-50 border border-slate-200 rounded-xl items-center justify-center active:bg-slate-100">
                   <Bell size={18} color="#475569" />
                   <View className="absolute -top-1 -right-1 bg-red-500 min-w-[16px] h-4 rounded-full px-1 items-center justify-center border-2 border-white">
                      <Text className="text-[9px] text-white font-extrabold">3</Text>
@@ -251,92 +258,30 @@ export default function ManageOrdersScreen() {
          </View>
 
          <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
-            {/* 2. Top Status Tabs */}
+            {/* 2. Top Status Filter Tabs */}
             <ScrollView horizontal showsHorizontalScrollIndicator={false} className="bg-white py-3 px-5 border-b border-slate-100">
-               <View className="flex-row space-x-2 pr-6">
-                  {TABS.map((tab) => {
-                     const isActive = activeTab === tab.id;
-                     return (
-                        <Pressable
-                           key={tab.id}
-                           onPress={() => setActiveTab(tab.id)}
-                           className={`px-3.5 py-2 rounded-xl flex-row items-center ${isActive ? 'bg-primary' : 'bg-slate-50 border border-slate-100'
-                              }`}
-                        >
-                           <Text className={`font-bold text-xs ${isActive ? 'text-white' : 'text-slate-700'}`}>
-                              {tab.label}
+               <View className="flex-row gap-x-2 pr-6">
+                  {STATUS_TABS.map((tab) => (
+                     <Pressable
+                        key={tab.id}
+                        onPress={() => setActiveTab(tab.id)}
+                        className={`px-3.5 py-2 rounded-xl flex-row items-center ${activeTab === tab.id ? 'bg-primary' : 'bg-slate-50 border border-slate-100'
+                           }`}
+                     >
+                        <Text className={`font-bold text-xs ${activeTab === tab.id ? 'text-white' : 'text-slate-700'}`}>
+                           {tab.label}
+                        </Text>
+                        <View className={`ml-1.5 px-1.5 py-0.5 rounded-full ${activeTab === tab.id ? 'bg-white/20' : tab.badgeBg}`}>
+                           <Text className={`text-[10px] font-bold ${activeTab === tab.id ? 'text-white' : tab.badgeText}`}>
+                              {tab.count}
                            </Text>
-                           <View
-                              className={`ml-1.5 px-1.5 py-0.5 rounded-full ${isActive ? 'bg-white/20' : tab.badgeBg
-                                 }`}
-                           >
-                              <Text className={`text-[10px] font-bold ${isActive ? 'text-white' : tab.badgeText}`}>
-                                 {tab.count}
-                              </Text>
-                           </View>
-                        </Pressable>
-                     );
-                  })}
-                  <Pressable className="px-3 py-2 rounded-xl flex-row items-center bg-slate-50 border border-slate-100">
-                     <Text className="font-bold text-xs text-slate-700 mr-1">More</Text>
-                     <ChevronDown size={14} color="#64748b" />
-                  </Pressable>
+                        </View>
+                     </Pressable>
+                  ))}
                </View>
             </ScrollView>
 
-            {/* 3. Summary Stats Grid (5 Cards Horizontal Scroll) */}
-            <ScrollView horizontal showsHorizontalScrollIndicator={false} className="px-5 py-4">
-               <View className="flex-row space-x-3 pr-6">
-                  <SummaryCard
-                     icon={ShoppingBag}
-                     label="New Orders"
-                     value="6"
-                     sub="Needs action"
-                     color="text-red-500"
-                     bg="bg-red-50"
-                     iconColor="#ef4444"
-                  />
-                  <SummaryCard
-                     icon={ChefHat}
-                     label="Preparing"
-                     value="5"
-                     sub="In progress"
-                     color="text-primary"
-                     bg="bg-primary/10"
-                     iconColor="#4F26D9"
-                  />
-                  <SummaryCard
-                     icon={PackageCheck}
-                     label="Ready for Pickup"
-                     value="4"
-                     sub="Waiting rider"
-                     color="text-emerald-600"
-                     bg="bg-emerald-50"
-                     iconColor="#10b981"
-                  />
-                  <SummaryCard
-                     icon={Bike}
-                     label="Out for Delivery"
-                     value="7"
-                     sub="On the way"
-                     color="text-indigo-600"
-                     bg="bg-indigo-50"
-                     iconColor="#6366f1"
-                  />
-                  <SummaryCard
-                     icon={TrendingUp}
-                     label="Today's Revenue"
-                     value="₦245,800"
-                     sub="+12.5% vs yesterday"
-                     color="text-emerald-600"
-                     bg="bg-amber-50"
-                     iconColor="#f59e0b"
-                  />
-               </View>
-            </ScrollView>
-
-
-            {/* 6. Sorting & Bulk Actions Bar */}
+            {/* 3. Sorting & Bulk Actions Bar */}
             <View className="px-5 mt-4 flex-row justify-between items-center">
                <View className="flex-row items-center">
                   <Text className="text-xs text-slate-500 font-medium mr-1.5">Sort by:</Text>
@@ -349,197 +294,210 @@ export default function ManageOrdersScreen() {
                   </Pressable>
                </View>
 
-               <View className="flex-row items-center space-x-3">
-                  <Pressable onPress={toggleSelectAll} className="flex-row items-center">
-                     {selectAll ? (
-                        <CheckSquare size={18} color="#4F26D9" />
-                     ) : (
-                        <Square size={18} color="#94a3b8" />
-                     )}
-                     <Text className="text-xs font-bold text-slate-700 ml-1.5">Select All</Text>
-                  </Pressable>
 
-                  <Pressable className="flex-row items-center bg-white border border-slate-200 px-3 py-1.5 rounded-xl shadow-sm">
-                     <Text className="text-xs font-bold text-primary mr-1">Bulk Actions</Text>
-                     <ChevronDown size={14} color="#4F26D9" />
-                  </Pressable>
-               </View>
             </View>
 
-            {/* 7. Orders Detailed Cards List */}
-            <View className="px-5 py-4 space-y-3.5">
-               {ORDERS.map((order) => {
-                  const isSelected = selectedOrders.includes(order.id);
-                  return (
-                     <View
-                        key={order.id}
-                        className="bg-white border border-slate-100 rounded-[28px] p-4 shadow-sm"
-                     >
-                        {/* Top ID & Status Header */}
-                        <View className="flex-row justify-between items-center">
-                           <View className="flex-row items-center flex-1 pr-2">
-                              <Pressable onPress={() => toggleSelectOrder(order.id)} className="mr-2.5">
-                                 {isSelected ? (
-                                    <CheckSquare size={18} color="#4F26D9" />
-                                 ) : (
-                                    <Square size={18} color="#cbd5e1" />
-                                 )}
-                              </Pressable>
-
-                              <View className={`px-2 py-0.5 rounded-md mr-2 ${order.statusBg}`}>
-                                 <Text className={`text-[9px] font-extrabold ${order.statusText}`}>
-                                    {order.status}
-                                 </Text>
-                              </View>
-
-                              <Text className="font-bold text-slate-900 text-sm">{order.id}</Text>
-                           </View>
-
-                           <Pressable
-                              onPress={() => router.push(order.route as any)}
-                              className="flex-row items-center"
-                           >
-                              <Text className="font-extrabold text-slate-900 text-base mr-1">{order.amount}</Text>
-                              <ChevronRight size={18} color="#cbd5e1" />
-                           </Pressable>
-                        </View>
-
-                        {/* Middle Info & Tag Badges */}
-                        <View className="flex-row mt-3 items-start justify-between">
-                           {/* Customer Info */}
-                           <View className="flex-1 pr-2">
-                              <Text className="text-slate-900 font-bold text-xs">{order.customer}</Text>
-                              <Text className="text-slate-400 text-[11px] mt-0.5">{order.phone}</Text>
-                              <Text className="text-slate-400 text-[10px] mt-0.5">{order.time}</Text>
-                           </View>
-
-                           {/* Items Preview */}
-                           <View className="items-end">
-                              <Text className="text-[10px] text-slate-400 font-bold mb-1">{order.itemCount}</Text>
-                              <View className="flex-row items-center space-x-1">
-                                 {order.items.map((emoji, idx) => (
-                                    <View
-                                       key={idx}
-                                       className="w-8 h-8 bg-slate-50 border border-slate-100 rounded-lg items-center justify-center"
-                                    >
-                                       <Text className="text-sm">{emoji}</Text>
-                                    </View>
-                                 ))}
-                                 {order.itemExtraCount && (
-                                    <View className="bg-slate-100 px-1.5 py-1 rounded-md">
-                                       <Text className="text-[9px] font-bold text-slate-600">
-                                          {order.itemExtraCount}
-                                       </Text>
-                                    </View>
-                                 )}
-                              </View>
-                           </View>
-                        </View>
-
-                        {/* Bottom Actions Row */}
-                        <View className="mt-3.5 pt-3 border-t border-slate-50 flex-row justify-end items-center">
-                           {order.actionType === 'accept_reject' && (
-                              <View className="flex-row space-x-2 flex-1 justify-end">
-                                 <Pressable
-                                    onPress={() => router.push('/orders/1')}
-                                    className="bg-red-500 px-5 h-10 rounded-xl flex-row items-center justify-center shadow-sm active:bg-red-600"
-                                 >
-                                    <Check size={16} color="white" />
-                                    <Text className="text-white font-bold text-xs ml-1">Accept</Text>
-                                 </Pressable>
-                                 <Pressable className="bg-white border border-slate-200 px-4 h-10 rounded-xl flex-row items-center justify-center">
-                                    <X size={16} color="#64748b" />
-                                    <Text className="text-slate-700 font-bold text-xs ml-1">Reject</Text>
-                                 </Pressable>
-                              </View>
-                           )}
-
-                           {order.actionType === 'start_preparing' && (
-                              <Pressable
-                                 onPress={() => router.push('/orders/preparing')}
-                                 className="bg-purple-50 border border-primary/20 px-4 h-10 rounded-xl flex-row items-center justify-center active:bg-purple-100"
-                              >
-                                 <ChefHat size={16} color="#4F26D9" />
-                                 <Text className="text-primary font-bold text-xs ml-1.5">{order.actionLabel}</Text>
-                              </Pressable>
-                           )}
-
-                           {order.actionType === 'mark_ready' && (
-                              <Pressable
-                                 onPress={() => router.push('/orders/ready')}
-                                 className="bg-purple-50 border border-primary/20 px-4 h-10 rounded-xl flex-row items-center justify-center active:bg-purple-100"
-                              >
-                                 <ShoppingBag size={16} color="#4F26D9" />
-                                 <Text className="text-primary font-bold text-xs ml-1.5">{order.actionLabel}</Text>
-                              </Pressable>
-                           )}
-
-                           {order.actionType === 'handover_rider' && (
-                              <Pressable
-                                 onPress={() => router.push('/orders/confirmation')}
-                                 className="bg-purple-50 border border-primary/20 px-4 h-10 rounded-xl flex-row items-center justify-center active:bg-purple-100"
-                              >
-                                 <Bike size={16} color="#4F26D9" />
-                                 <Text className="text-primary font-bold text-xs ml-1.5">{order.actionLabel}</Text>
-                              </Pressable>
-                           )}
-
-                           {order.actionType === 'badge_only' && (
-                              <View className={`px-3 py-1.5 rounded-full ${order.badgeStyle}`}>
-                                 <Text className="text-xs font-bold">{order.badgeLabel}</Text>
-                              </View>
-                           )}
-                        </View>
-                     </View>
-                  );
-               })}
+            {/* 4. Orders List */}
+            <View className="px-5 pt-4 gap-y-3.5">
+               {ORDERS.map((order) => (
+                  <OrderCard
+                     key={order.id}
+                     order={order}
+                     isSelected={selectedOrders.includes(order.id)}
+                     onToggleSelect={() => toggleSelectOrder(order.id)}
+                     onPressCard={() => router.push(order.route as any)}
+                  />
+               ))}
             </View>
 
-            {/* 8. Pagination Section */}
-            <View className="px-5 py-6 flex-row justify-between items-center">
-               <Text className="text-slate-400 text-xs font-medium">Showing 1 to 7 of 24 orders</Text>
-               <View className="flex-row items-center space-x-1.5">
-                  <Pressable className="w-8 h-8 rounded-xl bg-slate-100 items-center justify-center border border-slate-200">
-                     <ChevronLeft size={16} color="#94a3b8" />
-                  </Pressable>
-                  <Pressable className="w-8 h-8 rounded-xl bg-primary items-center justify-center shadow-sm">
-                     <Text className="text-white font-bold text-xs">1</Text>
-                  </Pressable>
-                  <Pressable className="w-8 h-8 rounded-xl bg-white border border-slate-200 items-center justify-center">
-                     <Text className="text-slate-700 font-bold text-xs">2</Text>
-                  </Pressable>
-                  <Pressable className="w-8 h-8 rounded-xl bg-white border border-slate-200 items-center justify-center">
-                     <Text className="text-slate-700 font-bold text-xs">3</Text>
-                  </Pressable>
-                  <Text className="text-slate-400 font-bold text-xs px-0.5">...</Text>
-                  <Pressable className="w-8 h-8 rounded-xl bg-white border border-slate-200 items-center justify-center">
-                     <Text className="text-slate-700 font-bold text-xs">4</Text>
-                  </Pressable>
-                  <Pressable className="w-8 h-8 rounded-xl bg-white border border-slate-200 items-center justify-center">
-                     <ChevronRight size={16} color="#475569" />
-                  </Pressable>
-               </View>
-            </View>
-
-            <View className="h-28" />
+            {/* 5. Pagination */}
+            <PaginationBar />
          </ScrollView>
-
-
       </SafeAreaView>
    );
 }
 
-// Subcomponents
-function SummaryCard({ icon: Icon, label, value, sub, color, bg, iconColor }: any) {
+// ----------------------------------------------------------------------
+// Improved Order Card Component
+// ----------------------------------------------------------------------
+
+interface OrderCardProps {
+   order: OrderItem;
+   isSelected: boolean;
+   onToggleSelect: () => void;
+   onPressCard: () => void;
+}
+
+function OrderCard({ order, isSelected, onToggleSelect, onPressCard }: OrderCardProps) {
+   const router = useRouter();
+   const hasSingleAction = order.actionType === 'start_preparing' || order.actionType === 'mark_ready' || order.actionType === 'handover_rider';
+
    return (
-      <View className="w-36 bg-white border border-slate-100 p-3.5 rounded-[22px] shadow-sm">
-         <View className={`w-8 h-8 ${bg} rounded-xl items-center justify-center mb-2.5`}>
-            <Icon size={18} color={iconColor} />
+      <Pressable
+         onPress={onPressCard}
+         className="bg-white border border-slate-100 rounded-[24px] p-4 shadow-sm active:bg-slate-50/50"
+      >
+         {/* Top Header Row: Selection + Order ID + Time  ·  Amount */}
+         <View className="flex-row justify-between items-center">
+            <View className="flex-row items-center flex-1 pr-2">
+               <Pressable onPress={onToggleSelect} hitSlop={8} className="mr-2.5">
+                  {isSelected ? <CheckSquare size={18} color="#4F26D9" /> : <Square size={18} color="#cbd5e1" />}
+               </Pressable>
+
+               <Text className="font-extrabold text-slate-900 text-sm">{order.id}</Text>
+               <Text className="text-slate-300 text-xs mx-1.5">·</Text>
+               <Text className="text-slate-400 text-xs font-medium" numberOfLines={1}>{order.time}</Text>
+            </View>
+
+            <Text className="font-extrabold text-slate-900 text-lg">{order.amount}</Text>
          </View>
-         <Text className="text-slate-400 text-[9px] font-bold uppercase tracking-wider">{label}</Text>
-         <Text className="text-xl font-bold text-slate-900 mt-0.5">{value}</Text>
-         <Text className={`${color} text-[9px] font-bold mt-0.5`}>{sub}</Text>
-      </View>
+
+         {/* Metadata Row: Status + Delivery Type */}
+         <View className="flex-row items-center mt-2 pb-3 border-b border-slate-50">
+            <View className={`px-2.5 py-1 rounded-full mr-1.5 ${order.statusBg}`}>
+               <Text className={`text-[10px] font-extrabold ${order.statusText}`}>
+                  {order.status}
+               </Text>
+            </View>
+
+            {order.typeIsExpress ? (
+               <View className="bg-amber-50 border border-amber-200/80 px-2 py-0.5 rounded-full flex-row items-center">
+                  <Zap size={10} color="#f59e0b" fill="#f59e0b" />
+                  <Text className="text-[9px] font-extrabold text-amber-700 ml-0.5">Express</Text>
+               </View>
+            ) : (
+               <View className="bg-slate-100 px-2 py-0.5 rounded-full flex-row items-center">
+                  <Bike size={10} color="#64748b" />
+                  <Text className="text-[9px] font-extrabold text-slate-600 ml-1">Standard</Text>
+               </View>
+            )}
+         </View>
+
+         {/* Middle Body Row: Items Preview */}
+         <View className="flex-row mt-3 items-center justify-between">
+            <View className="flex-row items-center gap-x-1.5">
+               {order.items.map((emoji, idx) => (
+                  <View
+                     key={idx}
+                     className="w-8 h-8 bg-slate-50 border border-slate-100 rounded-lg items-center justify-center"
+                  >
+                     <Text className="text-sm">{emoji}</Text>
+                  </View>
+               ))}
+               {order.itemExtraCount && (
+                  <View className="bg-slate-100 px-1.5 py-1 rounded-lg">
+                     <Text className="text-[9px] font-extrabold text-slate-600">{order.itemExtraCount}</Text>
+                  </View>
+               )}
+            </View>
+
+            <Text className="text-[10px] text-slate-400 font-bold">{order.itemCount}</Text>
+         </View>
+
+         {/* Bottom Action Footer */}
+         <View className={`mt-3.5 pt-3 border-t border-slate-50 flex-row items-center ${hasSingleAction ? 'justify-between' : 'justify-end'}`}>
+            {hasSingleAction && (
+               <Text className="text-slate-400 text-[10px] font-medium">Ordered {order.time}</Text>
+            )}
+
+            {order.actionType === 'accept_reject' && (
+               <View className="flex-row gap-x-2.5 flex-1 justify-end">
+                  <Pressable
+                     onPress={(e) => {
+                        e.stopPropagation();
+                        router.push('/orders/1');
+                     }}
+                     className="flex-1 bg-primary h-11 rounded-xl flex-row items-center justify-center shadow-md shadow-primary/20 active:bg-primary/90"
+                  >
+                     <Check size={16} color="white" strokeWidth={3} />
+                     <Text className="text-white font-bold text-xs ml-1.5">Accept Order</Text>
+                  </Pressable>
+
+                  <Pressable
+                     onPress={(e) => e.stopPropagation()}
+                     className="bg-red-50 border border-red-200/80 px-4 h-11 rounded-xl flex-row items-center justify-center active:bg-red-100"
+                  >
+                     <X size={16} color="#ef4444" />
+                     <Text className="text-red-600 font-bold text-xs ml-1">Reject</Text>
+                  </Pressable>
+               </View>
+            )}
+
+            {order.actionType === 'start_preparing' && (
+               <Pressable
+                  onPress={(e) => {
+                     e.stopPropagation();
+                     router.push('/orders/preparing');
+                  }}
+                  className="bg-purple-50 border border-primary/30 px-4 h-10 rounded-xl flex-row items-center justify-center active:bg-purple-100"
+               >
+                  <ChefHat size={16} color="#4F26D9" />
+                  <Text className="text-primary font-bold text-xs ml-1.5">{order.actionLabel}</Text>
+               </Pressable>
+            )}
+
+            {order.actionType === 'mark_ready' && (
+               <Pressable
+                  onPress={(e) => {
+                     e.stopPropagation();
+                     router.push('/orders/ready');
+                  }}
+                  className="bg-purple-50 border border-primary/30 px-4 h-10 rounded-xl flex-row items-center justify-center active:bg-purple-100"
+               >
+                  <ShoppingBag size={16} color="#4F26D9" />
+                  <Text className="text-primary font-bold text-xs ml-1.5">{order.actionLabel}</Text>
+               </Pressable>
+            )}
+
+            {order.actionType === 'handover_rider' && (
+               <Pressable
+                  onPress={(e) => {
+                     e.stopPropagation();
+                     router.push('/orders/confirmation');
+                  }}
+                  className="bg-purple-50 border border-primary/30 px-4 h-10 rounded-xl flex-row items-center justify-center active:bg-purple-100"
+               >
+                  <Bike size={16} color="#4F26D9" />
+                  <Text className="text-primary font-bold text-xs ml-1.5">{order.actionLabel}</Text>
+               </Pressable>
+            )}
+
+            {order.actionType === 'badge_only' && (
+               <View className={`px-3 py-1.5 rounded-full ${order.badgeStyle}`}>
+                  <Text className="text-xs font-bold">{order.badgeLabel}</Text>
+               </View>
+            )}
+         </View>
+      </Pressable>
    );
 }
 
+// Pagination Controls
+function PaginationBar() {
+   return (
+      <View className="px-5 pt-4 pb-6 items-center">
+         <Text className="text-slate-400 text-xs font-medium mb-3">Showing 1 to 7 of 24 orders</Text>
+         <View className="flex-row items-center gap-x-1.5">
+            <Pressable className="w-8 h-8 rounded-xl bg-slate-100 items-center justify-center border border-slate-200">
+               <ChevronLeft size={16} color="#94a3b8" />
+            </Pressable>
+            <Pressable className="w-8 h-8 rounded-xl bg-primary items-center justify-center shadow-sm">
+               <Text className="text-white font-bold text-xs">1</Text>
+            </Pressable>
+            <Pressable className="w-8 h-8 rounded-xl bg-white border border-slate-200 items-center justify-center">
+               <Text className="text-slate-700 font-bold text-xs">2</Text>
+            </Pressable>
+            <Pressable className="w-8 h-8 rounded-xl bg-white border border-slate-200 items-center justify-center">
+               <Text className="text-slate-700 font-bold text-xs">3</Text>
+            </Pressable>
+            <Text className="text-slate-400 font-bold text-xs px-0.5">...</Text>
+            <Pressable className="w-8 h-8 rounded-xl bg-white border border-slate-200 items-center justify-center">
+               <Text className="text-slate-700 font-bold text-xs">4</Text>
+            </Pressable>
+            <Pressable className="w-8 h-8 rounded-xl bg-white border border-slate-200 items-center justify-center">
+               <ChevronRight size={16} color="#475569" />
+            </Pressable>
+         </View>
+      </View>
+   );
+}

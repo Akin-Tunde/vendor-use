@@ -1,11 +1,9 @@
 import { useRouter } from 'expo-router';
 import {
   ArrowRight,
-  Check,
   ChevronDown,
   Edit3,
-  Info,
-  Lightbulb
+  Info
 } from 'lucide-react-native';
 import { useState } from 'react';
 import { Pressable, ScrollView, Switch, Text, TextInput, View } from 'react-native';
@@ -40,8 +38,8 @@ export default function AddProductStep2() {
             <View className="flex-1">
               <Text className="font-bold text-slate-900 text-base">Fresh Banana</Text>
 
-              <View className="flex-row mt-1.5 space-x-2">
-                <View className="bg-green-100 px-2 py-0.5 rounded">
+              <View className="flex-row mt-1.5">
+                <View className="bg-green-100 px-2 py-0.5 rounded mr-2">
                   <Text className="text-green-700 text-[9px] font-bold">Fruits</Text>
                 </View>
                 <View className="bg-blue-100 px-2 py-0.5 rounded">
@@ -62,11 +60,11 @@ export default function AddProductStep2() {
         </View>
 
         {/* 2. Pricing Section */}
-        <View className="p-5 bg-white border border-slate-100 rounded-[32px] shadow-sm mb-4 space-y-4">
-          <Text className="font-bold text-slate-900 text-sm">Pricing</Text>
+        <View className="p-5 bg-white border border-slate-100 rounded-[32px] shadow-sm mb-4">
+          <Text className="font-bold text-slate-900 text-sm mb-4">Pricing</Text>
 
-          <View className="flex-row space-x-3">
-            <View className="flex-1">
+          <View className="flex-row mb-4">
+            <View className="flex-1 mr-3">
               <Text className="text-slate-700 font-semibold text-xs mb-2">
                 Selling Price (₦) <Text className="text-red-500">*</Text>
               </Text>
@@ -85,8 +83,8 @@ export default function AddProductStep2() {
             </View>
           </View>
 
-          <View className="flex-row space-x-3">
-            <View className="flex-1">
+          <View className="flex-row">
+            <View className="flex-1 mr-3">
               <Text className="text-slate-700 font-semibold text-xs mb-2">
                 Cost Price (₦) <Text className="text-slate-400 font-normal">(Optional)</Text>
               </Text>
@@ -106,11 +104,11 @@ export default function AddProductStep2() {
         </View>
 
         {/* 3. Inventory Section */}
-        <View className="p-5 bg-white border border-slate-100 rounded-[32px] shadow-sm mb-4 space-y-4">
-          <Text className="font-bold text-slate-900 text-sm">Inventory</Text>
+        <View className="p-5 bg-white border border-slate-100 rounded-[32px] shadow-sm mb-4">
+          <Text className="font-bold text-slate-900 text-sm mb-4">Inventory</Text>
 
-          <View className="flex-row space-x-3">
-            <View className="flex-1">
+          <View className="flex-row mb-4">
+            <View className="flex-1 mr-3">
               <Text className="text-slate-700 font-semibold text-xs mb-2">SKU (Stock Keeping Unit)</Text>
               <TextInput defaultValue="BANANA-001" className="bg-slate-50/60 border border-slate-100 h-12 px-4 rounded-2xl text-slate-900 text-xs" />
               <Text className="text-slate-400 text-[8px] mt-1">Unique code to identify your product</Text>
@@ -125,8 +123,8 @@ export default function AddProductStep2() {
             </View>
           </View>
 
-          <View className="flex-row items-start space-x-3">
-            <View className="flex-1">
+          <View className="flex-row items-start">
+            <View className="flex-1 mr-3">
               <Text className="text-slate-700 font-semibold text-xs mb-2">Low Stock Alert</Text>
               <TextInput defaultValue="10" className="bg-slate-50/60 border border-slate-100 h-12 px-4 rounded-2xl text-slate-900 text-xs" keyboardType="numeric" />
               <Text className="text-slate-400 text-[8px] mt-1">Get notified when stock reaches this level</Text>
@@ -147,11 +145,11 @@ export default function AddProductStep2() {
         </View>
 
         {/* 4. Additional Options Section (Stacked Vertically) */}
-        <View className="p-5 bg-white border border-slate-100 rounded-[32px] shadow-sm mb-4 space-y-4">
-          <Text className="font-bold text-slate-900 text-sm mb-1">Additional Options</Text>
+        <View className="p-5 bg-white border border-slate-100 rounded-[32px] shadow-sm mb-4">
+          <Text className="font-bold text-slate-900 text-sm mb-4">Additional Options</Text>
 
           {/* Unit of Measurement */}
-          <View>
+          <View className="mb-4">
             <Text className="text-slate-700 font-semibold text-xs mb-2">Unit of Measurement</Text>
             <Pressable className="bg-slate-50/60 border border-slate-100 h-12 px-4 rounded-2xl flex-row items-center justify-between">
               <Text className="text-slate-900 text-xs font-medium">Per kg</Text>
@@ -161,14 +159,14 @@ export default function AddProductStep2() {
           </View>
 
           {/* Minimum Order Quantity */}
-          <View>
+          <View className="mb-4">
             <Text className="text-slate-700 font-semibold text-xs mb-2">Minimum Order Quantity</Text>
             <TextInput defaultValue="1" className="bg-slate-50/60 border border-slate-100 h-12 px-4 rounded-2xl text-slate-900 text-xs" keyboardType="numeric" />
             <Text className="text-slate-400 text-[8px] mt-1">Minimum quantity a customer can order</Text>
           </View>
 
           {/* Weight */}
-          <View>
+          <View className="mb-4">
             <Text className="text-slate-700 font-semibold text-xs mb-2">
               Weight <Text className="text-slate-400 font-normal">(Optional)</Text>
             </Text>
@@ -199,17 +197,15 @@ export default function AddProductStep2() {
               <Text className="text-slate-400 text-[9px]">Add size, color, pack size, etc.</Text>
             </Pressable>
           </View>
-
-        
         </View>
 
         <View className="h-10" />
       </ScrollView>
 
       {/* Footer Navigation */}
-      <View className="p-6 bg-white border-t border-slate-50 flex-row space-x-4">
+      <View className="p-6 bg-white border-t border-slate-50 flex-row">
         <Pressable
-          className="flex-1 h-14 rounded-2xl border border-primary justify-center items-center active:bg-purple-50"
+          className="flex-1 h-14 rounded-2xl border border-primary justify-center items-center active:bg-purple-50 mr-4"
           onPress={() => router.back()}
         >
           <Text className="text-primary font-bold text-base">Back</Text>

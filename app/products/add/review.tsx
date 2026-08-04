@@ -2,7 +2,6 @@ import { useRouter } from 'expo-router';
 import {
    Check,
    Edit3,
-   Info,
    Send
 } from 'lucide-react-native';
 import { Pressable, ScrollView, Text, View } from 'react-native';
@@ -48,8 +47,8 @@ export default function AddProductReviewScreen() {
                   </View>
                   <View className="flex-1">
                      <Text className="font-bold text-slate-900 text-lg">Fresh Banana</Text>
-                     <View className="flex-row mt-1.5 space-x-2">
-                        <View className="bg-green-100 px-2 py-0.5 rounded">
+                     <View className="flex-row mt-1.5">
+                        <View className="bg-green-100 px-2 py-0.5 rounded mr-2">
                            <Text className="text-green-700 text-[9px] font-bold">Fruits</Text>
                         </View>
                         <View className="bg-blue-100 px-2 py-0.5 rounded">
@@ -64,7 +63,7 @@ export default function AddProductReviewScreen() {
             </View>
 
             {/* 2. Product Information Card (Full Width) */}
-            <View className="p-5 bg-white border border-slate-100 rounded-[32px] shadow-sm mb-4 space-y-3">
+            <View className="p-5 bg-white border border-slate-100 rounded-[32px] shadow-sm mb-4">
                <View className="flex-row justify-between items-center mb-2">
                   <Text className="font-bold text-slate-900 text-sm">Product Information</Text>
                   <Pressable onPress={() => router.push('/products/add')}>
@@ -72,18 +71,18 @@ export default function AddProductReviewScreen() {
                   </Pressable>
                </View>
 
-               <View className="space-y-3">
+               <View>
                   <SummaryRow label="Category" value="Fruits" />
                   <SummaryRow label="Subcategory" value="Banana" />
                   <SummaryRow label="Product Type" value="Physical Product" />
                   <SummaryRow label="Tags" value="Fresh, Organic, Natural" />
                   <SummaryRow label="SKU" value="BANANA-001" />
-                  <SummaryRow label="Unit of Measurement" value="Per kg" />
+                  <SummaryRow label="Unit of Measurement" value="Per kg" last />
                </View>
             </View>
 
             {/* 3. Pricing Summary Card (Full Width) */}
-            <View className="p-5 bg-white border border-slate-100 rounded-[32px] shadow-sm mb-4 space-y-3">
+            <View className="p-5 bg-white border border-slate-100 rounded-[32px] shadow-sm mb-4">
                <View className="flex-row justify-between items-center mb-2">
                   <Text className="font-bold text-slate-900 text-sm">Pricing</Text>
                   <Pressable onPress={() => router.push('/products/add/pricing')}>
@@ -91,16 +90,16 @@ export default function AddProductReviewScreen() {
                   </Pressable>
                </View>
 
-               <View className="space-y-3">
+               <View>
                   <SummaryRow label="Selling Price" value="₦1,200" />
                   <SummaryRow label="Compare at Price" value="₦1,500" />
                   <SummaryRow label="Cost Price" value="₦800" />
-                  <SummaryRow label="Tax" value="No Tax" />
+                  <SummaryRow label="Tax" value="No Tax" last />
                </View>
             </View>
 
             {/* 4. Inventory Summary Card (Full Width) */}
-            <View className="p-5 bg-white border border-slate-100 rounded-[32px] shadow-sm mb-4 space-y-3">
+            <View className="p-5 bg-white border border-slate-100 rounded-[32px] shadow-sm mb-4">
                <View className="flex-row justify-between items-center mb-2">
                   <Text className="font-bold text-slate-900 text-sm">Inventory</Text>
                   <Pressable onPress={() => router.push('/products/add/pricing')}>
@@ -108,16 +107,16 @@ export default function AddProductReviewScreen() {
                   </Pressable>
                </View>
 
-               <View className="space-y-3">
+               <View>
                   <SummaryRow label="Stock Quantity" value="45" />
                   <SummaryRow label="Low Stock Alert" value="10" />
                   <SummaryRow label="Unlimited Stock" value="No" />
-                  <SummaryRow label="Minimum Order Qty" value="1" />
+                  <SummaryRow label="Minimum Order Qty" value="1" last />
                </View>
             </View>
 
             {/* 5. Additional Options Summary Card (Full Width) */}
-            <View className="p-5 bg-white border border-slate-100 rounded-[32px] shadow-sm mb-4 space-y-3">
+            <View className="p-5 bg-white border border-slate-100 rounded-[32px] shadow-sm mb-4">
                <View className="flex-row justify-between items-center mb-2">
                   <Text className="font-bold text-slate-900 text-sm">Additional Options</Text>
                   <Pressable onPress={() => router.push('/products/add/pricing')}>
@@ -125,20 +124,20 @@ export default function AddProductReviewScreen() {
                   </Pressable>
                </View>
 
-               <View className="space-y-3">
+               <View>
                   <SummaryRow label="Weight" value="1 kg" />
-                  <SummaryRow label="Product Variants" value="No variants added" />
+                  <SummaryRow label="Product Variants" value="No variants added" last />
                </View>
             </View>
 
+         
 
-     
          </ScrollView>
 
          {/* Side-by-Side Equal Navigation Buttons */}
-         <View className="p-6 bg-white border-t border-slate-50 flex-row space-x-4">
+         <View className="p-6 bg-white border-t border-slate-50 flex-row">
             <Pressable
-               className="flex-1 h-14 rounded-2xl border border-primary justify-center items-center active:bg-purple-50"
+               className="flex-1 h-14 rounded-2xl border border-primary justify-center items-center active:bg-purple-50 mr-4"
                onPress={() => router.back()}
             >
                <Text className="text-primary font-bold text-base">Back</Text>
@@ -157,9 +156,9 @@ export default function AddProductReviewScreen() {
 }
 
 // Helpers
-function SummaryRow({ label, value }: any) {
+function SummaryRow({ label, value, last }: any) {
    return (
-      <View className="flex-row justify-between items-center border-b border-slate-50 pb-2.5">
+      <View className={`flex-row justify-between items-center pb-2.5 ${last ? '' : 'border-b border-slate-50 mb-2.5'}`}>
          <Text className="text-slate-400 text-xs font-medium">{label}</Text>
          <Text className="text-slate-900 font-bold text-xs">{value}</Text>
       </View>
@@ -167,12 +166,12 @@ function SummaryRow({ label, value }: any) {
 }
 
 function StepIcon({ label, active, completed, step }: any) {
-  return (
-    <View className="items-center">
-      <View className={`w-6 h-6 rounded-full items-center justify-center ${active ? 'bg-primary' : 'bg-slate-200'}`}>
-        <Text className="text-white text-[10px] font-bold">{step}</Text>
+   return (
+      <View className="items-center">
+         <View className={`w-6 h-6 rounded-full items-center justify-center ${active ? 'bg-primary' : 'bg-slate-200'}`}>
+            <Text className="text-white text-[10px] font-bold">{step}</Text>
+         </View>
+         <Text className={`text-[8px] mt-1 font-bold ${active ? 'text-primary' : 'text-slate-400'}`}>{label}</Text>
       </View>
-      <Text className={`text-[8px] mt-1 font-bold ${active ? 'text-primary' : 'text-slate-400'}`}>{label}</Text>
-    </View>
-  );
+   );
 }

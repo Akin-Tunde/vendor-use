@@ -13,7 +13,6 @@ import {
 } from 'lucide-react-native';
 import { useState } from 'react';
 import { Image, Pressable, ScrollView, Text, TextInput, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function AddProductStep1() {
   const router = useRouter();
@@ -73,10 +72,10 @@ export default function AddProductStep1() {
           </View>
           <Text className="text-slate-400 text-[10px] mb-4">Add up to 6 clear images</Text>
 
-          <ScrollView horizontal showsHorizontalScrollIndicator={false} className="flex-row space-x-3">
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} className="flex-row">
             {/* Display Picked Images */}
             {images.map((uri, idx) => (
-              <View key={idx} className="w-24 h-24 rounded-2xl overflow-hidden relative border border-slate-200">
+              <View key={idx} className="w-24 h-24 rounded-2xl overflow-hidden relative border border-slate-200 mr-3">
                 <Image source={{ uri }} className="w-full h-full" />
                 <Pressable
                   onPress={() => removeImage(idx)}
@@ -91,7 +90,7 @@ export default function AddProductStep1() {
             {images.length < 6 && (
               <Pressable
                 onPress={pickImage}
-                className="w-24 h-24 border-2 border-dashed border-primary/40 bg-purple-50/20 rounded-2xl items-center justify-center"
+                className="w-24 h-24 border-2 border-dashed border-primary/40 bg-purple-50/20 rounded-2xl items-center justify-center mr-3"
               >
                 <Camera size={20} color="#4F26D9" />
                 <Text className="text-primary font-bold text-[9px] mt-1.5">Add Main Image</Text>
@@ -100,8 +99,11 @@ export default function AddProductStep1() {
             )}
 
             {/* Empty Slots */}
-            {Array.from({ length: Math.max(0, 5 - images.length) }).map((_, i) => (
-              <View key={i} className="w-24 h-24 border border-dashed border-slate-200 bg-slate-50/50 rounded-2xl items-center justify-center">
+            {Array.from({ length: Math.max(0, 5 - images.length) }).map((_, i, arr) => (
+              <View
+                key={i}
+                className={`w-24 h-24 border border-dashed border-slate-200 bg-slate-50/50 rounded-2xl items-center justify-center ${i < arr.length - 1 ? 'mr-3' : ''}`}
+              >
                 <ImageIcon size={20} color="#cbd5e1" />
                 <Text className="text-slate-400 font-bold text-[9px] mt-1.5">Add Image</Text>
               </View>
@@ -110,11 +112,11 @@ export default function AddProductStep1() {
         </View>
 
         {/* 2. Basic Information Section */}
-        <View className="p-5 bg-white border border-slate-100 rounded-[32px] shadow-sm mb-4 space-y-4">
-          <Text className="font-bold text-slate-900 text-sm">Basic Information</Text>
+        <View className="p-5 bg-white border border-slate-100 rounded-[32px] shadow-sm mb-4">
+          <Text className="font-bold text-slate-900 text-sm mb-4">Basic Information</Text>
 
           {/* Product Name */}
-          <View>
+          <View className="mb-4">
             <Text className="text-slate-700 font-semibold text-xs mb-2">
               Product Name <Text className="text-red-500">*</Text>
             </Text>
@@ -125,7 +127,7 @@ export default function AddProductStep1() {
           </View>
 
           {/* Category */}
-          <View>
+          <View className="mb-4">
             <Text className="text-slate-700 font-semibold text-xs mb-2">
               Category <Text className="text-red-500">*</Text>
             </Text>
@@ -136,7 +138,7 @@ export default function AddProductStep1() {
           </View>
 
           {/* Subcategory (Stacked Below) */}
-          <View>
+          <View className="mb-4">
             <Text className="text-slate-700 font-semibold text-xs mb-2">
               Subcategory <Text className="text-slate-400 font-normal">(Optional)</Text>
             </Text>
@@ -166,9 +168,9 @@ export default function AddProductStep1() {
         </View>
 
         {/* 3. Product Tags Section */}
-        <View className="p-5 bg-white border border-slate-100 rounded-[32px] shadow-sm mb-4 space-y-2">
+        <View className="p-5 bg-white border border-slate-100 rounded-[32px] shadow-sm mb-4">
           <Text className="font-bold text-slate-900 text-sm">Product Tags <Text className="text-slate-400 font-normal text-xs">(Optional)</Text></Text>
-          <Text className="text-slate-400 text-[10px]">Add keywords to help customers find your product</Text>
+          <Text className="text-slate-400 text-[10px] mt-2">Add keywords to help customers find your product</Text>
 
           <View className="bg-slate-50/60 border border-slate-100 h-12 px-4 rounded-2xl flex-row items-center justify-between mt-2">
             <TextInput
@@ -185,7 +187,7 @@ export default function AddProductStep1() {
           <Text className="font-bold text-slate-900 text-sm mb-1">Product Type</Text>
           <Text className="text-slate-400 text-[10px] mb-4">What best describes this product?</Text>
 
-          <View className="flex-row space-x-2">
+          <View className="flex-row">
             <TypeCard
               label="Physical Product"
               desc="A tangible item that requires delivery"
@@ -193,6 +195,7 @@ export default function AddProductStep1() {
               iconBg="bg-purple-100"
               selected={productType === 'physical'}
               onPress={() => setProductType('physical')}
+              style="mr-2"
             />
             <TypeCard
               label="Perishable"
@@ -202,6 +205,7 @@ export default function AddProductStep1() {
               iconColor="#22c55e"
               selected={productType === 'perishable'}
               onPress={() => setProductType('perishable')}
+              style="mr-2"
             />
             <TypeCard
               label="Digital/Service"
@@ -214,8 +218,6 @@ export default function AddProductStep1() {
             />
           </View>
         </View>
-
-     
       </ScrollView>
 
       {/* Footer Continue Button */}
@@ -243,12 +245,11 @@ function StepIcon({ label, active, completed, step }: any) {
   );
 }
 
-function TypeCard({ label, desc, icon: Icon, iconBg, iconColor = "#4F26D9", selected, onPress }: any) {
+function TypeCard({ label, desc, icon: Icon, iconBg, iconColor = "#4F26D9", selected, onPress, style = "" }: any) {
   return (
     <Pressable
       onPress={onPress}
-      className={`flex-1 p-3 border-2 rounded-2xl justify-between min-h-[120px] ${selected ? 'border-primary bg-purple-50/30' : 'border-slate-100 bg-white'
-        }`}
+      className={`flex-1 p-3 border-2 rounded-2xl justify-between min-h-[120px] ${selected ? 'border-primary bg-purple-50/30' : 'border-slate-100 bg-white'} ${style}`}
     >
       <View className="flex-row justify-between items-start mb-2">
         <View className={`w-8 h-8 ${iconBg} rounded-xl items-center justify-center`}>

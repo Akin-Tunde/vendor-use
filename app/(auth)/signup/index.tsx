@@ -18,44 +18,45 @@ export default function SignupStep1() {
           <ArrowLeft size={20} color="#000" />
         </Pressable>
 
-        <Text className="flex-1 text-center text-primary font-bold text-sm">Step 1 of 6</Text>
+        <Text className="flex-1 text-center text-primary font-bold text-sm">Step 1 of 5</Text>
 
         <View className="w-10" />
       </View>
 
       {/* Progress Bar */}
       <View className="flex-row items-center justify-center px-5 mt-4 mb-3">
-        {[1, 2, 3, 4, 5, 6].map((step) => (
+        {[1, 2, 3, 4, 5].map((step) => (
           <React.Fragment key={step}>
             <View className={`w-7 h-7 rounded-full items-center justify-center ${step === 1 ? 'bg-primary' : 'border border-slate-200 bg-white'}`}>
               <Text className={`text-xs ${step === 1 ? 'text-white font-bold' : 'text-slate-400'}`}>{step}</Text>
             </View>
-            {step < 6 && <View className="flex-1 h-[2px] bg-slate-100 mx-0.5" />}
+            {step < 5 && <View className="flex-1 h-[2px] bg-slate-100 mx-0.5" />}
           </React.Fragment>
         ))}
       </View>
 
       <ScrollView className="flex-1 px-6" showsVerticalScrollIndicator={false}>
+
         <View className="flex-row items-center">
           <View className="flex-1 mr-4">
-            <Text className="text-3xl font-bold text-slate-900">Create Your Vendor Account</Text>
+            <Text className="text-2xl font-bold text-slate-900">Create Your Vendor Account</Text>
             <Text className="text-slate-500 mt-2">Tell us a few details about your business to get started.</Text>
           </View>
-          <Image source={require('../../../assets/icons/onboarding-1.png')} className="w-24 h-24" resizeMode="contain" />
+         {/* <Image source={require('../../../assets/icons/onboarding-1.png')} className="w-24 h-24"  /> */}
         </View>
 
-        <View className="mt-8 space-y-5">
+        <View className="mt-3 space-y-5">
           <InputGroup label="Full Name" placeholder="Enter your full name" icon={User} />
           <InputGroup label="Business Name" placeholder="Enter your business name" icon={Store} />
           <InputGroup label="Email Address" placeholder="Enter your email address" icon={Mail} />
 
           <View>
-            <Text className="font-semibold text-slate-700 mb-2">Phone Number</Text>
+            <Text className="font-semibold  text-slate-700 mb-3 mt-3">Phone Number</Text>
             <View className="flex-row items-center border border-slate-200 rounded-2xl h-14 bg-slate-50/50">
               <Pressable className="flex-row items-center px-4 border-r border-slate-200">
                 <Text className="text-slate-900 font-bold">+234</Text>
               </Pressable>
-              <TextInput placeholder="Enter your phone number" className="flex-1 px-4 text-base text-slate-900" keyboardType="phone-pad" />
+              <TextInput placeholder="Enter your phone number" className="flex-1 px-4 text-sm text-slate-900" keyboardType="phone-pad" />
             </View>
           </View>
 
@@ -78,7 +79,7 @@ export default function SignupStep1() {
 
           <Pressable
             className="flex-1 bg-primary h-16 rounded-2xl justify-center items-center shadow-lg shadow-primary/30 active:bg-primary/90"
-            onPress={() => router.push('/(auth)/signup/step2' as any)}
+            onPress={() => router.push('/(auth)/signup/step3' as any)}
           >
             <Text className="text-white font-bold text-base">Continue</Text>
           </Pressable>
@@ -108,12 +109,12 @@ export default function SignupStep1() {
 function InputGroup({ label, placeholder, icon: Icon, isPassword = false }: any) {
   return (
     <View>
-      <Text className="font-semibold text-slate-700 mb-2">{label}</Text>
+      <Text className="font-semibold text-slate-700 mb-2 mt-3">{label}</Text>
       <View className="flex-row items-center border border-slate-200 rounded-2xl px-4 h-14 bg-slate-50/50">
         <View style={{ marginRight: 12 }}>
           <Icon size={20} color="#4F26D9" />
         </View>
-        <TextInput placeholder={placeholder} secureTextEntry={isPassword} className="flex-1 text-slate-900 text-base" />
+        <TextInput placeholder={placeholder} secureTextEntry={isPassword} className="flex-1 text-slate-900 text-sm" />
         {isPassword && <Eye size={20} color="#64748b" />}
       </View>
     </View>
