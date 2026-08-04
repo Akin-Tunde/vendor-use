@@ -1,10 +1,8 @@
 import { useRouter } from 'expo-router';
 import {
-   AlertTriangle,
    ArrowUpDown,
    Bell,
    Bike,
-   Calendar,
    Check,
    CheckSquare,
    ChefHat,
@@ -19,7 +17,6 @@ import {
    ShoppingBag,
    Square,
    TrendingUp,
-   Wifi,
    X,
    Zap
 } from 'lucide-react-native';
@@ -55,13 +52,13 @@ const ORDERS = [
       phone: '0803 123 4567',
       time: 'Today, 09:31 AM',
       amount: '₦18,650',
-      type: 'Express Delivery',
+      //  type: 'Express Delivery',
       typeIsExpress: true,
-      paymentStatus: 'Paid • Card',
+      // paymentStatus: 'Paid • Card',
       status: 'NEW',
       statusBg: 'bg-red-100',
       statusText: 'text-red-500',
-      timer: 'Waiting 6 min',
+      //   timer: 'Waiting 6 min',
       timerColor: 'text-red-500',
       itemCount: '2 items',
       items: ['🍌', '🍎'],
@@ -338,59 +335,6 @@ export default function ManageOrdersScreen() {
                </View>
             </ScrollView>
 
-            {/* 4. Priority Queue Section */}
-            <View className="px-5 mb-4">
-               <View className="flex-row justify-between items-center mb-2.5">
-                  <View className="flex-row items-center">
-                     <Text className="text-base font-bold text-slate-900">🔥 Priority Queue</Text>
-                  </View>
-                  <Pressable className="flex-row items-center">
-                     <Text className="text-primary font-bold text-xs mr-0.5">View all (5)</Text>
-                     <ChevronRight size={14} color="#4F26D9" />
-                  </Pressable>
-               </View>
-
-               <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                  <View className="flex-row space-x-3 pr-6">
-                     <PriorityBadge
-                        icon={Clock}
-                        label="3 New Orders"
-                        sub="Accept within 2 min"
-                        bg="bg-red-50/50"
-                        border="border-red-200"
-                        iconColor="#ef4444"
-                        chevronColor="#f87171"
-                     />
-                     <PriorityBadge
-                        icon={Bike}
-                        label="Rider Waiting"
-                        sub="2 orders"
-                        bg="bg-amber-50/50"
-                        border="border-amber-200"
-                        iconColor="#f59e0b"
-                        chevronColor="#fbbf24"
-                     />
-                     <PriorityBadge
-                        icon={AlertTriangle}
-                        label="2 Orders Delayed"
-                        sub="Tap to review"
-                        bg="bg-amber-50/50"
-                        border="border-amber-200"
-                        iconColor="#d97706"
-                        chevronColor="#f59e0b"
-                     />
-                     <PriorityBadge
-                        icon={Calendar}
-                        label="Scheduled Soon"
-                        sub="2 orders in 10 min"
-                        bg="bg-blue-50/50"
-                        border="border-blue-200"
-                        iconColor="#3b82f6"
-                        chevronColor="#60a5fa"
-                     />
-                  </View>
-               </ScrollView>
-            </View>
 
             {/* 6. Sorting & Bulk Actions Bar */}
             <View className="px-5 mt-4 flex-row justify-between items-center">
@@ -467,41 +411,6 @@ export default function ManageOrdersScreen() {
                               <Text className="text-slate-900 font-bold text-xs">{order.customer}</Text>
                               <Text className="text-slate-400 text-[11px] mt-0.5">{order.phone}</Text>
                               <Text className="text-slate-400 text-[10px] mt-0.5">{order.time}</Text>
-                           </View>
-
-                           {/* Delivery & Payment Badges */}
-                           <View className="flex-1 space-y-1.5">
-                              <View className="flex-row items-center">
-                                 {order.typeIsExpress ? (
-                                    <Zap size={12} color="#ef4444" />
-                                 ) : (
-                                    <Bike size={12} color="#4F26D9" />
-                                 )}
-                                 <Text
-                                    className={`text-[10px] font-bold ml-1.5 ${order.typeIsExpress ? 'text-red-500' : 'text-primary'
-                                       }`}
-                                 >
-                                    {order.type}
-                                 </Text>
-                              </View>
-
-                              <View className="flex-row items-center">
-                                 {order.paymentStatus.includes('Online') ? (
-                                    <Wifi size={12} color="#10b981" />
-                                 ) : (
-                                    <CreditCard size={12} color="#10b981" />
-                                 )}
-                                 <Text className="text-emerald-600 font-bold text-[10px] ml-1.5">
-                                    {order.paymentStatus}
-                                 </Text>
-                              </View>
-
-                              <View className="flex-row items-center">
-                                 <Clock size={12} color="#94a3b8" />
-                                 <Text className={`${order.timerColor} font-bold text-[10px] ml-1.5`}>
-                                    {order.timer}
-                                 </Text>
-                              </View>
                            </View>
 
                            {/* Items Preview */}
@@ -615,60 +524,7 @@ export default function ManageOrdersScreen() {
             <View className="h-28" />
          </ScrollView>
 
-         {/* 9. Floating Multi-Alert Summary Bar at Bottom */}
-         <View className="absolute bottom-4 left-4 right-4 bg-white border border-slate-200 rounded-2xl shadow-xl p-3 flex-row items-center justify-between">
-            <ScrollView horizontal showsHorizontalScrollIndicator={false} className="flex-1">
-               <View className="flex-row items-center space-x-4 pr-3">
-                  <View className="flex-row items-center">
-                     <View className="bg-red-50 p-1.5 rounded-full mr-2">
-                        <Bell size={16} color="#ef4444" />
-                     </View>
-                     <View>
-                        <Text className="font-bold text-red-500 text-xs">3 New Orders</Text>
-                        <Text className="text-slate-400 text-[9px]">Needs your attention</Text>
-                     </View>
-                  </View>
 
-                  <View className="h-6 w-[1px] bg-slate-200" />
-
-                  <View className="flex-row items-center">
-                     <View className="bg-amber-50 p-1.5 rounded-full mr-2">
-                        <Clock size={16} color="#f59e0b" />
-                     </View>
-                     <View>
-                        <Text className="font-bold text-amber-700 text-xs">2 Orders Delayed</Text>
-                        <Text className="text-slate-400 text-[9px]">Tap to review</Text>
-                     </View>
-                  </View>
-
-                  <View className="h-6 w-[1px] bg-slate-200" />
-
-                  <View className="flex-row items-center">
-                     <View className="bg-emerald-50 p-1.5 rounded-full mr-2">
-                        <Bike size={16} color="#10b981" />
-                     </View>
-                     <View>
-                        <Text className="font-bold text-emerald-800 text-xs">Rider Waiting</Text>
-                        <Text className="text-slate-400 text-[9px]">2 riders at store</Text>
-                     </View>
-                  </View>
-
-                  <View className="h-6 w-[1px] bg-slate-200" />
-
-                  <View className="flex-row items-center">
-                     <View className="bg-blue-50 p-1.5 rounded-full mr-2">
-                        <CreditCard size={16} color="#3b82f6" />
-                     </View>
-                     <View>
-                        <Text className="font-bold text-blue-700 text-xs">Payment Issues</Text>
-                        <Text className="text-slate-400 text-[9px]">1 order</Text>
-                     </View>
-                  </View>
-               </View>
-            </ScrollView>
-
-            <ChevronDown size={18} color="#64748b" className="ml-1" />
-         </View>
       </SafeAreaView>
    );
 }
@@ -687,17 +543,3 @@ function SummaryCard({ icon: Icon, label, value, sub, color, bg, iconColor }: an
    );
 }
 
-function PriorityBadge({ icon: Icon, label, sub, bg, border, iconColor, chevronColor }: any) {
-   return (
-      <Pressable className={`border px-3.5 py-2.5 rounded-2xl flex-row items-center ${bg} ${border}`}>
-         <View className="w-8 h-8 rounded-xl bg-white items-center justify-center mr-2.5 shadow-sm">
-            <Icon size={16} color={iconColor} />
-         </View>
-         <View className="mr-2">
-            <Text className="font-bold text-slate-900 text-xs">{label}</Text>
-            <Text className="text-slate-500 text-[10px] mt-0.5">{sub}</Text>
-         </View>
-         <ChevronRight size={14} color={chevronColor} />
-      </Pressable>
-   );
-}
