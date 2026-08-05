@@ -1,7 +1,7 @@
 import { useRouter } from 'expo-router';
-import { ArrowLeft, Info, Mail, Phone, Send } from 'lucide-react-native';
+import { ArrowLeft, Mail, Phone, Send } from 'lucide-react-native';
 import { useState } from 'react';
-import { Image, Pressable, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Image, Pressable, ScrollView, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function ForgotPasswordScreen() {
@@ -28,14 +28,18 @@ export default function ForgotPasswordScreen() {
 
                 {/* Top Illustration Graphic */}
                 <View className="items-center justify-center my-4">
-                    <View className="w-48 h-40  items-center justify-center  ">
-                        <Image source={require('../../../assets/icons/forgot-password.png')} className="w-full h-full"  />
+                    <View className="w-48 h-40 items-center justify-center">
+                        <Image
+                            source={require('../../../assets/icons/forgot-password.png')}
+                            className="w-full h-full"
+                            resizeMode="contain"
+                        />
                     </View>
                 </View>
 
                 {/* Rounded Tab Switcher Container */}
                 <View className="bg-slate-50 border border-slate-200/80 rounded-2xl p-1 flex-row mb-6 mt-2">
-                    <TouchableOpacity
+                    <Pressable
                         onPress={() => setActiveTab('email')}
                         className={`flex-1 py-3 rounded-xl items-center justify-center ${activeTab === 'email' ? 'bg-white shadow-sm border border-slate-100' : ''
                             }`}
@@ -44,9 +48,9 @@ export default function ForgotPasswordScreen() {
                             Email
                         </Text>
                         {activeTab === 'email' && <View className="h-0.5 w-12 bg-primary rounded-full mt-1" />}
-                    </TouchableOpacity>
+                    </Pressable>
 
-                    <TouchableOpacity
+                    <Pressable
                         onPress={() => setActiveTab('phone')}
                         className={`flex-1 py-3 rounded-xl items-center justify-center ${activeTab === 'phone' ? 'bg-white shadow-sm border border-slate-100' : ''
                             }`}
@@ -55,7 +59,7 @@ export default function ForgotPasswordScreen() {
                             Phone Number
                         </Text>
                         {activeTab === 'phone' && <View className="h-0.5 w-16 bg-primary rounded-full mt-1" />}
-                    </TouchableOpacity>
+                    </Pressable>
                 </View>
 
                 {/* Input Field */}
@@ -84,8 +88,6 @@ export default function ForgotPasswordScreen() {
                     )}
                 </View>
 
-              
-
                 {/* Send OTP Button */}
                 <Pressable
                     onPress={() => router.push('/(auth)/forgot-password/verify' as any)}
@@ -93,19 +95,6 @@ export default function ForgotPasswordScreen() {
                 >
                     <Text className="text-white font-bold text-base mr-2">Send OTP</Text>
                     <Send size={16} color="white" />
-                </Pressable>
-
-                {/* Divider */}
-                <View className="flex-row items-center my-6">
-                    <View className="flex-1 h-[1px] bg-slate-100" />
-                    <Text className="mx-4 text-slate-400 font-bold text-xs uppercase">or</Text>
-                    <View className="flex-1 h-[1px] bg-slate-100" />
-                </View>
-
-                {/* Google Button */}
-                <Pressable className="flex-row items-center justify-center border border-slate-200 h-14 rounded-2xl mb-8 active:bg-slate-50">
-                    <Image source={require('../../../assets/icons/google.jpg')} className="w-6 h-6 mr-3" resizeMode="contain" />
-                    <Text className="font-bold text-slate-700">Continue with Google</Text>
                 </Pressable>
 
                 {/* Bottom Link */}

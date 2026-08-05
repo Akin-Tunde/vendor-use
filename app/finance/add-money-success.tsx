@@ -1,7 +1,6 @@
-import React from 'react';
-import { View, Text,  ScrollView, Pressable } from 'react-native';
 import { useRouter } from 'expo-router';
-import { ArrowLeft, Share2, Check, Copy, ArrowRight } from 'lucide-react-native';
+import { ArrowLeft, Check, Copy, Share2 } from 'lucide-react-native';
+import { Pressable, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 export default function AddMoneySuccessScreen() {
   const router = useRouter();
@@ -42,7 +41,7 @@ export default function AddMoneySuccessScreen() {
         </View>
 
         {/* Transaction Details */}
-        <View className="mx-6 mt-6 bg-white border border-slate-100 p-5 rounded-[32px] shadow-sm space-y-3">
+        <View className="mx-6 mt-6 bg-white border border-slate-100 p-5 rounded-[32px] shadow-sm gap-y-3">
           <Text className="font-bold text-slate-900 text-sm mb-1">Transaction Details</Text>
           <DetailRow label="Amount Added" value="₦10,000.00" />
           <DetailRow label="Payment Method" value="Paystack (Card)" />
@@ -58,7 +57,7 @@ export default function AddMoneySuccessScreen() {
         </View>
 
         {/* Banner Promotion */}
-        <View className="mx-6 mt-6 bg-amber-50 border border-amber-200/60 p-5 rounded-[32px] flex-row items-center justify-between shadow-sm mb-12">
+        <View className="mx-6 mt-6 bg-amber-50 border border-amber-200/60 p-5 rounded-[32px] flex-row items-center justify-between shadow-sm mb-4">
           <View className="flex-1 pr-2">
             <Text className="font-bold text-amber-900 text-sm">Run your first ad now!</Text>
             <Text className="text-amber-800/80 text-xs mt-0.5">Boost your store visibility and get more customers.</Text>
@@ -70,15 +69,15 @@ export default function AddMoneySuccessScreen() {
       </ScrollView>
 
       {/* Footer Navigation Buttons */}
-      <View className="p-6 bg-white border-t border-slate-50 space-y-3">
-        <Pressable 
+      <View className="p-6 bg-white border-t border-slate-50 gap-y-3">
+        <Pressable
           onPress={() => router.replace('/(tabs)/finance')}
           className="bg-primary h-16 rounded-2xl justify-center items-center shadow-lg shadow-primary/30"
         >
           <Text className="text-white font-bold text-lg">Back to Wallet</Text>
         </Pressable>
 
-        <Pressable 
+        <Pressable
           onPress={() => router.push('/finance/transactions')}
           className="border border-primary h-16 rounded-2xl justify-center items-center"
         >

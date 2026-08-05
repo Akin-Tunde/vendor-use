@@ -1,7 +1,7 @@
 import { useRouter } from 'expo-router';
 import { ArrowLeft, CheckCircle2, Eye, EyeOff, Lock } from 'lucide-react-native';
 import { useState } from 'react';
-import { Pressable, ScrollView, Text, TextInput, View ,Image } from 'react-native';
+import { Image, Pressable, ScrollView, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function CreateNewPasswordScreen() {
@@ -29,9 +29,13 @@ export default function CreateNewPasswordScreen() {
 
                 {/* Top Illustration Graphic */}
                 <View className="items-center justify-center my-4">
-                    <View className="w-40 h-40  items-center justify-center">
-                      <Image source={require('../../../assets/icons/verify-otp.png')} className="w-full h-full" />
-          </View>
+                    <View className="w-40 h-40 items-center justify-center">
+                        <Image
+                            source={require('../../../assets/icons/verify-otp.png')}
+                            className="w-full h-full"
+                            resizeMode="contain"
+                        />
+                    </View>
                 </View>
 
                 {/* New Password Input */}
@@ -53,17 +57,17 @@ export default function CreateNewPasswordScreen() {
                 {/* Segmented Password Strength Bar */}
                 <View className="mb-4">
                     <View className="flex-row justify-between items-center mb-1">
-                        <View className="flex-1 flex-row space-x-2 mr-4">
+                        <View className="flex-1 flex-row gap-x-2 mr-4">
                             <View className="flex-1 h-1.5 bg-green-500 rounded-full" />
-                            <View className="flex-1 h-1.5 bg-slate-200 rounded-full" />
-                            <View className="flex-1 h-1.5 bg-slate-200 rounded-full" />
+                            <View className="flex-1 h-1.5 bg-green-500 rounded-full" />
+                            <View className="flex-1 h-1.5 bg-green-500 rounded-full" />
                         </View>
                         <Text className="text-green-600 font-bold text-xs">Strong</Text>
                     </View>
                 </View>
 
                 {/* Password Requirements Checklist */}
-                <View className="mb-6 space-y-2.5">
+                <View className="mb-6 gap-y-2.5">
                     <Text className="text-slate-600 font-semibold text-xs mb-1">Password must contain:</Text>
                     <CheckItem label="At least 8 characters" checked />
                     <CheckItem label="Contains uppercase letter" checked />

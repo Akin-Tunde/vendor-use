@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { View, Text,  ScrollView, Pressable, TextInput } from 'react-native';
 import { useRouter } from 'expo-router';
-import { ArrowLeft, Filter, Upload, Search, ChevronDown, ArrowDownLeft, ArrowUpRight } from 'lucide-react-native';
+import { ArrowDownLeft, ArrowLeft, ArrowUpRight, ChevronDown, Filter, Search, Upload } from 'lucide-react-native';
+import { useState } from 'react';
+import { Pressable, ScrollView, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 const FILTERS = ['All', 'Money In', 'Money Out', 'Withdrawals', 'Add Money'];
 
@@ -23,7 +23,7 @@ export default function TransactionsScreen() {
           </View>
         </View>
 
-        <View className="flex-row space-x-2">
+        <View className="flex-row gap-x-2">
           <Pressable className="w-10 h-10 bg-slate-50 border border-slate-100 rounded-xl items-center justify-center"><Filter size={18} color="#64748b" /></Pressable>
           <Pressable className="w-10 h-10 bg-slate-50 border border-slate-100 rounded-xl items-center justify-center"><Upload size={18} color="#64748b" /></Pressable>
         </View>
@@ -60,9 +60,13 @@ export default function TransactionsScreen() {
         </View>
 
         {/* Filter Pills */}
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} className="px-6 py-4 space-x-2">
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerClassName="px-6 py-4 gap-x-2"
+        >
           {FILTERS.map((f) => (
-            <Pressable 
+            <Pressable
               key={f}
               onPress={() => setActiveFilter(f)}
               className={`px-4 py-2 rounded-2xl ${activeFilter === f ? 'bg-primary' : 'bg-white border border-slate-100'}`}
@@ -73,9 +77,9 @@ export default function TransactionsScreen() {
         </ScrollView>
 
         {/* Grouped Transactions */}
-        <View className="px-6 mb-12">
+        <View className="px-6 mb-6">
           <Text className="font-bold text-slate-900 text-xs mb-3">Today</Text>
-          <View className="bg-white border border-slate-100 p-4 rounded-[32px] shadow-sm space-y-3 mb-6">
+          <View className="bg-white border border-slate-100 p-4 rounded-[32px] shadow-sm gap-y-3 mb-6">
             <TxItem label="Add Money" sub="Via Paystack (Card) • 10:52 AM" amount="+₦10,000.00" isPos />
             <TxItem label="Order Payment" sub="Order #ODR-98271 • 10:15 AM" amount="+₦24,500.00" isPos />
             <TxItem label="Withdrawal to Bank" sub="GTBank •••• 1234 • 09:30 AM" amount="-₦120,000.00" isPos={false} />
@@ -83,7 +87,7 @@ export default function TransactionsScreen() {
           </View>
 
           <Text className="font-bold text-slate-900 text-xs mb-3">Yesterday</Text>
-          <View className="bg-white border border-slate-100 p-4 rounded-[32px] shadow-sm space-y-3">
+          <View className="bg-white border border-slate-100 p-4 rounded-[32px] shadow-sm gap-y-3">
             <TxItem label="Add Money" sub="Via Bank Transfer • 06:20 PM" amount="+₦20,000.00" isPos />
             <TxItem label="Ad Campaign Payment" sub="Campaign: Summer Promo • 04:10 PM" amount="-₦15,000.00" isPos={false} />
             <TxItem label="Order Payment" sub="Order #ODR-98260 • 02:35 PM" amount="+₦18,000.00" isPos />
@@ -109,7 +113,7 @@ function TxItem({ label, sub, amount, isPos }: any) {
       <View className="items-end">
         <Text className={`font-bold text-xs ${isPos ? 'text-green-600' : 'text-red-500'}`}>{amount}</Text>
         <View className="bg-green-100 px-2 py-0.5 rounded-full mt-0.5">
-          <Text className="text-green-700 text-[8px] font-bold">Successful</Text>
+          <Text className="text-green-700 text-[9px] font-bold">Successful</Text>
         </View>
       </View>
     </View>

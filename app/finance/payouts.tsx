@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { View, Text,  ScrollView, Pressable, TextInput } from 'react-native';
 import { useRouter } from 'expo-router';
-import { ArrowLeft, Upload, Filter, Search, ChevronDown, ShieldCheck } from 'lucide-react-native';
+import { ArrowLeft, Filter, Search, ShieldCheck, Upload } from 'lucide-react-native';
+import { useState } from 'react';
+import { Pressable, ScrollView, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 const STATUS_FILTERS = ['All', 'Completed', 'Processing', 'Failed'];
 
@@ -44,7 +44,7 @@ export default function PayoutHistoryScreen() {
         </View>
 
         {/* Search & Filters */}
-        <View className="px-6 mt-4 flex-row space-x-2">
+        <View className="px-6 mt-4 flex-row gap-x-2">
           <View className="flex-1 bg-white border border-slate-100 h-12 rounded-2xl flex-row items-center px-4 shadow-sm">
             <Search size={18} color="#94a3b8" />
             <TextInput placeholder="Search by amount, bank or reference" className="flex-1 ml-2 text-xs" />
@@ -55,10 +55,14 @@ export default function PayoutHistoryScreen() {
         </View>
 
         {/* Status Pills */}
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} className="px-6 py-4 space-x-2">
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerClassName="px-6 py-4 gap-x-2"
+        >
           {STATUS_FILTERS.map((s) => (
-            <Pressable 
-              key={s} 
+            <Pressable
+              key={s}
               onPress={() => setActiveStatus(s)}
               className={`px-4 py-2 rounded-2xl ${activeStatus === s ? 'bg-primary' : 'bg-white border border-slate-100'}`}
             >
@@ -68,16 +72,16 @@ export default function PayoutHistoryScreen() {
         </ScrollView>
 
         {/* Payout List Grouped */}
-        <View className="px-6 mb-12">
+        <View className="px-6 mb-6">
           <Text className="font-bold text-slate-900 text-xs mb-3">Today</Text>
-          <View className="bg-white border border-slate-100 p-4 rounded-[32px] shadow-sm space-y-3 mb-6">
+          <View className="bg-white border border-slate-100 p-4 rounded-[32px] shadow-sm gap-y-3 mb-6">
             <PayoutRow bank="GTBank •••• 1234" amount="₦120,000.00" date="31 May 2025, 10:45 AM" status="Completed" statusColor="bg-green-100 text-green-700" />
             <PayoutRow bank="Access Bank •••• 4567" amount="₦85,000.00" date="31 May 2025, 09:15 AM" status="Processing" statusColor="bg-amber-100 text-amber-800" />
             <PayoutRow bank="GTBank •••• 1234" amount="₦150,000.00" date="30 May 2025, 04:20 PM" status="Completed" statusColor="bg-green-100 text-green-700" />
           </View>
 
           <Text className="font-bold text-slate-900 text-xs mb-3">Yesterday</Text>
-          <View className="bg-white border border-slate-100 p-4 rounded-[32px] shadow-sm space-y-3">
+          <View className="bg-white border border-slate-100 p-4 rounded-[32px] shadow-sm gap-y-3">
             <PayoutRow bank="Zenith Bank •••• 7890" amount="₦200,000.00" date="30 May 2025, 11:30 AM" status="Completed" statusColor="bg-green-100 text-green-700" />
             <PayoutRow bank="UBA •••• 1122" amount="₦95,000.00" date="29 May 2025, 03:10 PM" status="Completed" statusColor="bg-green-100 text-green-700" />
             <PayoutRow bank="GTBank •••• 1234" amount="₦50,000.00" date="29 May 2025, 09:40 AM" status="Failed" statusColor="bg-red-100 text-red-700" />
@@ -85,7 +89,7 @@ export default function PayoutHistoryScreen() {
         </View>
 
         {/* Security Footer Banner */}
-        <View className="mx-6 mb-12 bg-purple-50/60 p-4 rounded-2xl flex-row items-center border border-purple-100">
+        <View className="mx-6 mb-6 bg-purple-50/60 p-4 rounded-2xl flex-row items-center border border-purple-100">
           <ShieldCheck size={18} color="#4F26D9" className="mr-3" />
           <Text className="text-slate-600 text-[10px] flex-1 leading-4">
             All payouts are encrypted and processed securely. You will receive a notification for every payout.

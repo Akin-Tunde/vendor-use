@@ -93,7 +93,7 @@ export default function AddMoneyScreen() {
         </View>
 
         {/* 2. Choose Amount Section */}
-        <View className="mx-6 mt-6 bg-white border border-slate-100 p-5 rounded-[32px] shadow-sm space-y-4">
+        <View className="mx-6 mt-6 bg-white border border-slate-100 p-5 rounded-[32px] shadow-sm gap-y-4">
           <View>
             <Text className="font-bold text-slate-900 text-sm">Choose Amount</Text>
             <Text className="text-slate-400 text-[10px] mt-0.5">Select a quick amount or enter a custom amount</Text>
@@ -163,7 +163,7 @@ export default function AddMoneyScreen() {
         </Pressable>
 
         {/* 4. What You Can Do Checklist Card */}
-        <View className="mx-6 mt-4 bg-white border border-slate-100 p-5 rounded-[32px] shadow-sm mb-12 space-y-3">
+        <View className="mx-6 mt-4 bg-white border border-slate-100 p-5 rounded-[32px] shadow-sm mb-4 gap-y-3">
           <Text className="font-bold text-slate-900 text-sm mb-1">You will be able to</Text>
           <BenefitRow text="Run sponsored ads to boost your store" />
           <BenefitRow text="Promote products to increase visibility" />
@@ -190,7 +190,7 @@ function UsageItem({ icon: Icon, label, onPress }: any) {
       <View className="w-7 h-7 bg-white/10 rounded-lg items-center justify-center mb-1">
         <Icon size={14} color="white" />
       </View>
-      <Text className="text-white/80 text-[8px] font-bold">{label}</Text>
+      <Text className="text-white/80 text-[9px] font-bold">{label}</Text>
     </Pressable>
   );
 }

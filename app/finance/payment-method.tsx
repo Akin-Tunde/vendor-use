@@ -1,7 +1,6 @@
 import { useRouter } from 'expo-router';
 import {
   ArrowLeft,
-  Check,
   CreditCard,
   Info,
   Landmark,
@@ -112,7 +111,7 @@ export default function ChoosePaymentMethodScreen() {
         </View>
 
         {/* 2. Recommended Payment Methods */}
-        <View className="mx-6 mt-6 bg-white border border-slate-100 p-5 rounded-[32px] shadow-sm space-y-3">
+        <View className="mx-6 mt-6 bg-white border border-slate-100 p-5 rounded-[32px] shadow-sm gap-y-3">
           <Text className="font-bold text-slate-900 text-sm mb-1">Recommended</Text>
 
           {METHODS.map((m) => {
@@ -142,14 +141,14 @@ export default function ChoosePaymentMethodScreen() {
 
                 {/* Card Logos or 0 Fee Badge */}
                 {m.showCardLogos ? (
-                  <View className="flex-row items-center space-x-1 mr-2 bg-slate-100 px-2 py-1 rounded-lg">
-                    <Text className="text-[8px] font-extrabold text-blue-800">VISA</Text>
-                    <Text className="text-[8px] font-extrabold text-red-500">MC</Text>
-                    <Text className="text-[8px] font-extrabold text-teal-600">verve</Text>
+                  <View className="flex-row items-center gap-x-1 mr-2 bg-slate-100 px-2 py-1 rounded-lg">
+                    <Text className="text-[9px] font-extrabold text-blue-800">VISA</Text>
+                    <Text className="text-[9px] font-extrabold text-red-500">MC</Text>
+                    <Text className="text-[9px] font-extrabold text-teal-600">verve</Text>
                   </View>
                 ) : m.tag ? (
                   <View className="bg-green-100 px-2 py-0.5 rounded-md mr-2">
-                    <Text className="text-green-700 font-bold text-[8px]">{m.tag}</Text>
+                    <Text className="text-green-700 font-bold text-[9px]">{m.tag}</Text>
                   </View>
                 ) : null}
 
@@ -162,10 +161,8 @@ export default function ChoosePaymentMethodScreen() {
           })}
         </View>
 
-      
-
-        {/* 4. Payment Summary Card */}
-        <View className="mx-6 mt-4 bg-white border border-slate-100 p-5 rounded-[32px] shadow-sm space-y-3 mb-12">
+        {/* 3. Payment Summary Card */}
+        <View className="mx-6 mt-4 bg-white border border-slate-100 p-5 rounded-[32px] shadow-sm gap-y-3 mb-4">
           <Text className="font-bold text-slate-900 text-sm mb-1">Payment Summary</Text>
 
           <View className="flex-row justify-between items-center">

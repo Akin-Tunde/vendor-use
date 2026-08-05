@@ -1,5 +1,5 @@
 import { useRouter } from 'expo-router';
-import { ArrowLeft, RotateCw, ShieldCheck } from 'lucide-react-native';
+import { ArrowLeft, RotateCw } from 'lucide-react-native';
 import { useState } from 'react';
 import { Image, Pressable, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -32,8 +32,12 @@ export default function VerifyOTPScreen() {
 
         {/* Top Graphic Illustration */}
         <View className="items-center justify-center my-4">
-          <View className="w-48 h-40  items-center justify-center ">
-            <Image source={require('../../../assets/icons/verify-otp.png')} className="w-full h-full" />
+          <View className="w-48 h-40 items-center justify-center">
+            <Image
+              source={require('../../../assets/icons/verify-otp.png')}
+              className="w-full h-full"
+              resizeMode="contain"
+            />
           </View>
         </View>
 
@@ -67,8 +71,6 @@ export default function VerifyOTPScreen() {
         <Text className="text-center text-slate-400 text-xs mb-6">
           Code expires in <Text className="text-primary font-bold">02:45</Text>
         </Text>
-
- 
 
         {/* Resend Code Button */}
         <Pressable className="border border-slate-200 bg-white h-14 rounded-2xl flex-row justify-center items-center mb-8 active:bg-purple-50">
