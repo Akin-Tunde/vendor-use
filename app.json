@@ -8,7 +8,11 @@
     "scheme": "merchantapp",
     "userInterfaceStyle": "automatic",
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.usemarket.usemarketvendor",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -50,6 +54,9 @@
     "owner": "pen-akin",
     "runtimeVersion": {
       "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/5dd80625-6f26-4013-8384-5ca50f82051d"
     }
   }
 }
