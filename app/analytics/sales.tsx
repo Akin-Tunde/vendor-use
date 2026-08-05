@@ -32,7 +32,7 @@ export default function SalesReportScreen() {
           </View>
         </View>
 
-        <View className="flex-row space-x-2">
+        <View className="flex-row gap-2">
           <Pressable className="w-10 h-10 bg-slate-50 border border-slate-100 rounded-2xl items-center justify-center shadow-sm">
             <Filter size={18} color="#64748b" />
           </Pressable>
@@ -43,7 +43,7 @@ export default function SalesReportScreen() {
       </View>
 
       <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
-      
+
         {/* 1. 4 Metric Cards in 2x2 Grid */}
         <View className="px-6 py-4 flex-row flex-wrap justify-between gap-y-3">
           <SalesMetric label="Total Sales" value="₦1,245,800" trend="▲ 18.6%" icon="🛍️" />
@@ -56,7 +56,7 @@ export default function SalesReportScreen() {
         <View className="mx-6 bg-white border border-slate-100 p-5 rounded-[32px] shadow-sm mb-6">
           <View className="flex-row justify-between items-center mb-4">
             <Text className="font-bold text-slate-900 text-base">Sales Overview</Text>
-            <View className="flex-row items-center space-x-2">
+            <View className="flex-row items-center gap-2">
               <View className="w-2.5 h-0.5 bg-primary" />
               <Text className="text-[9px] text-slate-500 font-bold">This Month</Text>
             </View>
@@ -96,7 +96,7 @@ export default function SalesReportScreen() {
             </View>
 
             {/* Category Legend */}
-            <View className="flex-1 space-y-1.5">
+            <View className="flex-1 gap-1.5">
               <CategoryLegend color="bg-primary" label="Groceries & Staples" value="₦542,300" pct="43.6%" />
               <CategoryLegend color="bg-blue-500" label="Fruits & Vegetables" value="₦241,500" pct="19.4%" />
               <CategoryLegend color="bg-amber-500" label="Meat, Poultry & Fish" value="₦152,800" pct="12.3%" />
@@ -107,7 +107,7 @@ export default function SalesReportScreen() {
         </View>
 
         {/* 4. Sales by Payment Method (Full Width Card) */}
-        <View className="mx-6 bg-white border border-slate-100 p-5 rounded-[32px] shadow-sm space-y-3 mb-6">
+        <View className="mx-6 bg-white border border-slate-100 p-5 rounded-[32px] shadow-sm gap-3 mb-6">
           <Text className="font-bold text-slate-900 text-sm">Sales by Payment Method</Text>
           <PaymentBar label="Online Payment" value="₦842,100" pct="67.6%" color="bg-primary" />
           <PaymentBar label="Cash on Delivery" value="₦356,200" pct="28.6%" color="bg-green-500" />
@@ -115,7 +115,7 @@ export default function SalesReportScreen() {
         </View>
 
         {/* 5. Sales by Time (Stacked Vertically Below, Full Width Card) */}
-        <View className="mx-6 bg-white border border-slate-100 p-5 rounded-[32px] shadow-sm space-y-3 mb-12">
+        <View className="mx-6 bg-white border border-slate-100 p-5 rounded-[32px] shadow-sm gap-3 mb-12">
           <View className="flex-row justify-between items-center">
             <Text className="font-bold text-slate-900 text-sm">Sales by Time</Text>
             <Pressable className="flex-row items-center">

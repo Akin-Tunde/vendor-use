@@ -3,12 +3,9 @@ import {
   BarChart2,
   ChevronDown,
   ChevronRight,
-  Menu,
   Package,
   ShoppingBag,
   ShoppingCart,
-  Sparkles,
-  TrendingUp,
   Users,
   Wallet
 } from 'lucide-react-native';
@@ -30,7 +27,7 @@ export default function AnalyticsDashboardScreen() {
       {/* Top Header */}
       <View className="px-6 py-4 bg-white border-b border-slate-50 flex-row justify-between items-center">
         <View className="flex-row items-center">
-        
+
           <View>
             <Text className="text-xl font-bold text-slate-900">Analytics Dashboard</Text>
             <Text className="text-slate-400 text-xs">Overview of your business performance</Text>
@@ -44,7 +41,7 @@ export default function AnalyticsDashboardScreen() {
       </View>
 
       <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
-       
+
 
         {/* 1. Primary Metric Cards in 2x2 Grid */}
         <View className="px-6 py-4 flex-row flex-wrap justify-between gap-y-3">
@@ -94,7 +91,6 @@ export default function AnalyticsDashboardScreen() {
             <ReportCard title="Sales Report" desc="Detailed breakdown of sales" icon={BarChart2} iconBg="bg-purple-100" color="#4F26D9" onPress={() => router.push('/analytics/sales')} />
             <ReportCard title="Earnings Report" desc="Track earnings, fees & payouts" icon={Wallet} iconBg="bg-green-100" color="#22c55e" onPress={() => router.push('/analytics/earnings')} />
             <ReportCard title="Product Performance" desc="See top selling products" icon={Package} iconBg="bg-orange-100" color="#f59e0b" onPress={() => router.push('/analytics/products')} />
-            <ReportCard title="Customer Insights" desc="Understand customer behavior" icon={Users} iconBg="bg-blue-100" color="#3b82f6" onPress={() => router.push('/analytics/customers')} />
           </View>
         </View>
 
@@ -132,10 +128,10 @@ export default function AnalyticsDashboardScreen() {
             ))}
           </View>
 
-      
+
         </View>
 
-       
+
       </ScrollView>
     </SafeAreaView>
   );

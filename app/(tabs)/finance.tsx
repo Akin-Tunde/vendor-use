@@ -1,11 +1,18 @@
-import React, { useState } from 'react';
-import { View, Text,  ScrollView, Pressable } from 'react-native';
 import { useRouter } from 'expo-router';
-import { 
-  Eye, EyeOff, ArrowUp, ArrowDown, History, 
-  FileText, HelpCircle, Settings, ChevronRight, 
-  ArrowDownLeft, ArrowUpRight, Calendar, Wallet as WalletIcon
+import {
+  ArrowDown,
+  ArrowDownLeft,
+  ArrowUp,
+  ArrowUpRight, Calendar,
+  ChevronRight,
+  Eye, EyeOff,
+  FileText, HelpCircle,
+  History,
+  Settings,
+  Wallet as WalletIcon
 } from 'lucide-react-native';
+import { useState } from 'react';
+import { Pressable, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 export default function FinanceScreen() {
   const router = useRouter();
@@ -20,7 +27,7 @@ export default function FinanceScreen() {
           <Text className="text-slate-400 text-xs">Manage your balance and transactions</Text>
         </View>
 
-        <View className="flex-row space-x-3">
+        <View className="flex-row gap-3">
           <Pressable className="items-center">
             <HelpCircle size={22} color="#64748b" />
             <Text className="text-[10px] text-slate-500 font-medium mt-0.5">Help</Text>
@@ -71,7 +78,7 @@ export default function FinanceScreen() {
         </View>
 
         {/* Wallet Summary Grid */}
-        <View className="mx-6 mt-6 bg-white border border-slate-100 p-5 rounded-[32px] shadow-sm space-y-4">
+        <View className="mx-6 mt-6 bg-white border border-slate-100 p-5 rounded-[32px] shadow-sm gap-4">
           <Text className="font-bold text-slate-900 text-base">Wallet Summary</Text>
           <View className="flex-row flex-wrap justify-between gap-y-4">
             <SummaryItem label="Available Balance" value="₦842,300.00" sub="Ready to withdraw" icon="👛" />

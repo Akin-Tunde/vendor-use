@@ -1,10 +1,8 @@
 import { useRouter } from 'expo-router';
-import {
-  ChevronRight
-} from 'lucide-react-native';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Dimensions, FlatList, Image, Pressable, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+
 const { width } = Dimensions.get('window');
 
 const ONBOARDING_DATA = [
@@ -13,7 +11,7 @@ const ONBOARDING_DATA = [
     type: 'welcome',
     subtitle: 'Vendor',
     description: 'Manage your store.\nGrow your business.',
-    buttonText: 'Next',
+    buttonText: '',
     bg: 'bg-primary',
   },
   {
@@ -53,9 +51,19 @@ export default function OnboardingScreen() {
   const flatListRef = useRef<FlatList>(null);
   const router = useRouter();
 
+  // Auto-advance from Step 1 (Welcome Screen) after 10 seconds
+  useEffect(() => {
+    if (currentIndex === 0) {
+      const timer = setTimeout(() => {
+        flatListRef.current?.scrollToIndex({ index: 1, animated: true });
+      }, 5000); // 10 seconds
+      return () => clearTimeout(timer);
+    }
+  }, [currentIndex]);
+
   const handleNext = () => {
     if (currentIndex < ONBOARDING_DATA.length - 1) {
-      flatListRef.current?.scrollToIndex({ index: currentIndex + 1 });
+      flatListRef.current?.scrollToIndex({ index: currentIndex + 1, animated: true });
     } else {
       router.replace('/(auth)/login');
     }
@@ -78,9 +86,9 @@ export default function OnboardingScreen() {
 
           <View className="flex-1 px-2">
             {isWelcome ? (
-              /* SCREEN 1: PURPLE WELCOME */
+              /* SCREEN 1: PURPLE WELCOME (Advances automatically in 10s) */
               <View className="flex-1 justify-center items-center">
-                <View className="rounded-[32px]  justify-center items-center">
+                <View className="rounded-[32px] justify-center items-center">
                   <Image source={require('../assets/icons/logo-1.png')} className="w-64 h-64" />
                 </View>
                 <Text className="text-white text-5xl font-bold tracking-tight">useMarket</Text>
@@ -98,32 +106,14 @@ export default function OnboardingScreen() {
                   <Image source={item.image} className="w-full h-full" resizeMode="contain" />
                 </View>
 
-                {/* Text - now sits directly under the image */}
+                {/* Text - sits directly under the image */}
                 <View className="items-center mt-2">
                   <Text className="text-3xl font-bold text-slate-900 text-center">{item.title}</Text>
                   <Text className="text-2xl font-bold text-primary text-center">{item.subtitle}</Text>
-                  <Text className="text-muted  text-center mt-3 text-base px-2">
+                  <Text className="text-muted text-center mt-3 text-base px-2">
                     {item.description}
                   </Text>
                 </View>
-
-                {/* Feature Cards */}
-                {item.id !== '2' && (
-                  <View className="space-y-3 mt-8">
-                    {item.features?.map((f: any, i: number) => (
-                      <View key={i} className="flex-row items-center bg-white p-4 rounded-3xl border border-slate-100 shadow-sm">
-                        <View className={`w-12 h-12 rounded-2xl items-center justify-center mr-4 ${f.color}`}>
-                          <f.icon size={24} color="#4F26D9" />
-                        </View>
-                        <View className="flex-1">
-                          <Text className="font-bold text-slate-900 text-base">{f.title}</Text>
-                          <Text className="text-slate-500 text-xs mt-1 leading-4">{f.desc}</Text>
-                        </View>
-                        <ChevronRight size={20} color="#4F26D9" />
-                      </View>
-                    ))}
-                  </View>
-                )}
               </View>
             )}
           </View>
@@ -148,29 +138,31 @@ export default function OnboardingScreen() {
         keyExtractor={(item) => item.id}
       />
 
-      {/* Footer: Pagination & Button */}
-      <View className="absolute bottom-12 left-0 right-0 px-8 items-center">
-        {/* Pagination Dots - moved further up, away from the button */}
-        <View className="flex-row mb-16">
-          {ONBOARDING_DATA.map((_, i) => (
-            <View key={i}
-              className={`h-2 mx-1 rounded-full ${currentIndex === i ? 'w-2 bg-primary' : 'w-2 bg-slate-200'}`}
-              style={currentIndex === 0 ? { backgroundColor: currentIndex === i ? 'white' : 'rgba(255,255,255,0.3)' } : null}
-            />
-          ))}
-        </View>
+      {/* Footer: Pagination Dots & Next Button (Hidden on Step 1, visible on Steps 2-4) */}
+      {currentIndex > 0 && (
+        <View className="absolute bottom-12 left-0 right-0 px-8 items-center">
+          {/* Pagination Dots */}
+          <View className="flex-row mb-16">
+            {ONBOARDING_DATA.map((_, i) => (
+              <View
+                key={i}
+                className={`h-2 mx-1 rounded-full ${currentIndex === i ? 'w-2 bg-primary' : 'w-2 bg-slate-200'
+                  }`}
+              />
+            ))}
+          </View>
 
-        {/* Action Button */}
-        <Pressable
-          onPress={handleNext}
-          className={`w-full h-16 rounded-2xl justify-center items-center shadow-lg ${currentIndex === 0 ? 'bg-transparent border-2 border-white/30' : 'bg-primary'
-            }`}
-        >
-          <Text className="text-white font-bold text-xl">
-            {ONBOARDING_DATA[currentIndex].buttonText}
-          </Text>
-        </Pressable>
-      </View>
+          {/* Action Button */}
+          <Pressable
+            onPress={handleNext}
+            className="w-full h-16 rounded-2xl justify-center items-center shadow-lg bg-primary active:bg-primary/90"
+          >
+            <Text className="text-white font-bold text-xl">
+              {ONBOARDING_DATA[currentIndex].buttonText}
+            </Text>
+          </Pressable>
+        </View>
+      )}
     </View>
   );
 }

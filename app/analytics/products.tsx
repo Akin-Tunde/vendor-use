@@ -1,5 +1,5 @@
 import { useRouter } from 'expo-router';
-import { ArrowLeft, ChevronDown, ChevronRight, DollarSign, Filter, Package, ShoppingCart, Sparkles, TrendingUp } from 'lucide-react-native';
+import { ArrowLeft, ChevronDown, ChevronRight, DollarSign, Filter, Package, ShoppingCart, TrendingUp } from 'lucide-react-native';
 import { Pressable, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -43,7 +43,7 @@ export default function ProductPerformanceScreen() {
           </View>
         </View>
 
-        <View className="flex-row space-x-2">
+        <View className="flex-row gap-2">
           <Pressable className="bg-slate-50 border border-slate-100 px-3.5 py-2 rounded-2xl flex-row items-center">
             <Text className="text-xs font-bold text-slate-700 mr-1.5">This Month</Text>
             <ChevronDown size={14} color="#64748b" />
@@ -67,7 +67,7 @@ export default function ProductPerformanceScreen() {
         <View className="mx-6 bg-white border border-slate-100 p-5 rounded-[32px] shadow-sm mb-6">
           <View className="flex-row justify-between items-center mb-4">
             <Text className="font-bold text-slate-900 text-base">Sales Performance Overview</Text>
-            <View className="flex-row items-center space-x-3">
+            <View className="flex-row items-center gap-3">
               <View className="flex-row items-center">
                 <View className="w-2.5 h-0.5 bg-primary mr-1" />
                 <Text className="text-[9px] text-slate-500 font-bold">Revenue (₦)</Text>
@@ -130,7 +130,7 @@ export default function ProductPerformanceScreen() {
         </View>
 
         {/* 4. Low Performing Products & Stock Alert Cards (Stacked Vertically Below) */}
-        <View className="mx-6 space-y-6 mb-6">
+        <View className="mx-6 gap-6 mb-6">
           {/* Low Performing Products Card */}
           <View className="bg-white border border-slate-100 p-5 rounded-[32px] shadow-sm">
             <View className="flex-row justify-between items-center mb-3">
@@ -193,7 +193,6 @@ export default function ProductPerformanceScreen() {
           </View>
         </View>
 
-      
       </ScrollView>
     </SafeAreaView>
   );

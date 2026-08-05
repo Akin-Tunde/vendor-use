@@ -40,7 +40,7 @@ export default function EarningsReportScreen() {
           </View>
         </View>
 
-        <View className="flex-row space-x-2">
+        <View className="flex-row gap-2">
           <Pressable className="w-10 h-10 bg-slate-50 border border-slate-100 rounded-2xl items-center justify-center shadow-sm">
             <Calendar size={18} color="#64748b" />
           </Pressable>
@@ -52,11 +52,29 @@ export default function EarningsReportScreen() {
 
       <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
         {/* Time Period Filter Pills Bar */}
-   
+        <View className="px-6 pt-4 flex-row flex-wrap gap-2">
+          {TIME_FILTERS.map((filter) => (
+            <Pressable
+              key={filter}
+              onPress={() => setSelectedFilter(filter)}
+              className={`px-3.5 py-2 rounded-full border ${selectedFilter === filter
+                  ? 'bg-primary border-primary'
+                  : 'bg-white border-slate-100'
+                }`}
+            >
+              <Text
+                className={`text-xs font-bold ${selectedFilter === filter ? 'text-white' : 'text-slate-600'
+                  }`}
+              >
+                {filter}
+              </Text>
+            </Pressable>
+          ))}
+        </View>
 
         {/* 1. Primary 4 Metric Cards */}
         <View className="px-6 py-4">
-          <ScrollView horizontal showsHorizontalScrollIndicator={false} className="space-x-3">
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerClassName="gap-3">
             <MetricCard label="Total Earnings" value="₦986,500" trend="▲ 20.1%" sub="vs last month" icon={Wallet} bg="bg-purple-100" iconColor="#4F26D9" />
             <MetricCard label="Product Sales" value="₦1,245,800" trend="▲ 18.6%" sub="vs last month" icon={FileText} bg="bg-green-100" iconColor="#22c55e" />
             <MetricCard label="Platform Fees" value="-₦186,870" trend="▲ 12.3%" sub="vs last month" icon={Percent} bg="bg-orange-100" iconColor="#f97316" />
@@ -68,7 +86,7 @@ export default function EarningsReportScreen() {
         <View className="mx-6 bg-white border border-slate-100 p-5 rounded-[32px] shadow-sm mb-6">
           <View className="flex-row justify-between items-center mb-4">
             <Text className="font-bold text-slate-900 text-base">Earnings Overview</Text>
-            <View className="flex-row items-center space-x-3">
+            <View className="flex-row items-center gap-3">
               <View className="flex-row items-center">
                 <View className="w-2.5 h-0.5 bg-primary mr-1" />
                 <Text className="text-[9px] text-slate-500 font-bold">Net Earnings</Text>
@@ -110,7 +128,7 @@ export default function EarningsReportScreen() {
             </View>
 
             {/* Breakdown Legend */}
-            <View className="flex-1 space-y-2">
+            <View className="flex-1 gap-2">
               <BreakdownRow color="bg-primary" label="Product Sales" amount="₦1,245,800" pct="75.8%" />
               <BreakdownRow color="bg-green-500" label="Delivery Fees" amount="₦356,200" pct="21.6%" />
               <BreakdownRow color="bg-amber-500" label="Tips" amount="₦84,700" pct="5.1%" />

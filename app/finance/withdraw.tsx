@@ -1,10 +1,14 @@
-import React, { useState } from 'react';
-import { View, Text, ScrollView, Pressable, TextInput } from 'react-native';
 import { useRouter } from 'expo-router';
-import { 
-  ArrowLeft, History, Info, ShieldCheck, Check, 
-  Eye, EyeOff, Clock, ChevronDown, Plus, X
+import {
+  ArrowLeft,
+  ChevronDown,
+  Clock,
+  Eye, EyeOff,
+  History, Info,
+  Plus, X
 } from 'lucide-react-native';
+import { useState } from 'react';
+import { Pressable, ScrollView, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 const QUICK_AMOUNTS = ['10,000', '50,000', '100,000', '200,000'];
@@ -19,8 +23,8 @@ export default function WithdrawFundsScreen() {
       {/* Top Header */}
       <View className="px-6 py-4 bg-white border-b border-slate-50 flex-row justify-between items-center">
         <View className="flex-row items-center">
-          <Pressable 
-            onPress={() => router.back()} 
+          <Pressable
+            onPress={() => router.back()}
             className="w-10 h-10 bg-slate-50 border border-slate-200 rounded-2xl items-center justify-center mr-3 active:bg-purple-50"
           >
             <ArrowLeft size={20} color="#000" />
@@ -31,11 +35,11 @@ export default function WithdrawFundsScreen() {
           </View>
         </View>
 
-        <Pressable 
-          onPress={() => router.push('/finance/transactions')} 
-          className="bg-slate-50 border border-slate-200 px-3.5 py-2 rounded-2xl flex-row items-center active:bg-purple-50"
+        <Pressable
+          onPress={() => router.push('/finance/transactions')}
+          className="bg-slate-50 border border-slate-200 px-3.5 py-2 rounded-2xl flex-row items-center gap-1.5 active:bg-purple-50"
         >
-          <History size={16} color="#000" className="mr-1.5" />
+          <History size={16} color="#000" />
           <Text className="text-slate-900 font-bold text-xs">History</Text>
         </Pressable>
       </View>
@@ -55,9 +59,9 @@ export default function WithdrawFundsScreen() {
               {showBalance ? '₦842,300.00' : '••••••••'}
             </Text>
 
-            <View className="flex-row items-center mt-3">
+            <View className="flex-row items-center mt-3 gap-1">
               <Text className="text-white/70 text-xs">Withdrawable Balance</Text>
-              <Info size={12} color="rgba(255,255,255,0.7)" className="ml-1" />
+              <Info size={12} color="rgba(255,255,255,0.7)" />
             </View>
             <Text className="text-white font-bold text-sm mt-0.5">
               {showBalance ? '₦842,300.00' : '••••••••'}
@@ -71,7 +75,7 @@ export default function WithdrawFundsScreen() {
         </View>
 
         {/* 2. Enter Amount Card */}
-        <View className="mx-6 mt-6 bg-white border border-slate-100 p-5 rounded-[32px] shadow-sm space-y-4">
+        <View className="mx-6 mt-6 bg-white border border-slate-100 p-5 rounded-[32px] shadow-sm gap-4">
           <View className="flex-row justify-between items-center">
             <Text className="font-bold text-slate-900 text-sm">Enter Amount</Text>
             <Pressable onPress={() => setAmount('842,300')}>
@@ -82,7 +86,7 @@ export default function WithdrawFundsScreen() {
           <View className="bg-purple-50/20 border-2 border-primary h-14 rounded-2xl flex-row items-center px-4 justify-between">
             <View className="flex-row items-center flex-1">
               <Text className="text-slate-900 font-bold text-xl mr-1">₦</Text>
-              <TextInput 
+              <TextInput
                 value={amount}
                 onChangeText={setAmount}
                 keyboardType="numeric"
@@ -99,8 +103,8 @@ export default function WithdrawFundsScreen() {
           {/* Quick Amount Pills */}
           <View className="flex-row justify-between gap-x-2">
             {QUICK_AMOUNTS.map((amt) => (
-              <Pressable 
-                key={amt} 
+              <Pressable
+                key={amt}
                 onPress={() => setAmount(amt)}
                 className="flex-1 bg-purple-50/50 border border-purple-100 py-2.5 rounded-2xl items-center active:bg-primary active:border-primary"
               >
@@ -111,11 +115,11 @@ export default function WithdrawFundsScreen() {
         </View>
 
         {/* 3. Select Bank Account Card */}
-        <View className="mx-6 mt-6 bg-white border border-slate-100 p-5 rounded-[32px] shadow-sm space-y-3">
+        <View className="mx-6 mt-6 bg-white border border-slate-100 p-5 rounded-[32px] shadow-sm gap-3">
           <View className="flex-row justify-between items-center mb-1">
             <Text className="font-bold text-slate-900 text-sm">Select Bank Account</Text>
-            <Pressable className="flex-row items-center">
-              <Plus size={14} color="#4F26D9" className="mr-0.5" />
+            <Pressable className="flex-row items-center gap-0.5">
+              <Plus size={14} color="#4F26D9" />
               <Text className="text-primary font-bold text-xs">Add New Account</Text>
             </Pressable>
           </View>
@@ -140,18 +144,18 @@ export default function WithdrawFundsScreen() {
           </View>
 
           {/* View All Accounts Link */}
-          <Pressable className="flex-row items-center justify-center pt-2">
-            <ChevronDown size={14} color="#64748b" className="mr-1" />
+          <Pressable className="flex-row items-center justify-center gap-1 pt-2">
+            <ChevronDown size={14} color="#64748b" />
             <Text className="text-slate-600 font-bold text-xs">View all accounts</Text>
           </Pressable>
         </View>
 
         {/* 4. Withdrawal Summary Card */}
-        <View className="mx-6 mt-6 bg-white border border-slate-100 p-5 rounded-[32px] shadow-sm space-y-3">
+        <View className="mx-6 mt-6 bg-white border border-slate-100 p-5 rounded-[32px] shadow-sm gap-3">
           <Text className="font-bold text-slate-900 text-sm mb-1">Withdrawal Summary</Text>
           <SummaryRow label="Withdrawal Amount" value={`₦${amount || '0'}.00`} />
           <SummaryRow label="Processing Fee" value="₦0.00" green hasInfo />
-          
+
           <View className="flex-row justify-between pt-3 border-t border-slate-100">
             <Text className="font-bold text-slate-900 text-base">You will receive</Text>
             <Text className="font-bold text-slate-900 text-lg">₦{amount || '0'}.00</Text>
@@ -169,12 +173,11 @@ export default function WithdrawFundsScreen() {
           </View>
         </View>
 
-      
       </ScrollView>
 
       {/* Footer Button */}
       <View className="p-6 bg-white border-t border-slate-50">
-        <Pressable 
+        <Pressable
           onPress={() => router.push('/finance/withdraw-review')}
           className="bg-primary h-16 rounded-2xl justify-center items-center shadow-lg shadow-primary/30 active:bg-primary/90"
         >
@@ -188,9 +191,9 @@ export default function WithdrawFundsScreen() {
 function SummaryRow({ label, value, green, hasInfo }: any) {
   return (
     <View className="flex-row justify-between items-center">
-      <View className="flex-row items-center">
+      <View className="flex-row items-center gap-1">
         <Text className="text-slate-500 text-xs">{label}</Text>
-        {hasInfo && <Info size={12} color="#94a3b8" className="ml-1" />}
+        {hasInfo && <Info size={12} color="#94a3b8" />}
       </View>
       <Text className={`font-bold text-xs ${green ? 'text-green-600' : 'text-slate-900'}`}>{value}</Text>
     </View>
