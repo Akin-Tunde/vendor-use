@@ -1,5 +1,5 @@
 import { Tabs, usePathname } from 'expo-router';
-import { Home, ShoppingCart, Tag, User } from 'lucide-react-native';
+import { Image } from 'react-native';
 
 export default function TabLayout() {
   const pathname = usePathname();
@@ -26,21 +26,39 @@ export default function TabLayout() {
         name="index"
         options={{
           title: 'Home',
-          tabBarIcon: ({ color }) => <Home size={22} color={color} />,
+          tabBarIcon: ({ color }) => (
+            <Image
+              source={require('../../assets/icons/dashboard.png')}
+              style={{ width: 22, height: 22, }}
+              resizeMode="contain"
+            />
+          ),
         }}
       />
       <Tabs.Screen
         name="orders"
         options={{
           title: 'Orders',
-          tabBarIcon: ({ color }) => <ShoppingCart size={22} color={color} />,
+          tabBarIcon: ({ color }) => (
+            <Image
+              source={require('../../assets/icons/orders.png')}
+              style={{ width: 22, height: 22, }}
+              resizeMode="contain"
+            />
+          ),
         }}
       />
       <Tabs.Screen
         name="products"
         options={{
           title: 'Products',
-          tabBarIcon: ({ color }) => <Tag size={22} color={color} />,
+          tabBarIcon: ({ color }) => (
+            <Image
+              source={require('../../assets/icons/products.png')}
+              style={{ width: 22, height: 22, }}
+              resizeMode="contain"
+            />
+          ),
         }}
       />
       <Tabs.Screen
@@ -48,7 +66,15 @@ export default function TabLayout() {
         options={{
           title: 'Profile',
           tabBarIcon: ({ color }) => (
-            <User size={22} color={isProfileTabActive ? '#4F26D9' : color} />
+            <Image
+              source={require('../../assets/icons/profile.png')}
+              style={{
+                width: 22,
+                height: 22,
+
+              }}
+              resizeMode="contain"
+            />
           ),
           tabBarLabelStyle: {
             color: isProfileTabActive ? '#4F26D9' : '#94a3b8',

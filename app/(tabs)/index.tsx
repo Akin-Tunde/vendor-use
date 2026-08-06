@@ -1,7 +1,6 @@
 import { useRouter } from 'expo-router';
 import {
    Bell,
-   Calendar,
    ChevronRight,
    Eye,
    Percent,
@@ -17,12 +16,13 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function Dashboard() {
    const router = useRouter();
+
    return (
       <SafeAreaView className="flex-1 bg-[#F8F9FE]">
          {/* Top Header */}
          <View className="px-6 pt-4 pb-3 bg-white flex-row justify-between items-center border-b border-slate-50">
             <View className="flex-row items-center">
-               <View className="ml-4">
+               <View className="ml-2">
                   <View className="flex-row items-center">
                      <Text className="text-xl font-bold text-primary">useMarket</Text>
                      <View className="bg-primary/10 px-2 py-0.5 rounded ml-2">
@@ -33,15 +33,22 @@ export default function Dashboard() {
             </View>
 
             <View className="flex-row items-center">
-               <View className="relative mr-4">
+               <Pressable
+                  onPress={() => router.push('/settings/notifications' as any)}
+                  className="relative mr-4 p-1 active:opacity-70"
+               >
                   <Bell size={24} color="#4F26D9" />
                   <View className="absolute -top-1 -right-1 bg-red-500 w-4 h-4 rounded-full border-2 border-white items-center justify-center">
                      <Text className="text-[8px] text-white font-bold">3</Text>
                   </View>
-               </View>
-               <View className="w-10 h-10 rounded-full bg-slate-200 overflow-hidden border-2 border-green-500">
+               </Pressable>
+
+               <Pressable
+                  onPress={() => router.push('/(tabs)/profile')}
+                  className="w-10 h-10 rounded-full bg-slate-200 overflow-hidden border-2 border-green-500 active:opacity-80"
+               >
                   <Image source={{ uri: 'https://avatar.iran.liara.run/public/31' }} className="w-full h-full" />
-               </View>
+               </Pressable>
             </View>
          </View>
 
@@ -51,20 +58,63 @@ export default function Dashboard() {
                <View className="flex-row justify-between items-center mb-4">
                   <Text className="text-base font-bold text-slate-900">Overview</Text>
                   <Pressable className="flex-row items-center bg-slate-50 px-3 py-1.5 rounded-2xl border border-slate-100">
-                     <Calendar size={12} color="#4F26D9" className="mr-1.5" />
+                     <Image
+                        source={require('../../assets/icons/calendar.png')}
+                        className="w-3.5 h-3.5 mr-1.5"
+                        resizeMode="contain"
+                     />
                      <Text className="text-xs font-bold text-slate-700 mr-1">Today</Text>
                      <ChevronRight size={14} color="#94a3b8" className="rotate-90" />
                   </Pressable>
                </View>
 
                <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                  <StatCard title="Total Orders" value="24" trend="+ 20%" icon={ShoppingBag} iconBg="bg-purple-100" iconColor="#4F26D9" />
-                  <StatCard title="Total Sales" value="₦158,450" trend="+ 18%" icon={Wallet} iconBg="bg-green-100" iconColor="#22c55e" />
-                  <StatCard title="New Customers" value="12" trend="+ 9%" icon={Users} iconBg="bg-orange-100" iconColor="#f59e0b" />
-                  <StatCard title="Store Views" value="342" trend="+ 15%" icon={Eye} iconBg="bg-blue-100" iconColor="#3b82f6" />
+                  <StatCard
+                     title="Total Orders"
+                     value="24"
+                     trend="+ 20%"
+                     image={require('../../assets/icons/add product.png')}
+                     icon={ShoppingBag}
+                     iconBg="bg-purple-100"
+                     iconColor="#4F26D9"
+                     onPress={() => router.push('/orders')}
+                  />
+                  <StatCard
+                     title="Total Sales"
+                     value="₦158,450"
+                     trend="+ 18%"
+                     image={require('../../assets/icons/performance.png')}
+                     icon={Wallet}
+                     iconBg="bg-green-100"
+                     iconColor="#22c55e"
+                     onPress={() => router.push('/analytics/sales')}
+                  />
+                  <StatCard
+                     title="New Customers"
+                     value="12"
+                     trend="+ 9%"
+                     image={require('../../assets/icons/customers.png')}
+                     icon={Users}
+                     iconBg="bg-orange-100"
+                     iconColor="#f59e0b"
+                     onPress={() => router.push('/analytics/customers')}
+                  />
+                  <StatCard
+                     title="Store Views"
+                     value="342"
+                     trend="+ 15%"
+                     image={require('../../assets/icons/store_profile.png')}
+                     icon={Eye}
+                     iconBg="bg-blue-100"
+                     iconColor="#3b82f6"
+                     onPress={() => router.push('/(tabs)/analytics')}
+                  />
                </ScrollView>
 
-               <Pressable className="flex-row items-center justify-between border-t border-slate-50 mt-4 pt-3">
+               <Pressable
+                  onPress={() => router.push('/(tabs)/analytics')}
+                  className="flex-row items-center justify-between border-t border-slate-50 mt-4 pt-3 active:bg-slate-50/50 rounded-xl px-1"
+               >
                   <View className="flex-row items-center">
                      <TrendingUp size={14} color="#4F26D9" className="mr-2" />
                      <Text className="text-primary font-bold text-xs">View Analytics</Text>
@@ -77,16 +127,41 @@ export default function Dashboard() {
             <View className="mx-6 mt-6">
                <Text className="text-base font-bold text-slate-900 mb-3">Quick Actions</Text>
                <View className="flex-row justify-between">
-                  <ActionItem label="Add Product" icon={ShoppingBag} onPress={() => router.push('/products/add')} />
-                  <ActionItem label="Manage Products" icon={Tag} onPress={() => router.push('/products/inventory')} />
-                  <ActionItem label="Manage Orders" icon={ReceiptText} onPress={() => router.push('/orders')} />
-                  <ActionItem label="Promotions" icon={Percent} onPress={() => router.push('/marketing')} />
-                  <ActionItem label="Payouts" icon={Wallet} onPress={() => router.push('/finance/payouts')} />
+                  <ActionItem
+                     label="Add Product"
+                     image={require('../../assets/icons/add product.png')}
+                     icon={ShoppingBag}
+                     onPress={() => router.push('/products/add')}
+                  />
+                  <ActionItem
+                     label="Manage Products"
+                     image={require('../../assets/icons/products.png')}
+                     icon={Tag}
+                     onPress={() => router.push('/products/inventory')}
+                  />
+                  <ActionItem
+                     label="Manage Orders"
+                     image={require('../../assets/icons/orders.png')}
+                     icon={ReceiptText}
+                     onPress={() => router.push('/orders')}
+                  />
+                  <ActionItem
+                     label="Promotions"
+                     image={require('../../assets/icons/promotion.png')}
+                     icon={Percent}
+                     onPress={() => router.push('/marketing')}
+                  />
+                  <ActionItem
+                     label="Payouts"
+                     image={require('../../assets/icons/payouts.png')}
+                     icon={Wallet}
+                     onPress={() => router.push('/finance/payouts')}
+                  />
                </View>
             </View>
 
             {/* Recent Orders */}
-            <View className="mx-3 mt-6 bg-white border border-slate-100 p-5 rounded-[32px] shadow-sm">
+            <View className="mx-3 mt-6 bg-white border border-slate-100 p-5 rounded-[32px] shadow-sm mb-12">
                <View className="flex-row justify-between items-center mb-3">
                   <Text className="text-base font-bold text-slate-900">Recent Orders</Text>
                   <Pressable onPress={() => router.push('/orders')} className="flex-row items-center">
@@ -106,7 +181,8 @@ export default function Dashboard() {
                   textColor="text-green-700"
                   dotColor="bg-green-500"
                   iconBg="bg-purple-100"
-                  onPress={() => router.push('/orders/confirmation')}
+                  onPress={() => router.push('/orders/index')}
+                  image={require('../../assets/icons/new order.png')}
                />
                <OrderItem
                   id="#ORD-8920"
@@ -120,6 +196,7 @@ export default function Dashboard() {
                   dotColor="bg-blue-500"
                   iconBg="bg-orange-100"
                   onPress={() => router.push('/orders/preparing')}
+                   image={require('../../assets/icons/preparing order.png')}
                />
                <OrderItem
                   id="#ORD-8919"
@@ -133,6 +210,7 @@ export default function Dashboard() {
                   dotColor="bg-emerald-500"
                   iconBg="bg-green-100"
                   onPress={() => router.push('/orders/delivery')}
+                   image={require('../../assets/icons/orders.png')}
                />
 
                <Pressable onPress={() => router.push('/orders')} className="items-center border-t border-slate-50 mt-3 pt-3">
@@ -144,25 +222,36 @@ export default function Dashboard() {
    );
 }
 
-// Subcomponents
-function StatCard({ title, value, trend, icon: Icon, iconBg, iconColor }: any) {
+function StatCard({ title, value, trend, icon: Icon, image, iconBg, iconColor, onPress }: any) {
    return (
-      <View className="w-36 bg-slate-50/50 border border-slate-100 p-3.5 rounded-3xl mr-3">
+      <Pressable
+         onPress={onPress}
+         className="w-36 bg-slate-50/50 border border-slate-100 p-3.5 rounded-3xl mr-3 active:bg-purple-50/30"
+      >
          <View className={`w-8 h-8 ${iconBg} rounded-xl items-center justify-center mb-3`}>
-            <Icon size={16} color={iconColor} />
+            {image ? (
+               <Image source={image} className="w-8 h-8" resizeMode="contain" />
+            ) : (
+               <Icon size={16} color={iconColor} />
+            )}
          </View>
          <Text className="text-slate-400 text-[9px] font-bold uppercase">{title}</Text>
          <Text className="text-lg font-bold text-slate-900 mt-0.5">{value}</Text>
-         <Text className="text-green-600 text-[9px] font-bold mt-0.5">{trend} <Text className="text-slate-400 font-normal">vs yesterday</Text></Text>
-      </View>
+         <Text className="text-green-600 text-[9px] font-bold mt-0.5">
+            {trend} <Text className="text-slate-400 font-normal">vs yesterday</Text>
+         </Text>
+      </Pressable>
    );
 }
-
-function ActionItem({ label, icon: Icon, onPress }: any) {
+function ActionItem({ label, image, icon: Icon, onPress }: any) {
    return (
       <Pressable onPress={onPress} className="items-center w-[18%]">
          <View className="w-12 h-12 bg-white border border-slate-100 rounded-2xl items-center justify-center mb-2 shadow-sm active:bg-purple-50">
-            <Icon size={20} color="#4F26D9" />
+            {image ? (
+               <Image source={image} className="w-6 h-6" resizeMode="contain" />
+            ) : (
+               <Icon size={20} color="#4F26D9" />
+            )}
          </View>
          <Text className="text-slate-600 text-[8px] font-bold text-center uppercase" numberOfLines={2}>{label}</Text>
       </Pressable>
