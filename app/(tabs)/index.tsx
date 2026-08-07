@@ -161,6 +161,7 @@ export default function Dashboard() {
             </View>
 
             {/* Recent Orders */}
+            {/* Recent Orders */}
             <View className="mx-3 mt-6 bg-white border border-slate-100 p-5 rounded-[32px] shadow-sm mb-12">
                <View className="flex-row justify-between items-center mb-3">
                   <Text className="text-base font-bold text-slate-900">Recent Orders</Text>
@@ -181,7 +182,7 @@ export default function Dashboard() {
                   textColor="text-green-700"
                   dotColor="bg-green-500"
                   iconBg="bg-purple-100"
-                  onPress={() => router.push('/orders/index')}
+                  onPress={() => router.push('/orders/confirmation')}
                   image={require('../../assets/icons/new order.png')}
                />
                <OrderItem
@@ -195,8 +196,8 @@ export default function Dashboard() {
                   textColor="text-blue-700"
                   dotColor="bg-blue-500"
                   iconBg="bg-orange-100"
-                  onPress={() => router.push('/orders/preparing')}
-                   image={require('../../assets/icons/preparing order.png')}
+                  onPress={() => router.push('/orders/preparing order')}
+                  image={require('../../assets/icons/preparing order.png')}
                />
                <OrderItem
                   id="#ORD-8919"
@@ -210,13 +211,15 @@ export default function Dashboard() {
                   dotColor="bg-emerald-500"
                   iconBg="bg-green-100"
                   onPress={() => router.push('/orders/delivery')}
-                   image={require('../../assets/icons/orders.png')}
+                  image={require('../../assets/icons/Out for Delivery order.png')}
                />
 
                <Pressable onPress={() => router.push('/orders')} className="items-center border-t border-slate-50 mt-3 pt-3">
                   <Text className="text-primary font-bold text-xs">View All Orders</Text>
                </Pressable>
             </View>
+
+
          </ScrollView>
       </SafeAreaView>
    );
@@ -258,11 +261,15 @@ function ActionItem({ label, image, icon: Icon, onPress }: any) {
    );
 }
 
-function OrderItem({ id, tag, name, count, price, status, bgColor, textColor, dotColor, iconBg, onPress }: any) {
+function OrderItem({ id, tag, name, count, price, status, bgColor, textColor, dotColor, iconBg, image, onPress }: any) {
    return (
       <Pressable onPress={onPress} className="flex-row items-center py-3 border-b border-slate-50 active:bg-slate-50">
-         <View className={`w-10 h-10 ${iconBg} rounded-2xl items-center justify-center mr-3`}>
-            <ShoppingBag size={18} color="#4F26D9" />
+         <View className={`w-10 h-10  rounded-2xl items-center justify-center mr-3`}>
+            {image ? (
+               <Image source={image} className="w-10 h-10" resizeMode="contain" />
+            ) : (
+               <ShoppingBag size={18} color="#4F26D9" />
+            )}
          </View>
          <View className="flex-1">
             <View className="flex-row items-center">

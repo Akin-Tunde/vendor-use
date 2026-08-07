@@ -1,6 +1,5 @@
 import { useRouter } from 'expo-router';
 import {
-  BarChart3,
   Bell,
   Briefcase,
   ChevronRight,
@@ -13,7 +12,7 @@ import {
   TrendingUp,
   Wallet
 } from 'lucide-react-native';
-import { Pressable, ScrollView, Text, View } from 'react-native';
+import { Image, Pressable, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function ProfileScreen() {
@@ -64,8 +63,12 @@ export default function ProfileScreen() {
             onPress={() => router.push('/(tabs)/analytics')}
             className="flex-1 bg-white border border-slate-100 p-4 rounded-[28px] shadow-sm active:bg-purple-50/20"
           >
-            <View className="w-10 h-10 bg-purple-100 rounded-2xl items-center justify-center mb-2">
-              <BarChart3 size={20} color="#4F26D9" />
+            <View className="w-10 h-10 rounded-2xl items-center justify-center mb-2">
+              <Image
+                source={require('../../assets/icons/performance.png')}
+                className="w-9 h-9"
+                resizeMode="contain"
+              />
             </View>
             <Text className="font-bold text-slate-900 text-xs">Analytics</Text>
             <Text className="text-slate-400 text-[10px] mt-0.5">Sales & Growth</Text>
@@ -75,8 +78,12 @@ export default function ProfileScreen() {
             onPress={() => router.push('/(tabs)/finance')}
             className="flex-1 bg-white border border-slate-100 p-4 rounded-[28px] shadow-sm active:bg-purple-50/20"
           >
-            <View className="w-10 h-10 bg-green-100 rounded-2xl items-center justify-center mb-2">
-              <Wallet size={20} color="#22c55e" />
+            <View className="w-10 h-10 rounded-2xl items-center justify-center mb-2">
+              <Image
+                source={require('../../assets/icons/wallets.png')}
+                className="w-9 h-9"
+                resizeMode="contain"
+              />
             </View>
             <Text className="font-bold text-slate-900 text-xs">Wallet & Finance</Text>
             <Text className="text-slate-400 text-[10px] mt-0.5">₦842,300.00</Text>
@@ -89,6 +96,7 @@ export default function ProfileScreen() {
           <View className="bg-white border border-slate-100 p-4 rounded-[32px] shadow-sm gap-1">
             <MenuLink
               icon={TrendingUp}
+              image={require('../../assets/icons/sales.png')}
               label="Sales & Revenue Reports"
               sub="View detailed sales breakdowns and trends"
               bg="bg-purple-100"
@@ -97,6 +105,7 @@ export default function ProfileScreen() {
             />
             <MenuLink
               icon={Wallet}
+              image={require('../../assets/icons/earnings.png')}
               label="Earnings & Payouts"
               sub="Check net earnings, fees and payout schedules"
               bg="bg-green-100"
@@ -113,6 +122,7 @@ export default function ProfileScreen() {
           <View className="bg-white border border-slate-100 p-4 rounded-[32px] shadow-sm gap-1">
             <MenuLink
               icon={Store}
+              image={require('../../assets/icons/store_profile.png')}
               label="Store Profile"
               sub="Store name, logo, cover and address"
               bg="bg-purple-100"
@@ -121,6 +131,7 @@ export default function ProfileScreen() {
             />
             <MenuLink
               icon={Clock}
+              image={require('../../assets/icons/business_hour.png')}
               label="Business Hours & Delivery"
               sub="Operating hours, radius and fees"
               bg="bg-green-100"
@@ -129,6 +140,7 @@ export default function ProfileScreen() {
             />
             <MenuLink
               icon={Megaphone}
+              image={require('../../assets/icons/marketing.png')}
               label="Marketing Hub"
               sub="Campaigns, promotions and ads"
               bg="bg-amber-100"
@@ -137,6 +149,7 @@ export default function ProfileScreen() {
             />
             <MenuLink
               icon={Briefcase}
+              image={require('../../assets/icons/business_service.png')}
               label="Business Services"
               sub="Value-added store growth services"
               bg="bg-orange-100"
@@ -153,6 +166,7 @@ export default function ProfileScreen() {
           <View className="bg-white border border-slate-100 p-4 rounded-[32px] shadow-sm gap-1">
             <MenuLink
               icon={Bell}
+              image={require('../../assets/icons/notifications.png')}
               label="Notification Preferences"
               sub="Manage order and store alerts"
               bg="bg-blue-100"
@@ -161,6 +175,7 @@ export default function ProfileScreen() {
             />
             <MenuLink
               icon={HelpCircle}
+              image={require('../../assets/icons/help-support.png')}
               label="Help & Support"
               sub="24/7 customer support and FAQs"
               bg="bg-teal-100"
@@ -169,6 +184,7 @@ export default function ProfileScreen() {
             />
             <MenuLink
               icon={Sliders}
+              image={require('../../assets/icons/store_settings.png')}
               label="App Settings"
               sub="Language, currency, security and privacy"
               bg="bg-purple-100"
@@ -199,7 +215,7 @@ export default function ProfileScreen() {
   );
 }
 
-function MenuLink({ icon: Icon, label, sub, bg, iconColor, red, last, onPress }: any) {
+function MenuLink({ icon: Icon, image, label, sub, bg, iconColor, red, last, onPress }: any) {
   return (
     <Pressable
       onPress={onPress}
@@ -207,8 +223,12 @@ function MenuLink({ icon: Icon, label, sub, bg, iconColor, red, last, onPress }:
         } active:bg-purple-50/20 rounded-xl px-2`}
     >
       <View className="flex-row items-center flex-1 mr-2">
-        <View className={`w-10 h-10 ${bg} rounded-2xl items-center justify-center mr-3`}>
-          <Icon size={18} color={iconColor} />
+        <View className={`w-10 h-10  rounded-2xl items-center justify-center mr-3`}>
+          {image ? (
+            <Image source={image} className="w-8 h-8" resizeMode="contain" />
+          ) : (
+            <Icon size={18} color={iconColor} />
+          )}
         </View>
         <View className="flex-1">
           <Text className={`font-bold text-xs ${red ? 'text-red-600' : 'text-slate-900'}`}>
